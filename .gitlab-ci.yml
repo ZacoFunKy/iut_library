@@ -24,4 +24,3 @@ test:
   artifacts:
     reports:
       junit: junit.xml
-      coverage: build/logs/clover.xml
