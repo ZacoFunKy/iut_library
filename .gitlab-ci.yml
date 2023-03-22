@@ -7,7 +7,7 @@ cache:
 
 stages:
   - "analysis"
-  - "tests"
+  - "test"
 
 static_analysis:
   stage: analysis
