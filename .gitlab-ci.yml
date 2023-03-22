@@ -1,25 +1,79 @@
-default:
-  image: php:7.4-apache
+image: jakzal/phpqa:php8.1
+
+before_script:
+    - composer install
 
 cache:
-  paths:
-    - vendor/
+    paths:
+        - vendor/
 
 stages:
-  - "analysis"
-  - "tests"
+    - SecurityChecker
+    - CodingStandards
+    - UnitTests
+    - deploy
 
-static_analysis:
-  stage: analysis
-  script:
-    - sh scripts/ci-php-install.sh
-    - php bin/composer.phar require --dev phpstan/phpstan
-    - php vendor/bin/phpstan.phar analyse src --level=1
+security-checker:
+    stage: SecurityChecker
+    script:
+        - local-php-security-checker  --path=./composer.lock
+    allow_failure: false
+
+phpcs:
+    stage: CodingStandards
+    script:
+        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+    allow_failure: false
+
+phpstan:
+    stage: CodingStandards
+    script:
+        - phpstan analyse ./src
+    allow_failure: false
+
+twig-lint:
+    stage: CodingStandards
+    script:
+        - twig-lint lint ./templates
+    allow_failure: false
 
 phpunit:
-  stage: test
+    image: php:8.1-apache
+    stage: UnitTests
+    services:
+        - name: mysql:5.7
+          alias: mysql
+    variables:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      #MYSQL_ROOT_PASSWORD: pass_test
+      MYSQL_DATABASE: myapptest
+      #MYSQL_USER: myapptest
+      #MYSQL_PASSWORD: myapptest
+      #DATABASE_URL: 'mysql://myapptest:myapptest@mysql:3306/myapptest'
+      DATABASE_URL: 'mysql://root:@mysql:3306/myapptest'
+    before_script:
+        - apt-get update && apt-get install -y git libzip-dev
+        - curl -sSk https://getcomposer.org/installer | php -- --disable-tls && mv composer.phar /usr/local/bin/composer
+        - docker-php-ext-install mysqli pdo pdo_mysql zip
+        - php bin/console doctrine:database:drop --force --if-exists --env=test
+        - php bin/console doctrine:database:create --env=test
+        - php bin/console doctrine:migration:migrate --env=test --no-interaction
+    script:
+        - php bin/phpunit
+    allow_failure: false
+
+pages:
+  stage: deploy
+  image: tthor/test
+  before_script:
+    - mkdir -p public
   script:
-    - sh scripts/ci-php-install.sh
-    - php bin/composer.phar install -o
-    - php bin/composer.phar require --dev symfony/phpunit-bridge
-    - sh scripts/php_test_run.sh
+    - emacs README.org -l htmlize.el --batch --eval "(org-babel-do-load-languages 'org-babel-load-languages '( (python . t) ) )" --eval '(setq org-confirm-babel-evaluate nil)' --eval "(setq org-html-htmlize-output-type 'css)" -f org-html-export-to-html --kill
+    - cp README.html ./public/index.html
+    - cp *.png ./public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
