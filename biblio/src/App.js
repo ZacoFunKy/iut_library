@@ -1,4 +1,12 @@
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './components/Home';
+import SearchResults from './components/SearchResults';
+import FriendsView from './components/FriendsView';
+import Connexion from './components/Connexion';
+import Footer from './components/Footer';
+import { useState } from 'react';
 
 function App() {
 
