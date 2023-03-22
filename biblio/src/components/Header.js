@@ -1,7 +1,8 @@
 import "../styles/Header.css";
 import logo from "../assets/logo-iut.png";
-function Header() {
+import Navbar from "./Navbar";
 
+function Header() {
   return (
     <div className="Header flex items-center w-100">
         <div className="flex flex-row items-center">
@@ -9,7 +10,6 @@ function Header() {
             <h1 className="text ml-5 text-2xl mb-0 font-700">IUT - Bibliothèque</h1>
         </div>
         <Navbar/>
-        
     </div>
   );
 }

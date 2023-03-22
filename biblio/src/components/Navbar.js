@@ -1,12 +1,11 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-
-export function Navbar() {
+function Navbar() {
   return (
     <div className="Navbar flex flex-row items-center">
-      <Link to="/" className="text text-xl mr-5">Accueil</Link>
-      <Link to="/livres" className="text text-xl mr-5">Livres</Link>
-      <Link to="/auteurs" className="text text-xl mr-5">Auteurs</Link>
-      <Link to="/emprunts" className="text text-xl mr-5">Emprunts</Link>
+      <Link to="/" className="text text-xl mr-5 hover:underline">Accueil</Link>
+      <Link to="/amis" className="text text-xl mr-5 hover:underline">Amis</Link>
     </div>
   );
 }

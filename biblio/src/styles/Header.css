@@ -2,4 +2,5 @@
     background-color: #086969;
     padding: 3vh;
     height: max-content;
+    justify-content: space-between;
 }
