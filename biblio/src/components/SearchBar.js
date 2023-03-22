@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function SearchBar(props) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  /*const [searchResults, setSearchResults] = useState([]);*/
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+    console.log(event.target.value);
   };
 
   /*useEffect(() => {
