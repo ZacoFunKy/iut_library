@@ -1,4 +1,3 @@
-import "../styles/Header.css";
 import logo from "../assets/logo-iut.png";
 import Navbar from "./Navbar";
 import SearchBar from "./SearchBar";

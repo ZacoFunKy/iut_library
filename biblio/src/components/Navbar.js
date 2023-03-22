@@ -39,7 +39,7 @@ function Navbar() {
           <Link
             to="/"
             className={`text text-xl mr-5 ${location.pathname === "/"
-              ? "text-blue-500 underline underline-offset-8"
+              ? "text-[#009999] underline underline-offset-8"
               : "hover:underline underline-offset-8 "
             }`}
           >
@@ -48,7 +48,7 @@ function Navbar() {
           <Link
             to="/amis"
             className={`text text-xl mr-5 ${location.pathname === "/amis"
-              ? "text-blue-500 underline underline-offset-8"
+              ? "text-[#009999] underline underline-offset-8"
               : "hover:underline underline-offset-8 "
             }`}
           >
@@ -57,7 +57,7 @@ function Navbar() {
           <Link
             to="/connexion"
             className={`text text-xl mr-5 ${location.pathname === "/connexion"
-              ? "text-blue-500 underline underline-offset-8"
+              ? "text-[#009999] underline underline-offset-8"
               : "hover:underline underline-offset-8"
             }`}
           >
@@ -70,7 +70,7 @@ function Navbar() {
           <Link
             to="/"
             className={`text text-xl mr-5 ${location.pathname === "/"
-              ? "text-blue-500 underline underline-offset-8"
+              ? "text-[#009999] underline underline-offset-8"
               : "hover:underline underline-offset-8 "
             }`}
           >
@@ -79,7 +79,7 @@ function Navbar() {
           <Link
             to="/amis"
             className={`text text-xl mr-5 ${location.pathname === "/amis"
-              ? "text-blue-500 underline underline-offset-8"
+              ? "text-[#009999] underline underline-offset-8"
               : "hover:underline underline-offset-8 "
             }`}
           >
@@ -88,7 +88,7 @@ function Navbar() {
           <Link
             to="/connexion"
             className={`text text-xl mr-5 ${location.pathname === "/connexion"
-              ? "text-blue-500 underline underline-offset-8"
+              ? "text-[#009999] underline underline-offset-8"
               : "hover:underline underline-offset-8"
             }`}
           >
