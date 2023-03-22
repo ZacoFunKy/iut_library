@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { Fragment } from "react";
+
 
 function Connexion() {
   const [formData, setFormData] = useState({
@@ -16,7 +17,8 @@ function Connexion() {
   };
 
   return (
-      <div className="flex justify-center text-[#009999] mt-20">
+    <Fragment>
+      <div className="flex justify-center text-[#009999]">
         <form className="pt-6">
           <div className="mb-4 ">
             <h2 className="block  text-4xl font-bold mb-4 text-center">
@@ -32,9 +34,9 @@ function Connexion() {
               onChange={handleChange}
             />
           </div>
-          <div class="mb-6">
+          <div className="mb-6">
             <input
-              class="border-gray-300 placeholder-[#009999] appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="border-gray-300 placeholder-[#009999] appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               name="password"
               type="password"
@@ -43,7 +45,7 @@ function Connexion() {
               onChange={handleChange}
             />
           </div>
-          <div class="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <button
               className="bg-[#009999] hover:bg-[#086969] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
