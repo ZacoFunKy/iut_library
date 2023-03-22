@@ -5,6 +5,10 @@ cache:
   paths:
     - vendor/
 
+stages:
+  - "analysis"
+  - "tests"
+
 static_analysis:
   stage: analysis
   script:
