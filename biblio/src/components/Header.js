@@ -1,6 +1,7 @@
 import "../styles/Header.css";
 import logo from "../assets/logo-iut.png";
 import Navbar from "./Navbar";
+import SearchBar from "./SearchBar";
 
 function Header() {
   return (
@@ -9,6 +10,7 @@ function Header() {
             <img src={logo} alt="logo" className="w-10 mb-1.5"/>
             <h1 className="text ml-5 text-2xl mb-0 font-700">IUT - Bibliothèque</h1>
         </div>
+        <SearchBar/>
         <Navbar/>
     </div>
   );

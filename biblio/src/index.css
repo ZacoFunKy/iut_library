@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.loupe {
+  background-color: #009999;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.inputBar {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  min-width: 300px;
+  outline: none;
+}
+

@@ -5,7 +5,6 @@ import Header from "./Header";
 function Connexion() {
   return (
     <Fragment>
-      <Header />
       <div class="flex justify-center text-[#009999]">
         <form class="pt-6">
           <div class="mb-4 ">

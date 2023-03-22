@@ -6,10 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FriendsView from './components/FriendsView';
 import Connexion from './components/Connexion';
+import Header from './components/Header';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter basename="/">
+    <Header/>
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/amis" element={<FriendsView />} />
