@@ -1,14 +1,15 @@
 import { Fragment } from "react";
 import Header from "./Header";
 
+
 function Connexion() {
   return (
     <Fragment>
-      <div class="flex justify-center text-[#009999]">
+      <div class="flex justify-center text-[#009999] mt-8 p-8">
         <form class="pt-6">
           <div class="mb-4 ">
             <label
-              class="block  text-4xl font-bold mb-4 text-center"
+              class="block  text-4xl font-bold mb-9 text-center"
               for="username"
             >
               Connexion
