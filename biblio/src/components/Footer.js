@@ -1,7 +1,7 @@
 function Footer() {
   return ( 
 
-    <footer class="bg-gray-300 flex flex-row justify-around items-top p-10 absolute bottom-0 w-full h-max">
+    <footer className="bg-gray-300 flex flex-row justify-around items-top p-5 absolute bottom-0 w-full">
         
         <div class="">
             <h1 class=" mb-5 text-[#009999] text-2xl">IUT - Bibliothèque</h1>
