@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import "../styles/Connexion.css";
 import Header from "./Header";
 
 function Connexion() {

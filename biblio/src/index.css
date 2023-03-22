@@ -25,3 +25,15 @@ code {
   outline: none;
 }
 
+.footer {
+  position: absolute;
+  width: 100vw;
+  bottom: 0;
+  height: max-content;
+}
+
+.RS {
+  justify-content: space-around;
+  width:max-content ;
+}
+
