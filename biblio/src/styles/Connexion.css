@@ -1,0 +1,14 @@
+/*.connexion{
+    border:black solid;
+    text-align: center;
+}
+.connexion form{
+    display: flex; 
+    flex-direction: row;
+    flex-direction: column;
+}
+
+.connexion form input[type=text]
+{
+    border: solid green;
+}*/
