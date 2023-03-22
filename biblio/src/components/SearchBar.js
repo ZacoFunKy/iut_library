@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function SearchBar(props) {
-  const [searchTerm, setSearchTerm] = useState("");
+function SearchBar({ searchTerm, setSearchTerm }) {
+
   /*const [searchResults, setSearchResults] = useState([]);*/
+  const navigation = useNavigate();
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
-    console.log(event.target.value);
+    if (event.target.value.length === 1) {
+      navigation("/results");
+    } else if (event.target.value.length === 0) {
+      navigation("/");
+    }
+
   };
 
   /*useEffect(() => {
@@ -19,7 +26,7 @@ function SearchBar(props) {
   return (
     <div className="search-bar flex items-center">
       <input
-      className="inputBar p-2 pt-2.5 pl-5 pr-5"
+        className="inputBar p-2 pt-2.5 pl-5 pr-5"
         type="text"
         placeholder="Rechercher un auteur/livre"
         value={searchTerm}
