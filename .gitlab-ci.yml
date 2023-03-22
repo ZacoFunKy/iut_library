@@ -1,25 +1,27 @@
-default:
-  image: php:7.4-apache
-
-cache:
-  paths:
-    - vendor/
-
 stages:
-  - "analysis"
-  - "test"
+  - test
 
-static_analysis:
-  stage: analysis
-  script:
-    - sh scripts/ci-php-install.sh
-    - php bin/composer.phar require --dev phpstan/phpstan
-    - php vendor/bin/phpstan.phar analyse src --level=1
+variables:
+  SYMFONY_DEPRECATIONS_HELPER: weak
 
-phpunit:
+test:
   stage: test
+  image: php:7.4
+  services:
+    - mysql:5.7
+  before_script:
+    - apt-get update
+    - apt-get install -y git zip unzip
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - composer install --prefer-dist --no-progress --no-interaction
+    - cp .env.dist .env
+    - php bin/console doctrine:database:create --env=test
+    - php bin/console doctrine:schema:create --env=test
   script:
-    - sh scripts/ci-php-install.sh
-    - php bin/composer.phar install -o
-    - php bin/composer.phar require --dev symfony/phpunit-bridge
-    - sh scripts/php_test_run.sh
+    - vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
+    - vendor/bin/phpstan analyze src/ tests/
+    - vendor/bin/phpunit --coverage-text --colors=never --coverage-clover build/logs/clover.xml
+  artifacts:
+    reports:
+      junit: junit.xml
+      coverage: build/logs/clover.xml
