@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Alkatra', cursive;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.loupe {
+  background-color: #009999;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.inputBar {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  min-width: 300px;
+  outline: none;
+}
+
+.footer {
+  position: absolute;
+  width: 100vw;
+  bottom: 0;
+  height: max-content;
+}
+
+.RS {
+  justify-content: space-around;
+  width:max-content ;
+}
