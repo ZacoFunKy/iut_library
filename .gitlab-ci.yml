@@ -12,11 +12,6 @@ stages:
     - CodingStandards
     - UnitTests
 
-stages:
-    - SecurityChecker
-    - CodingStandards
-    - UnitTests
-
 security-checker:
     stage: SecurityChecker
     script:
