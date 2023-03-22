@@ -1,5 +1,3 @@
-import '../styles/Connexion.css';
-
 function Connexion() {
   return (
     <div class="flex justify-center text-[#009999]">   
