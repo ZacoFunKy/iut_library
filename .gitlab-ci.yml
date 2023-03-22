@@ -21,6 +21,3 @@ test:
     - vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
     - vendor/bin/phpstan analyze src/ tests/
     - vendor/bin/phpunit --coverage-text --colors=never --coverage-clover build/logs/clover.xml
-  artifacts:
-    reports:
-      junit: junit.xml
