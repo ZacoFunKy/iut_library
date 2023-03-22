@@ -5,7 +5,7 @@ before_script:
 
 cache:
     paths:
-        - vendor/
+        - ./symfony/vendor/
 
 stages:
     - SecurityChecker
@@ -16,25 +16,25 @@ stages:
 security-checker:
     stage: SecurityChecker
     script:
-        - local-php-security-checker  --path=./composer.lock
+        - local-php-security-checker  --path=./symfony/composer.lock
     allow_failure: false
 
 phpcs:
     stage: CodingStandards
     script:
-        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+        - phpcs -v --standard=PSR12 --ignore=./symfony/src/Kernel.php ./src
     allow_failure: false
 
 phpstan:
     stage: CodingStandards
     script:
-        - phpstan analyse ./src
+        - phpstan analyse ./symfony/src
     allow_failure: false
 
 twig-lint:
     stage: CodingStandards
     script:
-        - twig-lint lint ./templates
+        - twig-lint lint ./symfony/templates
     allow_failure: false
 
 
@@ -45,8 +45,8 @@ pages:
     - mkdir -p public
   script:
     - emacs README.org -l htmlize.el --batch --eval "(org-babel-do-load-languages 'org-babel-load-languages '( (python . t) ) )" --eval '(setq org-confirm-babel-evaluate nil)' --eval "(setq org-html-htmlize-output-type 'css)" -f org-html-export-to-html --kill
-    - cp README.html ./public/index.html
-    - cp *.png ./public/
+    - cp README.html ./symfony/public/index.html
+    - cp *.png ./symfony/public/
   artifacts:
     paths:
       - public
