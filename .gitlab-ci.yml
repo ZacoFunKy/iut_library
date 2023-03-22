@@ -1,0 +1,55 @@
+image: jakzal/phpqa:php8.1
+
+before_script:
+    - composer install
+
+cache:
+    paths:
+        - vendor/
+
+stages:
+    - SecurityChecker
+    - CodingStandards
+    - UnitTests
+    - deploy
+
+security-checker:
+    stage: SecurityChecker
+    script:
+        - local-php-security-checker  --path=./composer.lock
+    allow_failure: false
+
+phpcs:
+    stage: CodingStandards
+    script:
+        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+    allow_failure: false
+
+phpstan:
+    stage: CodingStandards
+    script:
+        - phpstan analyse ./src
+    allow_failure: false
+
+twig-lint:
+    stage: CodingStandards
+    script:
+        - twig-lint lint ./templates
+    allow_failure: false
+
+
+pages:
+  stage: deploy
+  image: tthor/test
+  before_script:
+    - mkdir -p public
+  script:
+    - emacs README.org -l htmlize.el --batch --eval "(org-babel-do-load-languages 'org-babel-load-languages '( (python . t) ) )" --eval '(setq org-confirm-babel-evaluate nil)' --eval "(setq org-html-htmlize-output-type 'css)" -f org-html-export-to-html --kill
+    - cp README.html ./public/index.html
+    - cp *.png ./public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
