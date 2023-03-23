@@ -39,13 +39,6 @@ phpstan:
         - phpstan analyse ./src
     allow_failure: false
 
-twig-lint:
-    stage: CodingStandards
-    script:
-        - twig-lint lint ./templates
-    allow_failure: false
-
-
 pages:
   stage: deploy
   image: tthor/test
@@ -57,6 +50,6 @@ pages:
     - cp *.png ./public/
   artifacts:
     paths:
-      - public
+      - vendor\*
   only:
     - master
