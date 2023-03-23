@@ -13,6 +13,15 @@ stages:
   - CodingStandards
   - UnitTests
 
+  # Bloquer le push ou le merge si le job de SecurityChecker ou de UnitTests échoue
+job_template:
+    script: 
+        - echo "job running"
+    rules:
+    - if: '($CI_JOB_NAME == "SecurityChecker" || $CI_JOB_NAME == "UnitTests") && $CI_JOB_STATUS != "success"'
+    when: always
+    allow_failure: false
+
 security-checker:
   stage: SecurityChecker
   script:
@@ -48,11 +57,3 @@ unit-tests:
   allow_failure: false
   extends: job_template
 
-# Bloquer le push ou le merge si le job de SecurityChecker ou de UnitTests échoue
-job_template:
-    script: 
-        - echo "job running"
-    rules:
-    - if: '($CI_JOB_NAME == "SecurityChecker" || $CI_JOB_NAME == "UnitTests") && $CI_JOB_STATUS != "success"'
-    when: always
-    allow_failure: false
