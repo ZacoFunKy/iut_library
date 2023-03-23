@@ -17,29 +17,34 @@ security-checker:
     script:
         - local-php-security-checker  --path=./composer.lock
     allow_failure: false
+    when: on_failure
 
 phpcs:
     stage: CodingStandards
     script:
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
+    when: on_failure
 
 phpstan:
     stage: CodingStandards
     script:
         - phpstan analyse ./src
     allow_failure: false
+    when: on_failure
 
 twig-lint:
     stage: CodingStandards
     script:
         - twig-lint lint ./templates
     allow_failure: false
+    when: on_failure
 
 unit-tests:
   stage: UnitTests
   script:
     - php ./vendor/bin/phpunit --configuration ./phpunit.xml
   allow_failure: false
+  when: on_failure
 
 
