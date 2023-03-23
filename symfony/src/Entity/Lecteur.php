@@ -171,5 +171,4 @@ class Lecteur
         }
         return $this;
     }
-    
 }

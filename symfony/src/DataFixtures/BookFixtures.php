@@ -83,5 +83,4 @@ class BookFixtures extends Fixture
 
         $manager->flush();*/
     }
-
 }

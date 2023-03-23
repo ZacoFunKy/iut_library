@@ -53,5 +53,4 @@ class Editeur
 
         return $this;
     }
-
 }
