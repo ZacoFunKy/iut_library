@@ -3,6 +3,7 @@ image: jakzal/phpqa:php8.1
 before_script:
     - cd symfony
     - composer install
+    - composer require --dev squizlabs/php_codesniffer
 
 cache:
     paths:
