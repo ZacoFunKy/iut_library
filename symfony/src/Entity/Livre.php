@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Livre
  *
- * @ORM\Table(name="LIVRE", indexes={@ORM\Index(name="I_FK_LIVRE_LANGUE", columns={"LIBELLELANGUE"}), @ORM\Index(name="I_FK_LIVRE_EDITEUR", columns={"ID_EDITEUR"})})
+ * @ORM\Table(name="LIVRE", indexes={@ORM\Index(name="I_FK_LIVRE_LANGUE",
+ * columns={"LIBELLELANGUE"}),
+ * @ORM\Index(name="I_FK_LIVRE_EDITEUR", columns={"ID_EDITEUR"})})
  * @ORM\Entity
  */
 class Livre
@@ -225,7 +227,6 @@ class Livre
         return $this;
     }
 
-    
     public function addIdAuteur(Auteur $idAuteur): self
     {
         if (!$this->idAuteur->contains($idAuteur)) {
@@ -245,7 +246,4 @@ class Livre
 
         return $this;
     }
-
-
-
 }

@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Emprunt
  *
- * @ORM\Table(name="EMPRUNT", indexes={@ORM\Index(name="I_FK_EMPRUNT_LECTEUR", columns={"ID_LECTEUR"}), @ORM\Index(name="I_FK_EMPRUNT_LIVRE", columns={"ID_LIVRE"})})
+ * @ORM\Table(name="EMPRUNT", indexes={@ORM\Index(name="I_FK_EMPRUNT_LECTEUR",
+ * columns={"ID_LECTEUR"}),
+ * @ORM\Index(name="I_FK_EMPRUNT_LIVRE", columns={"ID_LIVRE"})})
  * @ORM\Entity
  */
 class Emprunt
@@ -54,6 +56,4 @@ class Emprunt
      * })
      */
     private $idLivre;
-
-
 }
