@@ -45,7 +45,6 @@ class Categorie
     public function setNomcategorie(string $nomcategorie): self
     {
         $this->nomcategorie = $nomcategorie;
-
         return $this;
     }
 
@@ -56,7 +55,6 @@ class Categorie
             $this->idLivre[] = $idLivre;
             $idLivre->addNomcategorie($this);
         }
-
         return $this;
     }
 
@@ -66,9 +64,6 @@ class Categorie
             $this->idLivre->removeElement($idLivre);
             $idLivre->removeNomcategorie($this);
         }
-
         return $this;
     }
-
-
 }

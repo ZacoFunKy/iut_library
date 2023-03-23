@@ -160,7 +160,6 @@ class Lecteur
             $this->idLecteurSuit->add($lecteur);
             $lecteur->addIdLecteurEstSuivi($this);
         }
-    
         return $this;
     }
 
@@ -170,10 +169,6 @@ class Lecteur
             $this->idLecteurEstSuivi->add($lecteur);
             $lecteur->addIdLecteurSuit($this);
         }
-    
         return $this;
     }
-
-
-
 }

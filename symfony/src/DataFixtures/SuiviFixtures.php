@@ -23,6 +23,5 @@ class SuiviFixtures extends Fixture
         }
 
         $manager->flush();
-
     }
 }

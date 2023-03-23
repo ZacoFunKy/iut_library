@@ -11,7 +11,6 @@ use App\Entity\Editeur;
 use App\Entity\Genre;
 use App\Entity\Langue;
 
-
 class BookFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
