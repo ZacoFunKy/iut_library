@@ -13,12 +13,19 @@ code {
 }
 
 .Header {
+  width: 100vw;
   padding: 3vh;
   height: max-content;
   justify-content: space-between;
   border-bottom: #009999 2px solid;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .text {
+    display: none;
+  }
 }
 
 .loupe {
@@ -32,7 +39,6 @@ code {
   border: 2px solid #009999;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  min-width: 300px;
   outline: none;
 }
 
