@@ -5,11 +5,30 @@ body {
   font-family: 'Alkatra', cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .Header {
@@ -20,6 +39,7 @@ code {
   border-bottom: #009999 2px solid;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  animation: slideIn 0.75s ease-in-out;
 }
 
 @media screen and (max-width: 600px) {
@@ -51,6 +71,7 @@ code {
   width: 100vw;
   bottom: 0;
   height: max-content;
+  animation: slideOut 0.75s ease-in-out;
 }
 
 

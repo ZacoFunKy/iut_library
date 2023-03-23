@@ -25,7 +25,7 @@ function Connexion() {
               Connexion
             </h2>
             <input
-              className="border-gray-300 placeholder-[#009999] appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="border-gray-300 appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="username"
               name="username"
               type="text"
@@ -36,7 +36,7 @@ function Connexion() {
           </div>
           <div className="mb-6">
             <input
-              className="border-gray-300 placeholder-[#009999] appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="border-gray-300 appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               name="password"
               type="password"
@@ -45,7 +45,7 @@ function Connexion() {
               onChange={handleChange}
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button
               className="bg-[#009999] hover:bg-[#086969] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
