@@ -12,6 +12,7 @@ stages:
   - SecurityChecker
   - CodingStandards
   - UnitTests
+  - checkReact
 
 security-checker:
   stage: SecurityChecker
@@ -47,4 +48,23 @@ twig-lint:
 #    - php ./vendor/bin/phpunit --configuration ./phpunit.xml
 #  allow_failure: false
 #  when: on_success
+
+build: 
+    stage: checkReact
+    image: node:8.11.3
+    script:
+        - cd ../biblio
+        - npm install --silent
+        - npm run build
+    artifacts:
+        paths:
+          - dist/
+
+lint: 
+    stage: checkReact
+    image: node:8.11.3
+    script:
+        - cd ../biblio
+        - npm install --silent
+        - npm run lint
 
