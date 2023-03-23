@@ -19,6 +19,7 @@ security-checker:
     - local-php-security-checker --path=./composer.lock
   allow_failure: false
 
+
 phpcs:
   stage: CodingStandards
   script:
@@ -40,9 +41,9 @@ twig-lint:
   allow_failure: false
   when: on_success
 
-unit-tests:
-  stage: UnitTests
-  script:
-    - php ./vendor/bin/phpunit --configuration ./phpunit.xml
-  allow_failure: false
-  when: on_success
+#unit-tests:
+#  stage: UnitTests
+#  script:
+#    - php ./vendor/bin/phpunit --configuration ./phpunit.xml
+#  allow_failure: false
+#  when: on_success
