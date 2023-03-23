@@ -23,7 +23,7 @@ security-checker:
 phpcbf:
     stage: CodingStandards
     script:
-        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
+        - phpcbf --standard=PSR12 --verbose --ignore=./src/Kernel.php ./src
     allow_failure: false
 
 
