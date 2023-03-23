@@ -20,6 +20,13 @@ security-checker:
         - local-php-security-checker  --path=./composer.lock
     allow_failure: false
 
+phpcbf:
+    stage: CodingStandards
+    script:
+        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
+    allow_failure: false
+
+
 phpcs:
     stage: CodingStandards
     script:
@@ -38,11 +45,6 @@ twig-lint:
         - twig-lint lint ./templates
     allow_failure: false
 
-phpcbf:
-    stage: CodingStandards
-    script:
-        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
-    allow_failure: false
 
 pages:
   stage: deploy
