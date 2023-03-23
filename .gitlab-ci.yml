@@ -23,9 +23,8 @@ security-checker:
 phpcbf:
     stage: CodingStandards
     script:
-        - php -d memory_limit=-1 /usr/local/bin/phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
+        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
-
 
 phpcs:
     stage: CodingStandards
