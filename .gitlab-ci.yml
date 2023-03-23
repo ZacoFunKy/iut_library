@@ -38,6 +38,11 @@ twig-lint:
         - twig-lint lint ./templates
     allow_failure: false
 
+phpcbf:
+    stage: CodingStandards
+    script:
+        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
+    allow_failure: false
 
 pages:
   stage: deploy
