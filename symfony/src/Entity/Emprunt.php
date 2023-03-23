@@ -56,4 +56,5 @@ class Emprunt
      * })
      */
     private $idLivre;
+    
 }

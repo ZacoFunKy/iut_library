@@ -45,5 +45,4 @@ class Langue
         return $this;
     }
 
-
 }
