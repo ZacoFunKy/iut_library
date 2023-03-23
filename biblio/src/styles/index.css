@@ -26,6 +26,10 @@ code {
   .text {
     display: none;
   }
+  .RS svg {
+    width: 25px;
+    height: 25px;
+  }
 }
 
 .loupe {
@@ -49,7 +53,7 @@ code {
   height: max-content;
 }
 
+
 .RS {
-  justify-content: space-around;
-  width:max-content ;
+  max-width:33%;
 }
