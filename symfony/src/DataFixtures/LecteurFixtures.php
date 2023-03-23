@@ -10,7 +10,7 @@ class LecteurFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $base_url= "https://randomuser.me/api?results=100";
+        $base_url = "https://randomuser.me/api?results=100";
         $json = file_get_contents($base_url);
         $data = json_decode($json, true);
         $results = $data['results'];
@@ -25,6 +25,5 @@ class LecteurFixtures extends Fixture
             $manager->persist($lecteur);
         }
         $manager->flush();
-
     }
 }

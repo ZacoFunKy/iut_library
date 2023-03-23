@@ -29,4 +29,29 @@ class Editeur
     private $nomediteur;
 
 
+
+    /**
+     * Get idEditeur.
+     *
+     * @return int
+     */
+    public function getIdEditeur()
+    {
+        return $this->idEditeur;
+    }
+
+    /**
+     * Set nomediteur.
+     *
+     * @param string $nomediteur
+     *
+     * @return Editeur
+     */
+    public function setNomediteur($nomediteur)
+    {
+        $this->nomediteur = $nomediteur;
+
+        return $this;
+    }
+
 }

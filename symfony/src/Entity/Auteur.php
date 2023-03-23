@@ -51,4 +51,40 @@ class Auteur
         $this->idLivre = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+    public function getIdAuteur(): ?int
+    {
+        return $this->idAuteur;
+    }
+
+    public function getIntuituleauteur(): ?string
+    {
+        return $this->intuituleauteur;
+    }
+
+    public function setIntuituleauteur(?string $intuituleauteur): self
+    {
+        $this->intuituleauteur = $intuituleauteur;
+
+        return $this;
+    }
+
+    public function addIdLivre(Livre $idLivre): self
+    {
+        if (!$this->idLivre->contains($idLivre)) {
+            $this->idLivre[] = $idLivre;
+        }
+
+        return $this;
+    }
+
+    public function removeIdLivre(Livre $idLivre): self
+    {
+        if ($this->idLivre->contains($idLivre)) {
+            $this->idLivre->removeElement($idLivre);
+        }
+
+        return $this;
+    }
+
 }

@@ -36,4 +36,39 @@ class Categorie
         $this->idLivre = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+    public function getNomcategorie(): ?string
+    {
+        return $this->nomcategorie;
+    }
+
+    public function setNomcategorie(string $nomcategorie): self
+    {
+        $this->nomcategorie = $nomcategorie;
+
+        return $this;
+    }
+
+
+    public function addIdLivre(Livre $idLivre): self
+    {
+        if (!$this->idLivre->contains($idLivre)) {
+            $this->idLivre[] = $idLivre;
+            $idLivre->addNomcategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdLivre(Livre $idLivre): self
+    {
+        if ($this->idLivre->contains($idLivre)) {
+            $this->idLivre->removeElement($idLivre);
+            $idLivre->removeNomcategorie($this);
+        }
+
+        return $this;
+    }
+
+
 }

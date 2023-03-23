@@ -114,4 +114,138 @@ class Livre
         $this->idAuteur = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    public function getIdLivre(): ?int
+    {
+        return $this->idLivre;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): self
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCouverture()
+    {
+        return $this->couverture;
+    }
+
+    public function setCouverture($couverture): self
+    {
+        $this->couverture = $couverture;
+
+        return $this;
+    }
+
+    public function getDateparution(): ?\DateTimeInterface
+    {
+        return $this->dateparution;
+    }
+
+    public function setDateparution(?\DateTimeInterface $dateparution): self
+    {
+        $this->dateparution = $dateparution;
+
+        return $this;
+    }
+
+    public function getPage(): ?string
+    {
+        return $this->page;
+    }
+
+    public function setPage(?string $page): self
+    {
+        $this->page = $page;
+
+        return $this;
+    }
+
+    public function getDateacquisitions(): ?\DateTimeInterface
+    {
+        return $this->dateacquisitions;
+    }
+
+    public function setDateacquisitions(\DateTimeInterface $dateacquisitions): self
+    {
+        $this->dateacquisitions = $dateacquisitions;
+
+        return $this;
+    }
+
+
+    public function setIdEditeur(?Editeur $idEditeur): self
+    {
+        $this->idEditeur = $idEditeur;
+
+        return $this;
+    }
+
+    public function setLibellelangue(?Langue $libellelangue): self
+    {
+        $this->libellelangue = $libellelangue;
+
+        return $this;
+    }
+
+
+    public function addNomcategorie(CATEGORIE $nomcategorie): self
+    {
+        if (!$this->nomcategorie->contains($nomcategorie)) {
+            $this->nomcategorie[] = $nomcategorie;
+        }
+
+        return $this;
+    }
+
+    public function removeNomcategorie(CATEGORIE $nomcategorie): self
+    {
+        if ($this->nomcategorie->contains($nomcategorie)) {
+            $this->nomcategorie->removeElement($nomcategorie);
+        }
+
+        return $this;
+    }
+
+    
+    public function addIdAuteur(Auteur $idAuteur): self
+    {
+        if (!$this->idAuteur->contains($idAuteur)) {
+            $this->idAuteur[] = $idAuteur;
+            $idAuteur->addIdLivre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdAuteur(Auteur $idAuteur): self
+    {
+        if ($this->idAuteur->contains($idAuteur)) {
+            $this->idAuteur->removeElement($idAuteur);
+            $idAuteur->removeIdLivre($this);
+        }
+
+        return $this;
+    }
+
+
+
 }

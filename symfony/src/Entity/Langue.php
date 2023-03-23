@@ -28,5 +28,22 @@ class Langue
      */
     private $nomlangue;
 
+    public function getLibellelangue(): ?string
+    {
+        return $this->libellelangue;
+    }
+
+    public function getNomlangue(): ?string
+    {
+        return $this->nomlangue;
+    }
+
+    public function setNomlangue(string $nomlangue): self
+    {
+        $this->nomlangue = $nomlangue;
+
+        return $this;
+    }
+
 
 }
