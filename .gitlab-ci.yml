@@ -9,48 +9,51 @@ cache:
     - vendor/
 
 stages:
-    - SecurityChecker
-    - CodingStandards
-    - UnitTests
-    - deploy
+  - SecurityChecker
+  - CodingStandards
+  - UnitTests
+
+  # Bloquer le push ou le merge si le job de SecurityChecker ou de UnitTests échoue
+job_template:
+    script: 
+        - echo "job running"
+    rules:
+    - if: '($CI_JOB_NAME == "SecurityChecker" || $CI_JOB_NAME == "UnitTests") && $CI_JOB_STATUS != "success"'
+    when: always
+    allow_failure: false
 
 security-checker:
-    stage: SecurityChecker
-    script:
-        - local-php-security-checker  --path=./composer.lock
-    allow_failure: false
+  stage: SecurityChecker
+  script:
+    - local-php-security-checker --path=./composer.lock
+  allow_failure: false
+  extends: job_template
 
 phpcs:
-    stage: CodingStandards
-    script:
-        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
-    allow_failure: false
+  stage: CodingStandards
+  script:
+    - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+  allow_failure: false
+  extends: job_template
 
 phpstan:
-    stage: CodingStandards
-    script:
-        - phpstan analyse ./src
-    allow_failure: false
+  stage: CodingStandards
+  script:
+    - phpstan analyse ./src
+  allow_failure: false
+  extends: job_template
 
 twig-lint:
-    stage: CodingStandards
-    script:
-        - twig-lint lint ./templates
-    allow_failure: false
-
-
-pages:
-  stage: deploy
-  image: tthor/test
-  before_script:
-    - mkdir -p public
+  stage: CodingStandards
   script:
-    - emacs README.org -l htmlize.el --batch --eval "(org-babel-do-load-languages 'org-babel-load-languages '( (python . t) ) )" --eval '(setq org-confirm-babel-evaluate nil)' --eval "(setq org-html-htmlize-output-type 'css)" -f org-html-export-to-html --kill
-    - cp README.html ./public/index.html
-    - cp *.png ./public/
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
+    - twig-lint lint ./templates
+  allow_failure: false
+  extends: job_template
+
+unit-tests:
+  stage: UnitTests
+  script:
+    - php ./vendor/bin/phpunit --configuration ./phpunit.xml
+  allow_failure: false
+  extends: job_template
 
