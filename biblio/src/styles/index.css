@@ -66,6 +66,14 @@ code {
   outline: none;
 }
 
+.suggestions {
+  position: absolute;
+  max-width: 200px;
+  background-color: #009999;
+  border-radius: 5px;
+  z-index: 5;
+}
+
 .footer {
   position: absolute;
   width: 100vw;

@@ -1,11 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 function SearchResults(props) {
-    
   return (
-    <ol className="books-grid">
-      <li> { props.searchTerm} </li>
-    </ol>
+    <Fragment>
+      
+    </Fragment>
   );
 }
 
