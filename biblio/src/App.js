@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
 import SearchResults from './components/SearchResults';
@@ -23,6 +23,7 @@ function App() {
         <Route path="/results" element={<SearchResults searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
         <Route path="/amis" element={<FriendsView />} />
         <Route path="/connexion" element={<Connexion />} />
+        <Route path='*' element={<Navigate to='/' />} />
       </Routes>
       <Footer />
     </BrowserRouter>
