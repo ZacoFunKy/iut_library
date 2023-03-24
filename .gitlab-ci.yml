@@ -1,9 +1,7 @@
 image: jakzal/phpqa:php8.1
 
 before_script:
-    - cd symfony
     - composer install
-    - composer require --dev squizlabs/php_codesniffer
 
 cache:
     paths:
@@ -21,15 +19,16 @@ security-checker:
         - local-php-security-checker  --path=./composer.lock
     allow_failure: false
 
-phpcbf:
-    stage: CodingStandards
+phpunit:
+    stage: UnitTests
     script:
-        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
+        - phpunit --coverage-clover=coverage.xml
     allow_failure: false
 
 phpcs:
     stage: CodingStandards
     script:
+        - phpcbf -w -p symfony ./src --standard=PSR12 --ignore=./src/Kernel.php ./src 
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
@@ -38,6 +37,7 @@ phpstan:
     script:
         - phpstan analyse ./src
     allow_failure: false
+
 
 pages:
   stage: deploy
@@ -50,6 +50,6 @@ pages:
     - cp *.png ./public/
   artifacts:
     paths:
-      - vendor\*
+      - public
   only:
     - master

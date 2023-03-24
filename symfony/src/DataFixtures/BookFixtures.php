@@ -21,7 +21,7 @@ class BookFixtures extends Fixture
             $json = file_get_contents($base_url);
             $data = json_decode($json, true);
             $results = $data['items'];
-            foreach($results as $results) {
+            foreach ($results as $results) {
                 $livre = new Livre();
                 $livre->setTitre($results['volumeInfo']['title']);
                 if(!isset($results['volumeInfo']['description'])) {
@@ -31,35 +31,29 @@ class BookFixtures extends Fixture
                 }
                 $dateParuption = $results['volumeInfo']['publishedDate'];
 
-                if(is_numeric($dateParuption)){
+                if (is_numeric($dateParuption)){
                     $dateP = new \DateTime($dateParuption);
                     $livre->setDateparution($dateP);
                 }
-                if(isset($results['volumeInfo']['pageCount'])){
+                if (isset($results['volumeInfo']['pageCount'])) {
                     $livre->setPage($results['volumeInfo']['pageCount']);
                 }
-                //$livre->setPage($results['volumeInfo']['pageCount']);
-                //
-                
-                //$livre->setPage(5);
 
-                if(isset($results['volumeInfo']['imageLinks']['thumbnail'])){
+                if (isset($results['volumeInfo']['imageLinks']['thumbnail'])) {
                     $livre->setCouverture($results['volumeInfo']['imageLinks']['thumbnail']);
                 }
-                //$livre->setCouverture($results['volumeInfo']['imageLinks']['thumbnail']);
-
 
                 $aujourdhui = time();
                 $avant =  strtotime('-2 years');
-                $random_date = mt_rand($avant, $aujourdhui);
+                $randomDate = mt_rand($avant, $aujourdhui);
                 $dateAcquisition = new \DateTime();
-                $dateAcquisition->setTimestamp($random_date);
+                $dateAcquisition->setTimestamp($randomDate);
                 $livre->setDateAcquisition($dateAcquisition);
                 
-                if(isset($results['volumeInfo']['publisher'])) {
+                if (isset($results['volumeInfo']['publisher'])) {
                     $editor = $results['volumeInfo']['publisher'];
                     $editeur = $manager->getRepository(Editeur::class)->findOneBy(['nomEditeur' => $editor]);
-                    if($editeur == null) {
+                    if ($editeur == null) {
                         $editeur = new Editeur();
                         $editeur->setNomediteur($editor);
                         $manager->persist($editeur);
@@ -68,11 +62,11 @@ class BookFixtures extends Fixture
                     
                 }
 
-                if(isset($results['volumeInfo']['categories'])){
+                if (isset($results['volumeInfo']['categories'])) {
                     $categoris = $results['volumeInfo']['categories'];
-                    foreach($categoris as $categoris) {
+                    foreach ($categoris as $categoris) {
                         $genre = $manager->getRepository(Categorie::class)->findOneBy(['nomCategorie' => $categoris]);
-                        if($genre == null) {
+                        if ($genre == null) {
                             $genre = new Categorie();
                             $genre->setNomcategorie($categoris);
                             $manager->persist($genre);
@@ -81,10 +75,10 @@ class BookFixtures extends Fixture
                     }
                 }
                 
-                if(isset($results['volumeInfo']['language'])){
+                if (isset($results['volumeInfo']['language'])) {
                     $l = $results['volumeInfo']['language'];
                     $langue = $manager->getRepository(Langue::class)->findOneBy(['libelleLangue' => strtolower($l)]);
-                    if($langue == null) {
+                    if ($langue == null) {
                         $langue = new Langue();
                         $langue->setLibelleLangue($l);
                         $langue->setNomlangue($l);
@@ -94,11 +88,11 @@ class BookFixtures extends Fixture
                     
                 }
 
-                if(isset($results['volumeInfo']['authors'])) {
+                if (isset($results['volumeInfo']['authors'])) {
                     $authors = $results['volumeInfo']['authors'];
-                    foreach($authors as $authors) {
+                    foreach ($authors as $authors) {
                         $auteur = $manager->getRepository(Auteur::class)->findOneBy(['intituleAuteur' => $authors]);
-                        if($auteur == null) {
+                        if ($auteur == null) {
                             $auteur = new Auteur();
                             $auteur->setIntituleauteur($authors);
                             $manager->persist($auteur);
@@ -111,7 +105,5 @@ class BookFixtures extends Fixture
             }
 
         }
-
-        //$manager->flush();
     }
 }
