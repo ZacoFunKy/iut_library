@@ -180,7 +180,7 @@ class Livre
 
         return $this;
     }
-    
+
     public function getLangue(): ?Langue
     {
         return $this->langue;
@@ -243,8 +243,4 @@ class Livre
 
         return $this;
     }
-
-
-
-
 }

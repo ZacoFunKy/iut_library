@@ -14,7 +14,7 @@ class BookFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 200; $i=$i+40) {
+        for ($i = 0; $i < 200; $i = $i + 40) {
             $baseUrl = "https://www.googleapis.com/books/v1/volumes?q=inauthor&maxResults=40&startIndex=$i";
             $json = file_get_contents($baseUrl);
             $data = json_decode($json, true);

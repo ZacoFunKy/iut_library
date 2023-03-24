@@ -73,8 +73,4 @@ class Editeur
 
         return $this;
     }
-
-
-
-
 }
