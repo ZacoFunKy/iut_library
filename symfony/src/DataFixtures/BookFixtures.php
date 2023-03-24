@@ -53,7 +53,7 @@ class BookFixtures extends Fixture
                         $editeur->setNomediteur($editor);
                         $manager->persist($editeur);
                     }
-                    $livre->setEditeur($editeur);   
+                    $livre->setEditeur($editeur);
                 }
                 if (isset($results['volumeInfo']['categories'])) {
                     $categoris = $results['volumeInfo']['categories'];
