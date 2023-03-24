@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Alkatra&display=swap");
 
 /*
 ! tailwindcss v3.2.7 | MIT License | https://tailwindcss.com
@@ -877,13 +877,13 @@ video {
 
 body {
   margin: 0;
-  font-family: 'Alkatra', cursive;
+  font-family: "Alkatra", cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -990,7 +990,7 @@ code {
 }
 
 .RS {
-  max-width:33%;
+  max-width: 33%;
 }
 
 .hover\:cursor-pointer:hover{

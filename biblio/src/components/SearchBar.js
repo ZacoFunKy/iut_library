@@ -18,7 +18,7 @@ function SearchBar({ setBook, searchTerm, setSearchTerm }) {
   useEffect(() => {
     if (searchTerm.length >= 4) {
       fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&maxResults=5`
+        `https://www.googleapis.com/books/v1/volumes?q=inauthor:${searchTerm}&maxResults=5`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -53,15 +53,26 @@ function SearchBar({ setBook, searchTerm, setSearchTerm }) {
             </svg>
           </button>
         </div>
-        <div className="suggestions flex flex-col absolute top-20 bg-white">
-          {listSuggestions.map((suggestion) => {
-            return (
-              <Link key={suggestion.id} className="p-2 hover:bg-[#096969] hover:cursor-pointer" to="/book" onClick={() => {setBook(suggestion); setSearchTerm(""); setListSuggestions([])}}>
-                <p>{suggestion.volumeInfo.title}</p>
-              </Link>
-            );
-          })}
-        </div>
+        {listSuggestions !== undefined ? (
+          <div className="suggestions flex flex-col absolute top-20 bg-white">
+            {listSuggestions.map((suggestion) => {
+              return (
+                <Link
+                  key={suggestion.id}
+                  className="p-2 hover:bg-[#096969] hover:cursor-pointer"
+                  to="/book"
+                  onClick={() => {
+                    setBook(suggestion);
+                    setSearchTerm("");
+                    setListSuggestions([]);
+                  }}
+                >
+                  <p>{suggestion.volumeInfo.title}</p>
+                </Link>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </Fragment>
   );

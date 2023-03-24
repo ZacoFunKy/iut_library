@@ -34,65 +34,71 @@ function Navbar() {
       </button>
 
       {showMenu ? (
-      <div className="fixed inset-0 z-10 flex items-center justify-center bg-white">
-        <div className="lg:hidden flex flex-col items-center">
-          <Link
-            to="/"
-            className={`text text-xl m-5 ${location.pathname === "/"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
-            }`}
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            Accueil
-          </Link>
-          <Link
-            to="/amis"
-            className={`text text-xl m-5 ${location.pathname === "/amis"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
-            }`}
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            Amis
-          </Link>
-          <Link
-            to="/connexion"
-            className={`text text-xl m-5 ${location.pathname === "/connexion"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8"
-            }`}
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            Connexion
-          </Link>
+        <div className="fixed inset-0 z-10 flex items-center justify-center bg-white">
+          <div className="lg:hidden flex flex-col items-center">
+            <Link
+              to="/"
+              className={`text text-xl m-5 ${
+                location.pathname === "/"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8 "
+              }`}
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              Accueil
+            </Link>
+            <Link
+              to="/amis"
+              className={`text text-xl m-5 ${
+                location.pathname === "/amis"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8 "
+              }`}
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              Amis
+            </Link>
+            <Link
+              to="/connexion"
+              className={`text text-xl m-5 ${
+                location.pathname === "/connexion"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8"
+              }`}
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              Connexion
+            </Link>
+          </div>
         </div>
-      </div>
       ) : (
         <div className="hidden lg:flex flex-row items-center">
           <Link
             to="/"
-            className={`text text-xl mr-5 ${location.pathname === "/"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
+            className={`text text-xl mr-5 ${
+              location.pathname === "/"
+                ? "text-[#009999] underline underline-offset-8"
+                : "hover:underline underline-offset-8 "
             }`}
           >
             Accueil
           </Link>
           <Link
             to="/amis"
-            className={`text text-xl mr-5 ${location.pathname === "/amis"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
+            className={`text text-xl mr-5 ${
+              location.pathname === "/amis"
+                ? "text-[#009999] underline underline-offset-8"
+                : "hover:underline underline-offset-8 "
             }`}
           >
             Amis
           </Link>
           <Link
             to="/connexion"
-            className={`text text-xl mr-5 ${location.pathname === "/connexion"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8"
+            className={`text text-xl mr-5 ${
+              location.pathname === "/connexion"
+                ? "text-[#009999] underline underline-offset-8"
+                : "hover:underline underline-offset-8"
             }`}
           >
             Connexion

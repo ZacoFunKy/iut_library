@@ -20,7 +20,7 @@ function BookView({ Book }) {
             </div>
           ) : null}
           <div className="book m-5 md:flex-row flex-col flex">
-            {Book.volumeInfo.imageLinks !== undefined  ? (
+            {Book.volumeInfo.imageLinks !== undefined ? (
               <div className="book__image">
                 <img
                   src={Book.volumeInfo.imageLinks.thumbnail}
@@ -46,7 +46,9 @@ function BookView({ Book }) {
                   <span className="text-[#009999]">
                     {Book.volumeInfo.pageCount}
                   </span>
-                ) : <p>Pas défini</p>}
+                ) : (
+                  <p>Pas défini</p>
+                )}
               </div>
               {Book.volumeInfo.description !== undefined ? (
                 <div className="flex flex-col max-w-sm">
