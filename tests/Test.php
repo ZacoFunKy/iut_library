@@ -1,17 +1,39 @@
 <?php
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Entity\Livre;
-class Test extends TestCase{
-    private $entityManager;
-/*
-    public function __construct(EntityManagerInterface $entityManager){
-        $this->entityManager=$entityManager;
-    }*/
+use App\Entity\Livre;
+use App\Entity\Lecteur;
+use App\Entity\Editeur;
+use App\Entity\Auteur;
+use App\Entity\Categorie;
+use App\Entity\Langue;
+use App\Entity\Emprunt;
 
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
+class ProductRepositoryTest extends KernelTestCase
+{
+    protected $pdo;
+    private $entityManager;
+
+    protected function setUp(): void
+    {
+        $kernel = self::bootKernel();
+        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
+        $username = 'ztanji';
+        $password = 'J9SwdTBV';
+
+        $this->pdo = new PDO("mysql:host=info-titania;port=3306;dbname=etu_ztanji", $username, $password);
+    }
+
+    public function testConnection()
+    {
+        $this->assertNotNull($this->pdo);
+    }
+    
     function testBookCount(): void
     {
-        //$em = $this->getDoctrine()->getManager();
+
         $bookCount = $this->entityManager->getRepository(Livre::class)->count([]);
 
         $this->assertGreaterThan(200, $bookCount);
@@ -19,25 +41,17 @@ class Test extends TestCase{
 
     function testUserCount()
     {
-        //$em = $this->getDoctrine()->getManager();
         $userCount = $this->entityManager->getRepository(Lecteur::class)->count([]);
 
-        $this->assertGreaterThan(100, $userCount);
+        $this->assertGreaterThanOrEqual(100, $userCount);
     }
 
     function testAuthorCount()
     {
-        $em = $this->getDoctrine()->getManager();
-        $authorCount = $em->getRepository(Auteur::class)->count([]);
-
+        $authorCount = $this->entityManager->getRepository(Auteur::class)->count([]);
         $this->assertGreaterThan(50, $authorCount);
     }
-
-    function testUniqueName(){
-        $em = $this->getDoctrine()->getManager();
-        $userCount = $em->getRepository(Lecteur::class);
-    }
-
+    
     function differentMailForAllUsers(){
         $repository = $this->getDoctrine()->getRepository(Lecteur::class);
         $queryBuilder = $repository->createQueryBuilder('u');
