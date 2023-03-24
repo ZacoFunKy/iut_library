@@ -15,7 +15,7 @@ class BookFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        /*
+        
         for($i = 0; $i < 200; $i=$i+40) {
             $base_url= "https://www.googleapis.com/books/v1/volumes?q=inauthor&maxResults=40&startIndex=$i";
             $json = file_get_contents($base_url);
@@ -30,57 +30,88 @@ class BookFixtures extends Fixture
                     $livre->setDescription($results['volumeInfo']['description']);
                 }
                 $dateParuption = $results['volumeInfo']['publishedDate'];
-                $dateParuption = new \DateTime($dateParuption);
-                $livre->setDateparution($dateParuption);
-                $livre->setPage($results['volumeInfo']['pageCount']);
-                $livre->setCouverture($results['volumeInfo']['imageLinks']['thumbnail']);
+
+                if(is_numeric($dateParuption)){
+                    $dateP = new \DateTime($dateParuption);
+                    $livre->setDateparution($dateP);
+                }
+                if(isset($results['volumeInfo']['pageCount'])){
+                    $livre->setPage($results['volumeInfo']['pageCount']);
+                }
+                //$livre->setPage($results['volumeInfo']['pageCount']);
+                //
+                
+                //$livre->setPage(5);
+
+                if(isset($results['volumeInfo']['imageLinks']['thumbnail'])){
+                    $livre->setCouverture($results['volumeInfo']['imageLinks']['thumbnail']);
+                }
+                //$livre->setCouverture($results['volumeInfo']['imageLinks']['thumbnail']);
+
+
+                $aujourdhui = time();
+                $avant =  strtotime('-2 years');
+                $random_date = mt_rand($avant, $aujourdhui);
+                $dateAcquisition = new \DateTime();
+                $dateAcquisition->setTimestamp($random_date);
+                $livre->setDateAcquisition($dateAcquisition);
+                
                 if(isset($results['volumeInfo']['publisher'])) {
                     $editor = $results['volumeInfo']['publisher'];
-                    $editeur = $manager->getRepository(Editeur::class)->findOneBy(['nomediteur' => $editor]);
+                    $editeur = $manager->getRepository(Editeur::class)->findOneBy(['nomEditeur' => $editor]);
                     if($editeur == null) {
                         $editeur = new Editeur();
                         $editeur->setNomediteur($editor);
                         $manager->persist($editeur);
                     }
-                    $livre->setIdEditeur($editeur);
+                    $livre->setEditeur($editeur);
+                    
                 }
+
                 if(isset($results['volumeInfo']['categories'])){
                     $categoris = $results['volumeInfo']['categories'];
                     foreach($categoris as $categoris) {
-                        $genre = $manager->getRepository(Categorie::class)->findOneBy(['nomgenre' => $categoris]);
+                        $genre = $manager->getRepository(Categorie::class)->findOneBy(['nomCategorie' => $categoris]);
                         if($genre == null) {
                             $genre = new Categorie();
                             $genre->setNomcategorie($categoris);
                             $manager->persist($genre);
                         }
-                        $livre->addNomcategorie($genre);
+                        $livre->addCategory($genre);
                     }
                 }
+                
                 if(isset($results['volumeInfo']['language'])){
-                    $langue = $results['volumeInfo']['language'];
-                    $langue = $manager->getRepository(Langue::class)->findOneBy(['nomlangue' => $langue]);
+                    $l = $results['volumeInfo']['language'];
+                    $langue = $manager->getRepository(Langue::class)->findOneBy(['libelleLangue' => strtolower($l)]);
                     if($langue == null) {
-                        $language = new Langue();
-                        $language->setNomlangue($langue);
-                        $manager->persist($language);
+                        $langue = new Langue();
+                        $langue->setLibelleLangue($l);
+                        $langue->setNomlangue($l);
+                        $manager->persist($langue);
                     }
+                    $livre->setLangue($langue);
+                    
                 }
+
                 if(isset($results['volumeInfo']['authors'])) {
                     $authors = $results['volumeInfo']['authors'];
                     foreach($authors as $authors) {
-                        $auteur = $manager->getRepository(Auteur::class)->findOneBy(['nomauteur' => $authors]);
+                        $auteur = $manager->getRepository(Auteur::class)->findOneBy(['intituleAuteur' => $authors]);
                         if($auteur == null) {
                             $auteur = new Auteur();
-                            $auteur->getIntuituleauteur($authors);
+                            $auteur->setIntituleauteur($authors);
                             $manager->persist($auteur);
                         }
-                        $livre->addIdAuteur($auteur);
+                        $livre->addAuteur($auteur);
                     }
                 }
                 $manager->persist($livre);
+                $manager->flush();
             }
+
         }
 
-        $manager->flush();*/
+        //$manager->flush();
     }
 }

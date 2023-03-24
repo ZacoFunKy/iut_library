@@ -2,55 +2,79 @@
 
 namespace App\Entity;
 
+use App\Repository\EditeurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Editeur
- *
- * @ORM\Table(name="EDITEUR")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: EditeurRepository::class)]
 class Editeur
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_EDITEUR", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idEditeur;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="NOMEDITEUR", type="string", length=255, nullable=false, options={"fixed"=true})
-     */
-    private $nomediteur;
+    #[ORM\Column(length: 255)]
+    private ?string $nomEditeur = null;
+
+    #[ORM\OneToMany(mappedBy: 'editeur', targetEntity: Livre::class)]
+    private Collection $livres;
 
 
-
-    /**
-     * Get idEditeur.
-     *
-     * @return int
-     */
-    public function getIdEditeur()
+    public function __construct()
     {
-        return $this->idEditeur;
+        $this->livres = new ArrayCollection();
     }
 
-    /**
-     * Set nomediteur.
-     *
-     * @param string $nomediteur
-     *
-     * @return Editeur
-     */
-    public function setNomediteur($nomediteur)
+    public function getId(): ?int
     {
-        $this->nomediteur = $nomediteur;
+        return $this->id;
+    }
+
+    public function getNomEditeur(): ?string
+    {
+        return $this->nomEditeur;
+    }
+
+    public function setNomEditeur(string $nomEditeur): self
+    {
+        $this->nomEditeur = $nomEditeur;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Livre>
+     */
+    public function getLivres(): Collection
+    {
+        return $this->livres;
+    }
+
+    public function addLivre(Livre $livre): self
+    {
+        if (!$this->livres->contains($livre)) {
+            $this->livres->add($livre);
+            $livre->setEditeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivre(Livre $livre): self
+    {
+        if ($this->livres->removeElement($livre)) {
+            // set the owning side to null (unless already changed)
+            if ($livre->getEditeur() === $this) {
+                $livre->setEditeur(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
 }

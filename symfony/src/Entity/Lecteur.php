@@ -2,141 +2,100 @@
 
 namespace App\Entity;
 
+use App\Repository\LecteurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use PhpParser\ErrorHandler\Collecting;
-use Symfony\Component\Validator\Constraints\Collection;
 
-/**
- * Lecteur
- *
- * @ORM\Table(name="LECTEUR")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: LecteurRepository::class)]
 class Lecteur
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_LECTEUR", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idLecteur;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="NOMLECTEUR", type="string", length=32, nullable=false, options={"fixed"=true})
-     */
-    private $nomlecteur;
+    #[ORM\Column(length: 255)]
+    private ?string $nomLecteur = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="PRENOMLECTEUR", type="string", length=32, nullable=false, options={"fixed"=true})
-     */
-    private $prenomlecteur;
+    #[ORM\Column(length: 255)]
+    private ?string $prenomLecteur = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="IMAGEDEPROFIL", type="blob", length=0, nullable=true)
-     */
-    private $imagedeprofil;
+    #[ORM\Column(type: Types::BLOB, nullable: true)]
+    private $imageDeProfil = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="MOTDEPASSE", type="string", length=255, nullable=false, options={"fixed"=true})
-     */
-    private $motdepasse;
+    #[ORM\Column(length: 255)]
+    private ?string $motDePasse = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="EMAIL", type="string", length=255, nullable=false, options={"fixed"=true})
-     */
-    private $email;
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Lecteur", mappedBy="idLecteurEstSuivi")
-     */
-    private $idLecteurSuit = array();
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'lecteursQuiMeSuivent')]
+    private Collection $lecteursSuivis;
 
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'lecteursSuivis')]
+    private Collection $lecteursQuiMeSuivent;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     * @ORM\ManyToMany(targetEntity="Lecteur", inversedBy="idLecteurSuit")
-     * @ORM\JoinTable(name="SUIVRE",
-     *  joinColumns={
-     *     @ORM\JoinColumn(name="ID_LECTEUR", referencedColumnName="ID_LECTEUR")
-     *  },
-     * inverseJoinColumns={
-     *    @ORM\JoinColumn(name="ID_LECTEUR_EST_SUIVI", referencedColumnName="ID_LECTEUR")
-     * }
-     * )
-     */
-    private $idLecteurEstSuivi = array();
+    #[ORM\OneToMany(mappedBy: 'lecteur', targetEntity: Emprunt::class, orphanRemoval: true)]
+    private Collection $emprunts;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->idLecteurSuit = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->lecteursSuivis = new ArrayCollection();
+        $this->lecteursQuiMeSuivent = new ArrayCollection();
+        $this->emprunts = new ArrayCollection();
     }
 
-    public function getIdLecteur(): ?int
+    public function getId(): ?int
     {
-        return $this->idLecteur;
+        return $this->id;
     }
 
-    public function getNomlecteur(): ?string
+    public function getNomLecteur(): ?string
     {
-        return $this->nomlecteur;
+        return $this->nomLecteur;
     }
 
-    public function setNomlecteur(string $nomlecteur): self
+    public function setNomLecteur(string $nomLecteur): self
     {
-        $this->nomlecteur = $nomlecteur;
+        $this->nomLecteur = $nomLecteur;
 
         return $this;
     }
 
-    public function getPrenomlecteur(): ?string
+    public function getPrenomLecteur(): ?string
     {
-        return $this->prenomlecteur;
+        return $this->prenomLecteur;
     }
 
-    public function setPrenomlecteur(string $prenomlecteur): self
+    public function setPrenomLecteur(string $prenomLecteur): self
     {
-        $this->prenomlecteur = $prenomlecteur;
+        $this->prenomLecteur = $prenomLecteur;
 
         return $this;
     }
 
-    public function getImagedeprofil()
+    public function getImageDeProfil()
     {
-        return $this->imagedeprofil;
+        return $this->imageDeProfil;
     }
 
-    public function setImagedeprofil($imagedeprofil): self
+    public function setImageDeProfil($imageDeProfil): self
     {
-        $this->imagedeprofil = $imagedeprofil;
+        $this->imageDeProfil = $imageDeProfil;
 
         return $this;
     }
 
-    public function getMotdepasse(): ?string
+    public function getMotDePasse(): ?string
     {
-        return $this->motdepasse;
+        return $this->motDePasse;
     }
 
-    public function setMotdepasse(string $motdepasse): self
+    public function setMotDePasse(string $motDePasse): self
     {
-        $this->motdepasse = $motdepasse;
+        $this->motDePasse = $motDePasse;
 
         return $this;
     }
@@ -153,22 +112,84 @@ class Lecteur
         return $this;
     }
 
-
-    public function addIdLecteurSuit(Lecteur $lecteur)
+    /**
+     * @return Collection<int, self>
+     */
+    public function getLecteursSuivis(): Collection
     {
-        if (!$this->idLecteurSuit->contains($lecteur)) {
-            $this->idLecteurSuit->add($lecteur);
-            $lecteur->addIdLecteurEstSuivi($this);
+        return $this->lecteursSuivis;
+    }
+
+    public function addLecteursSuivi(self $lecteursSuivi): self
+    {
+        if (!$this->lecteursSuivis->contains($lecteursSuivi)) {
+            $this->lecteursSuivis->add($lecteursSuivi);
         }
+
         return $this;
     }
 
-    public function addIdLecteurEstSuivi(Lecteur $lecteur)
+    public function removeLecteursSuivi(self $lecteursSuivi): self
     {
-        if (!$this->idLecteurEstSuivi->contains($lecteur)) {
-            $this->idLecteurEstSuivi->add($lecteur);
-            $lecteur->addIdLecteurSuit($this);
+        $this->lecteursSuivis->removeElement($lecteursSuivi);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getLecteursQuiMeSuivent(): Collection
+    {
+        return $this->lecteursQuiMeSuivent;
+    }
+
+    public function addLecteursQuiMeSuivent(self $lecteursQuiMeSuivent): self
+    {
+        if (!$this->lecteursQuiMeSuivent->contains($lecteursQuiMeSuivent)) {
+            $this->lecteursQuiMeSuivent->add($lecteursQuiMeSuivent);
+            $lecteursQuiMeSuivent->addLecteursSuivi($this);
         }
+
+        return $this;
+    }
+
+    public function removeLecteursQuiMeSuivent(self $lecteursQuiMeSuivent): self
+    {
+        if ($this->lecteursQuiMeSuivent->removeElement($lecteursQuiMeSuivent)) {
+            $lecteursQuiMeSuivent->removeLecteursSuivi($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getEmprunts(): Collection
+    {
+        return $this->emprunts;
+    }
+
+    public function addEmprunt(Emprunt $emprunt): self
+    {
+        if (!$this->emprunts->contains($emprunt)) {
+            $this->emprunts->add($emprunt);
+            $emprunt->setLecteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmprunt(Emprunt $emprunt): self
+    {
+        if ($this->emprunts->removeElement($emprunt)) {
+            // set the owning side to null (unless already changed)
+            if ($emprunt->getLecteur() === $this) {
+                $emprunt->setLecteur(null);
+            }
+        }
+
         return $this;
     }
 }

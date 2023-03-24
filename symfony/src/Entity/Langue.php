@@ -2,45 +2,88 @@
 
 namespace App\Entity;
 
+use App\Repository\LangueRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Langue
- *
- * @ORM\Table(name="LANGUE")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: LangueRepository::class)]
 class Langue
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="LIBELLELANGUE", type="string", length=32, nullable=false, options={"fixed"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $libellelangue;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="NOMLANGUE", type="string", length=32, nullable=false, options={"fixed"=true})
-     */
-    private $nomlangue;
+    #[ORM\Column(length: 255)]
+    private ?string $libelleLangue = null;
 
-    public function getLibellelangue(): ?string
+    #[ORM\Column(length: 255)]
+    private ?string $nomLangue = null;
+
+    #[ORM\OneToMany(mappedBy: 'langue', targetEntity: Livre::class, orphanRemoval: true)]
+    private Collection $livres;
+
+    public function __construct()
     {
-        return $this->libellelangue;
+        $this->livres = new ArrayCollection();
     }
 
-    public function getNomlangue(): ?string
+    public function getId(): ?int
     {
-        return $this->nomlangue;
+        return $this->id;
     }
 
-    public function setNomlangue(string $nomlangue): self
+    public function getLibelleLangue(): ?string
     {
-        $this->nomlangue = $nomlangue;
+        return $this->libelleLangue;
+    }
+
+    public function setLibelleLangue(string $libelleLangue): self
+    {
+        $this->libelleLangue = $libelleLangue;
+
+        return $this;
+    }
+
+    public function getNomLangue(): ?string
+    {
+        return $this->nomLangue;
+    }
+
+    public function setNomLangue(string $nomLangue): self
+    {
+        $this->nomLangue = $nomLangue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Livre>
+     */
+    public function getLivres(): Collection
+    {
+        return $this->livres;
+    }
+
+    public function addLivre(Livre $livre): self
+    {
+        if (!$this->livres->contains($livre)) {
+            $this->livres->add($livre);
+            $livre->setLangue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivre(Livre $livre): self
+    {
+        if ($this->livres->removeElement($livre)) {
+            // set the owning side to null (unless already changed)
+            if ($livre->getLangue() === $this) {
+                $livre->setLangue(null);
+            }
+        }
 
         return $this;
     }

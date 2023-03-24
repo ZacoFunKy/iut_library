@@ -16,7 +16,7 @@ class SuiviFixtures extends Fixture
             for ($i = 0; $i < $nbSuivi; $i++) {
                 $lecteurSuivi = $lecteurs[rand(0, count($lecteurs) - 1)];
                 if ($lecteurSuivi != $lecteur) {
-                    $lecteur->addIdLecteurSuit($lecteurSuivi);
+                    $lecteur->addLecteursSuivi($lecteurSuivi);
                 }
             }
             $manager->persist($lecteur);

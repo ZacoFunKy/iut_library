@@ -2,86 +2,69 @@
 
 namespace App\Entity;
 
+use App\Repository\AuteurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Auteur
- *
- * @ORM\Table(name="AUTEUR")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: AuteurRepository::class)]
 class Auteur
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_AUTEUR", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idAuteur;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="INTUITULEAUTEUR", type="string", length=32, nullable=true, options={"fixed"=true})
-     */
-    private $intuituleauteur;
+    #[ORM\Column(length: 255)]
+    private ?string $intituleAuteur = null;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="LIVRE", inversedBy="idAuteur")
-     * @ORM\JoinTable(name="ECRIRE",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="ID_AUTEUR", referencedColumnName="ID_AUTEUR")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="ID_LIVRE", referencedColumnName="ID_LIVRE")
-     *   }
-     * )
-     */
-    private $idLivre = array();
+    #[ORM\ManyToMany(targetEntity: Livre::class, mappedBy: 'auteurs')]
+    private Collection $livres;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->idLivre = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->livres = new ArrayCollection();
     }
 
-
-    public function getIdAuteur(): ?int
+    public function getId(): ?int
     {
-        return $this->idAuteur;
+        return $this->id;
     }
 
-    public function getIntuituleauteur(): ?string
+    public function getIntituleAuteur(): ?string
     {
-        return $this->intuituleauteur;
+        return $this->intituleAuteur;
     }
 
-    public function setIntuituleauteur(?string $intuituleauteur): self
+    public function setIntituleAuteur(string $intituleAuteur): self
     {
-        $this->intuituleauteur = $intuituleauteur;
+        $this->intituleAuteur = $intituleAuteur;
 
         return $this;
     }
 
-    public function addIdLivre(Livre $idLivre): self
+    /**
+     * @return Collection<int, Livre>
+     */
+    public function getLivres(): Collection
     {
-        if (!$this->idLivre->contains($idLivre)) {
-            $this->idLivre[] = $idLivre;
+        return $this->livres;
+    }
+
+    public function addLivre(Livre $livre): self
+    {
+        if (!$this->livres->contains($livre)) {
+            $this->livres->add($livre);
+            $livre->addAuteur($this);
         }
 
         return $this;
     }
 
-    public function removeIdLivre(Livre $idLivre): self
+    public function removeLivre(Livre $livre): self
     {
-        if ($this->idLivre->contains($idLivre)) {
-            $this->idLivre->removeElement($idLivre);
+        if ($this->livres->removeElement($livre)) {
+            $livre->removeAuteur($this);
         }
 
         return $this;

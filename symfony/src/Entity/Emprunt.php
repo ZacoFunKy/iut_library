@@ -2,58 +2,82 @@
 
 namespace App\Entity;
 
+use App\Repository\EmpruntRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Emprunt
- *
- * @ORM\Table(name="EMPRUNT", indexes={@ORM\Index(name="I_FK_EMPRUNT_LECTEUR",
- * columns={"ID_LECTEUR"}),
- * @ORM\Index(name="I_FK_EMPRUNT_LIVRE", columns={"ID_LIVRE"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: EmpruntRepository::class)]
 class Emprunt
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_EMPRUNT", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idEmprunt;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="DATEEMPRUNT", type="datetime", nullable=false)
-     */
-    private $dateemprunt;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $DateEmprunt = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="DATERENDU", type="datetime", nullable=true)
-     */
-    private $daterendu;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateRendu = null;
 
-    /**
-     * @var \Lecteur
-     *
-     * @ORM\ManyToOne(targetEntity="Lecteur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ID_LECTEUR", referencedColumnName="ID_LECTEUR")
-     * })
-     */
-    private $idLecteur;
+    #[ORM\ManyToOne(inversedBy: 'emprunts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Lecteur $lecteur = null;
 
-    /**
-     * @var \Livre
-     *
-     * @ORM\ManyToOne(targetEntity="Livre")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ID_LIVRE", referencedColumnName="ID_LIVRE")
-     * })
-     */
-    private $idLivre;
+    #[ORM\ManyToOne(inversedBy: 'emprunts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Livre $livre = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getDateEmprunt(): ?\DateTimeInterface
+    {
+        return $this->DateEmprunt;
+    }
+
+    public function setDateEmprunt(\DateTimeInterface $DateEmprunt): self
+    {
+        $this->DateEmprunt = $DateEmprunt;
+
+        return $this;
+    }
+
+    public function getDateRendu(): ?\DateTimeInterface
+    {
+        return $this->dateRendu;
+    }
+
+    public function setDateRendu(?\DateTimeInterface $dateRendu): self
+    {
+        $this->dateRendu = $dateRendu;
+
+        return $this;
+    }
+
+    public function getLecteur(): ?Lecteur
+    {
+        return $this->lecteur;
+    }
+
+    public function setLecteur(?Lecteur $lecteur): self
+    {
+        $this->lecteur = $lecteur;
+
+        return $this;
+    }
+
+    public function getLivre(): ?Livre
+    {
+        return $this->livre;
+    }
+
+    public function setLivre(?Livre $livre): self
+    {
+        $this->livre = $livre;
+
+        return $this;
+    }
 }

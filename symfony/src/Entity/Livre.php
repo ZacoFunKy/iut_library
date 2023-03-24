@@ -2,123 +2,69 @@
 
 namespace App\Entity;
 
+use App\Repository\LivreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Livre
- *
- * @ORM\Table(name="LIVRE", indexes={@ORM\Index(name="I_FK_LIVRE_LANGUE",
- * columns={"LIBELLELANGUE"}),
- * @ORM\Index(name="I_FK_LIVRE_EDITEUR", columns={"ID_EDITEUR"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_LIVRE", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idLivre;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="TITRE", type="string", length=255, nullable=false, options={"fixed"=true})
-     */
-    private $titre;
+    #[ORM\Column(length: 500)]
+    private ?string $titre = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="DESCRIPTION", type="string", length=255, nullable=true, options={"fixed"=true})
-     */
-    private $description;
+    #[ORM\Column(length: 2555, nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="COUVERTURE", type="blob", length=0, nullable=true)
-     */
-    private $couverture;
+    #[ORM\Column(type: Types::BLOB, nullable: true)]
+    private $couverture = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="DATEPARUTION", type="date", nullable=true)
-     */
-    private $dateparution;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="PAGE", type="bigint", nullable=true)
-     */
-    private $page;
+    #[ORM\Column(nullable: true)]
+    private ?int $page = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="DATEACQUISITIONS", type="date", nullable=false)
-     */
-    private $dateacquisitions;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateAcquisition = null;
 
-    /**
-     * @var \Editeur
-     *
-     * @ORM\ManyToOne(targetEntity="Editeur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ID_EDITEUR", referencedColumnName="ID_EDITEUR")
-     * })
-     */
-    private $idEditeur;
+    #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class, orphanRemoval: true)]
+    private Collection $emprunts;
 
-    /**
-     * @var \Langue
-     *
-     * @ORM\ManyToOne(targetEntity="Langue")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="LIBELLELANGUE", referencedColumnName="LIBELLELANGUE")
-     * })
-     */
-    private $libellelangue;
+    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'livres')]
+    private Collection $categories;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="CATEGORIE", inversedBy="idLivre")
-     * @ORM\JoinTable(name="CATEGORISE",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="ID_LIVRE", referencedColumnName="ID_LIVRE")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="NOMCATEGORIE", referencedColumnName="NOMCATEGORIE")
-     *   }
-     * )
-     */
-    private $nomcategorie = array();
+    #[ORM\ManyToOne(inversedBy: 'livres')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Langue $langue = null;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Auteur", mappedBy="idLivre")
-     */
-    private $idAuteur = array();
 
-    /**
-     * Constructor
-     */
+    #[ORM\ManyToMany(targetEntity: Auteur::class, inversedBy: 'livres')]
+    private Collection $auteurs;
+
+
+    #[ORM\ManyToOne(inversedBy: 'livres')]
+    private ?Editeur $editeur = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateParution = null;
+
+
     public function __construct()
     {
-        $this->nomcategorie = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->idAuteur = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->emprunts = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->auteurs = new ArrayCollection();
     }
 
-    public function getIdLivre(): ?int
+
+    public function getId(): ?int
     {
-        return $this->idLivre;
+        return $this->id;
     }
 
     public function getTitre(): ?string
@@ -157,93 +103,148 @@ class Livre
         return $this;
     }
 
-    public function getDateparution(): ?\DateTimeInterface
-    {
-        return $this->dateparution;
-    }
-
-    public function setDateparution(?\DateTimeInterface $dateparution): self
-    {
-        $this->dateparution = $dateparution;
-
-        return $this;
-    }
-
-    public function getPage(): ?string
+    public function getPage(): ?int
     {
         return $this->page;
     }
 
-    public function setPage(?string $page): self
+    public function setPage(?int $page): self
     {
         $this->page = $page;
 
         return $this;
     }
 
-    public function getDateacquisitions(): ?\DateTimeInterface
+    public function getDateAcquisition(): ?\DateTimeInterface
     {
-        return $this->dateacquisitions;
+        return $this->dateAcquisition;
     }
 
-    public function setDateacquisitions(\DateTimeInterface $dateacquisitions): self
+    public function setDateAcquisition(\DateTimeInterface $dateAcquisition): self
     {
-        $this->dateacquisitions = $dateacquisitions;
+        $this->dateAcquisition = $dateAcquisition;
 
         return $this;
     }
 
-
-    public function setIdEditeur(?Editeur $idEditeur): self
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getEmprunts(): Collection
     {
-        $this->idEditeur = $idEditeur;
-
-        return $this;
+        return $this->emprunts;
     }
 
-    public function setLibellelangue(?Langue $libellelangue): self
+    public function addEmprunt(Emprunt $emprunt): self
     {
-        $this->libellelangue = $libellelangue;
-
-        return $this;
-    }
-
-
-    public function addNomcategorie(CATEGORIE $nomcategorie): self
-    {
-        if (!$this->nomcategorie->contains($nomcategorie)) {
-            $this->nomcategorie[] = $nomcategorie;
+        if (!$this->emprunts->contains($emprunt)) {
+            $this->emprunts->add($emprunt);
+            $emprunt->setLivre($this);
         }
 
         return $this;
     }
 
-    public function removeNomcategorie(CATEGORIE $nomcategorie): self
+    public function removeEmprunt(Emprunt $emprunt): self
     {
-        if ($this->nomcategorie->contains($nomcategorie)) {
-            $this->nomcategorie->removeElement($nomcategorie);
+        if ($this->emprunts->removeElement($emprunt)) {
+            // set the owning side to null (unless already changed)
+            if ($emprunt->getLivre() === $this) {
+                $emprunt->setLivre(null);
+            }
         }
 
         return $this;
     }
 
-    public function addIdAuteur(Auteur $idAuteur): self
+    /**
+     * @return Collection<int, Categorie>
+     */
+    public function getCategories(): Collection
     {
-        if (!$this->idAuteur->contains($idAuteur)) {
-            $this->idAuteur[] = $idAuteur;
-            $idAuteur->addIdLivre($this);
+        return $this->categories;
+    }
+
+    public function addCategory(Categorie $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
 
         return $this;
     }
 
-    public function removeIdAuteur(Auteur $idAuteur): self
+    public function removeCategory(Categorie $category): self
     {
-        if ($this->idAuteur->contains($idAuteur)) {
-            $this->idAuteur->removeElement($idAuteur);
-            $idAuteur->removeIdLivre($this);
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+    
+    public function getLangue(): ?Langue
+    {
+        return $this->langue;
+    }
+
+    public function setLangue(?Langue $langue): self
+    {
+        $this->langue = $langue;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Auteur>
+     */
+    public function getAuteurs(): Collection
+    {
+        return $this->auteurs;
+    }
+
+    public function addAuteur(Auteur $auteur): self
+    {
+        if (!$this->auteurs->contains($auteur)) {
+            $this->auteurs->add($auteur);
         }
 
         return $this;
     }
+
+    public function removeAuteur(Auteur $auteur): self
+    {
+        $this->auteurs->removeElement($auteur);
+
+        return $this;
+    }
+
+
+
+    public function getEditeur(): ?Editeur
+    {
+        return $this->editeur;
+    }
+
+    public function setEditeur(?Editeur $editeur): self
+    {
+        $this->editeur = $editeur;
+
+        return $this;
+    }
+
+    public function getDateParution(): ?\DateTimeInterface
+    {
+        return $this->dateParution;
+    }
+
+    public function setDateParution(?\DateTimeInterface $dateParution): self
+    {
+        $this->dateParution = $dateParution;
+
+        return $this;
+    }
+
+
+
+
 }

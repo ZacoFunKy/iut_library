@@ -2,68 +2,71 @@
 
 namespace App\Entity;
 
+use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Categorie
- *
- * @ORM\Table(name="CATEGORIE")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="NOMCATEGORIE", type="string", length=32, nullable=false, options={"fixed"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $nomcategorie;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Livre", mappedBy="nomcategorie")
-     */
-    private $idLivre = array();
+    #[ORM\Column(length: 255)]
+    private ?string $nomCategorie = null;
 
-    /**
-     * Constructor
-     */
+    #[ORM\ManyToMany(targetEntity: Livre::class, mappedBy: 'categories')]
+    private Collection $livres;
+
     public function __construct()
     {
-        $this->idLivre = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->livres = new ArrayCollection();
     }
 
-
-    public function getNomcategorie(): ?string
+    public function getId(): ?int
     {
-        return $this->nomcategorie;
+        return $this->id;
     }
 
-    public function setNomcategorie(string $nomcategorie): self
+    public function getNomCategorie(): ?string
     {
-        $this->nomcategorie = $nomcategorie;
+        return $this->nomCategorie;
+    }
+
+    public function setNomCategorie(string $nomCategorie): self
+    {
+        $this->nomCategorie = $nomCategorie;
+
         return $this;
     }
 
-
-    public function addIdLivre(Livre $idLivre): self
+    /**
+     * @return Collection<int, Livre>
+     */
+    public function getLivres(): Collection
     {
-        if (!$this->idLivre->contains($idLivre)) {
-            $this->idLivre[] = $idLivre;
-            $idLivre->addNomcategorie($this);
+        return $this->livres;
+    }
+
+    public function addLivre(Livre $livre): self
+    {
+        if (!$this->livres->contains($livre)) {
+            $this->livres->add($livre);
+            $livre->addCategory($this);
         }
+
         return $this;
     }
 
-    public function removeIdLivre(Livre $idLivre): self
+    public function removeLivre(Livre $livre): self
     {
-        if ($this->idLivre->contains($idLivre)) {
-            $this->idLivre->removeElement($idLivre);
-            $idLivre->removeNomcategorie($this);
+        if ($this->livres->removeElement($livre)) {
+            $livre->removeCategory($this);
         }
+
         return $this;
     }
 }
