@@ -25,7 +25,7 @@ function BookView({ Book }) {
                 <img
                   src={Book.volumeInfo.imageLinks.thumbnail}
                   alt="couverture du livre"
-                  style={{ minWidth: "400px", height: "65vh" }}
+                  style={{ minWidth: "350px", maxWidth:"400px", height: "65vh" }}
                 />
               </div>
             ) : (
