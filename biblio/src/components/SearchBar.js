@@ -2,9 +2,12 @@ import { React, useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function SearchBar({ setBook, searchTerm, setSearchTerm }) {
+function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
   const [listSuggestions, setListSuggestions] = useState([]);
   const navigation = useNavigate();
+  const [focused, setFocused] = useState(false);
+  const onFocus = () => setFocused(true);
+  const onBlur = () => setFocused(false);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -14,6 +17,21 @@ function SearchBar({ setBook, searchTerm, setSearchTerm }) {
       navigation("/");
     }
   };
+
+  useEffect(() => {
+    if (searchTerm.length >= 1) {
+      fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=inauthor:${searchTerm}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setResults(data.items);
+          console.log(data.items);
+        });
+    } else {
+      setResults([]);
+    }
+  }, [searchTerm, setResults]);
 
   useEffect(() => {
     if (searchTerm.length >= 4) {
@@ -28,7 +46,7 @@ function SearchBar({ setBook, searchTerm, setSearchTerm }) {
     } else {
       setListSuggestions([]);
     }
-  }, [searchTerm]);
+  }, [searchTerm, setResults]);
 
   return (
     <Fragment>
@@ -40,6 +58,8 @@ function SearchBar({ setBook, searchTerm, setSearchTerm }) {
             placeholder="Rechercher un auteur/livre"
             value={searchTerm}
             onChange={handleChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
           <button className="loupe p-1.5 pl-3 pr-3 rounded-tr-md rounded-br-md">
             <svg
@@ -55,18 +75,22 @@ function SearchBar({ setBook, searchTerm, setSearchTerm }) {
             <p className="text-xs">rechercher</p>
           </button>
         </div>
-        {listSuggestions !== undefined ? (
-          <div className="suggestions flex flex-col absolute top-20 bg-white">
+        {listSuggestions ? (
+          <div
+            className="suggestions flex flex-col absolute top-20 bg-white"
+            style={{ display: focused ? "flex" : "none" }}
+          >
             {listSuggestions.map((suggestion) => {
               return (
                 <Link
                   key={suggestion.id}
-                  className="p-2 hover:bg-[#096969] hover:cursor-pointer"
-                  to="/book"
-                  onClick={() => {
+                  className="p-2 hover:bg-[#096969] text-white hover:cursor-pointer"
+                  onMouseDown={(event) => {
+                    event.preventDefault();
                     setBook(suggestion);
                     setSearchTerm("");
                     setListSuggestions([]);
+                    navigation("/book");
                   }}
                 >
                   <p>{suggestion.volumeInfo.title}</p>

@@ -9,6 +9,7 @@ import BookView from "./components/BookView";
 import { useState } from "react";
 
 function App() {
+  const [results, setResults] = useState([]);
   const [Book, setBook] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -20,6 +21,7 @@ function App() {
         setSearchTerm={setSearchTerm}
         Book={Book}
         setBook={setBook}
+        setResults={setResults}
       />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,8 +30,7 @@ function App() {
           path="/results"
           element={
             <SearchResults
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
+              results={results}
             />
           }
         />
