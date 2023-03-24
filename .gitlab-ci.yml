@@ -53,10 +53,3 @@ pages:
       - vendor\*
   only:
     - master
-
-#unit-tests:
-#  stage: UnitTests
-#  script:
-#    - php ./vendor/bin/phpunit --configuration ./phpunit.xml
-#  allow_failure: false
-#  when: on_success
