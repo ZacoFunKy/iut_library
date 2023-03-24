@@ -8,30 +8,27 @@ use App\Entity\Livre;
 use App\Entity\Auteur;
 use App\Entity\Categorie;
 use App\Entity\Editeur;
-use App\Entity\Genre;
 use App\Entity\Langue;
 
 class BookFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        
-        for($i = 0; $i < 200; $i=$i+40) {
-            $base_url= "https://www.googleapis.com/books/v1/volumes?q=inauthor&maxResults=40&startIndex=$i";
-            $json = file_get_contents($base_url);
+        for ($i = 0; $i < 200; $i=$i+40) {
+            $baseUrl = "https://www.googleapis.com/books/v1/volumes?q=inauthor&maxResults=40&startIndex=$i";
+            $json = file_get_contents($baseUrl);
             $data = json_decode($json, true);
             $results = $data['items'];
             foreach ($results as $results) {
                 $livre = new Livre();
                 $livre->setTitre($results['volumeInfo']['title']);
-                if(!isset($results['volumeInfo']['description'])) {
+                if (!isset($results['volumeInfo']['description'])) {
                     $livre->setDescription("No description available");
                 } else {
                     $livre->setDescription($results['volumeInfo']['description']);
                 }
                 $dateParuption = $results['volumeInfo']['publishedDate'];
-
-                if (is_numeric($dateParuption)){
+                if (is_numeric($dateParuption)) {
                     $dateP = new \DateTime($dateParuption);
                     $livre->setDateparution($dateP);
                 }
@@ -42,14 +39,12 @@ class BookFixtures extends Fixture
                 if (isset($results['volumeInfo']['imageLinks']['thumbnail'])) {
                     $livre->setCouverture($results['volumeInfo']['imageLinks']['thumbnail']);
                 }
-
                 $aujourdhui = time();
                 $avant =  strtotime('-2 years');
                 $randomDate = mt_rand($avant, $aujourdhui);
                 $dateAcquisition = new \DateTime();
                 $dateAcquisition->setTimestamp($randomDate);
                 $livre->setDateAcquisition($dateAcquisition);
-                
                 if (isset($results['volumeInfo']['publisher'])) {
                     $editor = $results['volumeInfo']['publisher'];
                     $editeur = $manager->getRepository(Editeur::class)->findOneBy(['nomEditeur' => $editor]);
@@ -58,10 +53,8 @@ class BookFixtures extends Fixture
                         $editeur->setNomediteur($editor);
                         $manager->persist($editeur);
                     }
-                    $livre->setEditeur($editeur);
-                    
+                    $livre->setEditeur($editeur);   
                 }
-
                 if (isset($results['volumeInfo']['categories'])) {
                     $categoris = $results['volumeInfo']['categories'];
                     foreach ($categoris as $categoris) {
@@ -74,7 +67,6 @@ class BookFixtures extends Fixture
                         $livre->addCategory($genre);
                     }
                 }
-                
                 if (isset($results['volumeInfo']['language'])) {
                     $l = $results['volumeInfo']['language'];
                     $langue = $manager->getRepository(Langue::class)->findOneBy(['libelleLangue' => strtolower($l)]);
@@ -85,9 +77,7 @@ class BookFixtures extends Fixture
                         $manager->persist($langue);
                     }
                     $livre->setLangue($langue);
-                    
                 }
-
                 if (isset($results['volumeInfo']['authors'])) {
                     $authors = $results['volumeInfo']['authors'];
                     foreach ($authors as $authors) {
@@ -103,7 +93,6 @@ class BookFixtures extends Fixture
                 $manager->persist($livre);
                 $manager->flush();
             }
-
         }
     }
 }
