@@ -9,7 +9,7 @@ function Navbar() {
     <div className="">
       <button
         type="button"
-        className="block lg:hidden relative z-20"
+        className="block lg:hidden relative z-20 ml-5"
         onClick={() => setShowMenu(!showMenu)}
       >
         <svg

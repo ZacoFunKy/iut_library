@@ -37,15 +37,6 @@ code {
   }
 }
 
-@keyframes slideOut {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
 .Header {
   width: 100vw;
   padding: 3vh;
@@ -79,11 +70,13 @@ code {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   outline: none;
+  width: 100%;
 }
 
 .suggestions {
   position: absolute;
-  max-width: 200px;
+  width: 15%;
+  min-width: 200px;
   background-color: #009999;
   border-radius: 5px;
   z-index: 5;
@@ -92,7 +85,6 @@ code {
 .footer {
   width: 100vw;
   height: max-content;
-  animation: slideOut 0.75s ease-in-out;
 }
 
 .RS {
