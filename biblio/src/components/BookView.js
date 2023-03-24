@@ -20,21 +20,17 @@ function BookView({ Book }) {
             </div>
           ) : null}
           <div className="book m-5 md:flex-row flex-col flex">
-            {Book.volumeInfo.thumbnail !== undefined ? (
-              <div>
-                {Book.volumeInfo.thumbnail !== null ? (
-                  <div className="book__image">
-                    <img
-                      src={Book.volumeInfo.imageLinks.thumbnail}
-                      alt="couverture du livre"
-                      style={{ minWidth: "400px", height: "65vh" }}
-                    />
-                  </div>
-                ) : (
-                  <p>Pas d'image disponible</p>
-                )}
+            {Book.volumeInfo.imageLinks !== undefined  ? (
+              <div className="book__image">
+                <img
+                  src={Book.volumeInfo.imageLinks.thumbnail}
+                  alt="couverture du livre"
+                  style={{ minWidth: "400px", height: "65vh" }}
+                />
               </div>
-            ) : null}
+            ) : (
+              <p>Pas d'image disponible</p>
+            )}
             <div className=" ml-0 md:ml-20">
               {Book.volumeInfo.authors !== null ? (
                 <div className="book__author text-xl">
@@ -46,15 +42,13 @@ function BookView({ Book }) {
               ) : null}
               <div>
                 <span className="text-xl">Nombre de pages : </span>{" "}
-                {Book.volumeInfo.pageCount === undefined ? (
+                {Book.volumeInfo.pageCount !== undefined ? (
                   <span className="text-[#009999]">
                     {Book.volumeInfo.pageCount}
                   </span>
-                ) : (
-                  <p>Pas défini</p>
-                )}
+                ) : <p>Pas défini</p>}
               </div>
-              {Book.volumeInfo.description !== null ? (
+              {Book.volumeInfo.description !== undefined ? (
                 <div className="flex flex-col max-w-sm">
                   <span className="text-2xl">Résumé</span>
                   <p>{Book.volumeInfo.description.substr(0, 200)}...</p>
