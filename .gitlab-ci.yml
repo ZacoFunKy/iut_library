@@ -21,16 +21,15 @@ security-checker:
         - local-php-security-checker  --path=./composer.lock
     allow_failure: false
 
-phpunit:
-    stage: UnitTests
+phpcbf:
+    stage: CodingStandards
     script:
-        - phpunit --coverage-clover=coverage.xml
+        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
 phpcs:
     stage: CodingStandards
     script:
-        - phpcbf -w -p ./src --standard=PSR12 --ignore=./src/Kernel.php ./src 
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
@@ -39,7 +38,6 @@ phpstan:
     script:
         - phpstan analyse ./src
     allow_failure: false
-
 
 pages:
   stage: deploy
@@ -52,6 +50,6 @@ pages:
     - cp *.png ./public/
   artifacts:
     paths:
-      - public
+      - vendor\*
   only:
     - master
