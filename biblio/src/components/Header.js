@@ -1,7 +1,6 @@
-import logo from "../assets/logo-iut.png";
+import logo from "../assets/logo-iut.webp";
 import Navbar from "./Navbar";
 import SearchBar from "./SearchBar";
-import { React } from "react";
 
 function Header({setBook, searchTerm, setSearchTerm }) {
 
