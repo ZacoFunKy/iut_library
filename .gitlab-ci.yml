@@ -21,11 +21,6 @@ security-checker:
         - local-php-security-checker  --path=./composer.lock
     allow_failure: false
 
-lint:php:
-  stage: CodingStandards
-  image: sixlive/php-lint-fix
-  script:
-    - php-cs-fixer fix --dry-run --diff
 
 phpcs:
     stage: CodingStandards
