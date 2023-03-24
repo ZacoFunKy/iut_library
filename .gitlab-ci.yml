@@ -29,7 +29,7 @@ phpunit:
 phpcs:
     stage: CodingStandards
     script:
-        - phpcbf -w -p symfony ./src --standard=PSR12 --ignore=./src/Kernel.php ./src 
+        - phpcbf -w -p ./src --standard=PSR12 --ignore=./src/Kernel.php ./src 
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
