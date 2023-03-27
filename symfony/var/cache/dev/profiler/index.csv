@@ -878,3 +878,6 @@ bd365e,::1,GET,https://localhost:8000/api/authors/research/?name=International%2
 16309e,::1,GET,https://localhost:8000/api/books/last_posts,1679917821,,200
 64fc8d,::1,GET,https://localhost:8000/api/books/last_emprunts,1679917821,080b6e,405
 080b6e,::1,GET,https://localhost:8000/api/books/last_emprunts,1679917821,,405
+db45ca,::1,GET,https://localhost:8000/api/books/last_posts,1679918968,,200
+b4674c,::1,GET,https://localhost:8000/api/books/last_emprunts,1679918969,c63a63,405
+c63a63,::1,GET,https://localhost:8000/api/books/last_emprunts,1679918969,,405
