@@ -9,7 +9,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Livre;
 use FOS\RestBundle\Controller\Annotations\View;
 
-
 class APIController extends AbstractController
 {
     #[Route('/a/p/i', name: 'app_a_p_i')]
