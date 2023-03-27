@@ -19,7 +19,7 @@ stages:
 unittest:
     stage: UnitTests
     script:
-        - vendor/bin/phpunit ./tests 
+        - php bin/phpunit
     allow_failure: false
 
 security-checker:
