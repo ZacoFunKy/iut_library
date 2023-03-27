@@ -7,29 +7,44 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;  
 
 #[ORM\Entity(repositoryClass: LecteurRepository::class)]
-class Lecteur
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank]
+    private ?string $email = null;
+
+    #[ORM\Column]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    #[Assert\NotBlank]
+    private ?string $password = null;
+
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $nomLecteur = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $prenomLecteur = null;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
     private $imageDeProfil = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $motDePasse = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $email = null;
 
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'lecteursQuiMeSuivent')]
     private Collection $lecteursSuivis;
@@ -39,6 +54,9 @@ class Lecteur
 
     #[ORM\OneToMany(mappedBy: 'lecteur', targetEntity: Emprunt::class, orphanRemoval: true)]
     private Collection $emprunts;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $token = null;
 
     public function __construct()
     {
@@ -52,54 +70,6 @@ class Lecteur
         return $this->id;
     }
 
-    public function getNomLecteur(): ?string
-    {
-        return $this->nomLecteur;
-    }
-
-    public function setNomLecteur(string $nomLecteur): self
-    {
-        $this->nomLecteur = $nomLecteur;
-
-        return $this;
-    }
-
-    public function getPrenomLecteur(): ?string
-    {
-        return $this->prenomLecteur;
-    }
-
-    public function setPrenomLecteur(string $prenomLecteur): self
-    {
-        $this->prenomLecteur = $prenomLecteur;
-
-        return $this;
-    }
-
-    public function getImageDeProfil()
-    {
-        return $this->imageDeProfil;
-    }
-
-    public function setImageDeProfil($imageDeProfil): self
-    {
-        $this->imageDeProfil = $imageDeProfil;
-
-        return $this;
-    }
-
-    public function getMotDePasse(): ?string
-    {
-        return $this->motDePasse;
-    }
-
-    public function setMotDePasse(string $motDePasse): self
-    {
-        $this->motDePasse = $motDePasse;
-
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
@@ -108,6 +78,95 @@ class Lecteur
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getNomlecteur(): ?string
+    {
+        return $this->nomLecteur;
+    }
+
+    public function setNomlecteur(string $nomlecteur): self
+    {
+        $this->nomLecteur = $nomlecteur;
+
+        return $this;
+    }
+
+    public function getPrenomlecteur(): ?string
+    {
+        return $this->prenomLecteur;
+    }
+
+    public function setPrenomlecteur(string $prenomlecteur): self
+    {
+        $this->prenomLecteur = $prenomlecteur;
+
+        return $this;
+    }
+
+    public function getImagedeprofil()
+    {
+        return $this->imageDeProfil;
+    }
+
+    public function setImagedeprofil($imagedeprofil): self
+    {
+        $this->imageDeProfil = $imagedeprofil;
 
         return $this;
     }
@@ -189,6 +248,18 @@ class Lecteur
                 $emprunt->setLecteur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
