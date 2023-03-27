@@ -121,4 +121,34 @@ class APIController extends AbstractController
 
         return $emprunts;
     }
+
+    #[View(serializerGroups: ['livre_basic'])]
+    #[Route('/books/research/', name: 'app_api_research', methods: ['GET'])]
+    public function research(EntityManagerInterface $entityManager)
+    {
+        $name = $_GET['name'];
+        if($name == null){
+            return $this->json(['message' => 'No books found'], 404);
+        }
+        // Get the books that start with the name
+        $livres_titre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
+        $livres_titre = $entityManager->createQuery($livres_titre)->setParameter('name', $name . '%')->getResult();
+        if($livres_titre == null){
+            $livres_titre = [];
+        }
+        $author = $entityManager->getRepository(Lecteur::class)->findOneBy(['nomLecteur' => $name]);
+        if($author == null){
+            $livre_author = [];
+        }else{
+            $livre_author = $author->getLivres();
+        }
+        $livres = array_unique(array_merge($livres_titre,$livre_author), SORT_REGULAR);
+
+
+        if (empty($livres)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $livres;
+    }
 }
