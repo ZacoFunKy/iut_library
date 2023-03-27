@@ -1,7 +1,9 @@
 image: jakzal/phpqa:php8.1
 
 before_script:
+    - cd symfony
     - composer install
+    - composer require --dev squizlabs/php_codesniffer
 
 cache:
     paths:
@@ -49,7 +51,6 @@ pages:
     - cp *.png ./public/
   artifacts:
     paths:
-      - public
+      - vendor\*
   only:
     - master
-
