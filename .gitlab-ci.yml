@@ -10,47 +10,15 @@ cache:
         - vendor/
 
 stages:
-    - SecurityChecker
-    - CodingStandards
-    - UnitTests
-    - deploy
+    - ReactCheck
 
-security-checker:
-    stage: SecurityChecker
+eslint:
+    stage: ReactCheck
+    image: node:18-alpine
     script:
-        - local-php-security-checker  --path=./composer.lock
-    allow_failure: false
+        - npm ci
+        - npx eslint --format gitlab .
+    artifacts:
+        reports:
+            codequality: gl-codequality.json
 
-phpcbf:
-    stage: CodingStandards
-    script:
-        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
-    allow_failure: false
-
-
-phpcs:
-    stage: CodingStandards
-    script:
-        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
-    allow_failure: false
-
-phpstan:
-    stage: CodingStandards
-    script:
-        - phpstan analyse ./src
-    allow_failure: false
-
-pages:
-  stage: deploy
-  image: tthor/test
-  before_script:
-    - mkdir -p public
-  script:
-    - emacs README.org -l htmlize.el --batch --eval "(org-babel-do-load-languages 'org-babel-load-languages '( (python . t) ) )" --eval '(setq org-confirm-babel-evaluate nil)' --eval "(setq org-html-htmlize-output-type 'css)" -f org-html-export-to-html --kill
-    - cp README.html ./public/index.html
-    - cp *.png ./public/
-  artifacts:
-    paths:
-      - vendor\*
-  only:
-    - master
