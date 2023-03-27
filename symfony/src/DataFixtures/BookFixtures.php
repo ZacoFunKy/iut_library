@@ -10,7 +10,6 @@ use App\Entity\Livre;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-
 class BookFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
