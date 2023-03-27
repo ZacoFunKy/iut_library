@@ -15,7 +15,6 @@ class Livre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['livre_basic'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 500)]
