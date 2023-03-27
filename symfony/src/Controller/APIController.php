@@ -108,7 +108,7 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No books found'], 404);
         }
 
-        return $this->json($livres, 200, [], ['groups' => 'livre_basic']);
+        return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
     }
 
 
@@ -130,7 +130,7 @@ class APIController extends AbstractController
         $emprunts = array_slice($emprunts->toArray(), 0, 4);
 
         if (empty($emprunts)) {
-            return $this->json(['message' => 'No books found'], 404);
+            return $this->json(['message' => 'No books found'], 404)->setMaxAge(3600);
         }
 
         return $emprunts;
@@ -186,6 +186,6 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No authors found'], 404);
         }
 
-        return $this->json($authors, 200, [], ['groups' => 'auteur_basic']);
+        return $this->json($authors, 200, [], ['groups' => 'auteur_basic'])->setMaxAge(3600);
     }
 }

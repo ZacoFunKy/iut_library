@@ -2,8 +2,11 @@ import { React, useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
+function SearchBar({ setBook, searchTerm, setSearchTerm, setResults, indexPage }) {
   const [listSuggestions, setListSuggestions] = useState([]);
+
+  console.log(indexPage);
+
   const navigation = useNavigate();
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -18,6 +21,8 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
     }
   };
 
+
+
   useEffect(() => {
     if (searchTerm.length >= 1) {
       fetch(
@@ -25,14 +30,14 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
       )
         .then((response) => response.json())
         .then((data) => {
-          setResults(data);
+          setResults(data.slice(indexPage, indexPage + 10));
           
           console.log(data);
         });
     } else {
       setResults([]);
     }
-  }, [searchTerm, setResults]);
+  }, [indexPage, searchTerm, setResults]);
 
   useEffect(() => {
     if (searchTerm.length >= 1) {
@@ -107,6 +112,7 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
           </div>
         ) : null}
       </div>
+     
     </Fragment>
   );
 }

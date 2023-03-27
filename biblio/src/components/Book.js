@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import pasDeCouv from "../assets/pas-de-couv.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
