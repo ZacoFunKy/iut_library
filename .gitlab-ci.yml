@@ -1,9 +1,10 @@
 image: jakzal/phpqa:php8.1
 
 before_script:
-    - cd symfony
-    - composer install
-    - composer require --dev squizlabs/php_codesniffer
+  - cd symfony
+  - composer install
+  - composer require --dev squizlabs/php_codesniffer
+  - composer require --dev phpunit/phpunit
 
 cache:
     paths:
@@ -15,16 +16,21 @@ stages:
     - UnitTests
     - deploy
 
+unittest:
+    stage: UnitTests
+    script:
+        - vendor/bin/phpunit ./tests 
+    allow_failure: false
+
 security-checker:
     stage: SecurityChecker
     script:
         - local-php-security-checker  --path=./composer.lock
     allow_failure: false
 
-
 phpcs:
     stage: CodingStandards
-    script:
+    script:        
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
@@ -48,3 +54,4 @@ pages:
       - vendor\*
   only:
     - master
+

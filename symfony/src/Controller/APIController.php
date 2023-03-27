@@ -21,6 +21,9 @@ use FOS\RestBundle\Controller\Annotations\View;
 #[Route('/api')]
 class APIController extends AbstractController
 {
+    /**
+     * Route pour enregistrer un utilisateur
+     */
     #[Route('/register', name: 'api_reg', methods: ['POST'])]
     public function register(
         EntityManagerInterface $em,
@@ -61,7 +64,9 @@ class APIController extends AbstractController
         ];
         return new JsonResponse($response);
     }
-
+    /**
+     * Route pour se login et générer un token d'un utilisateur
+     */
     #[Route('/login', name: 'api_login', methods: ['POST'])]
     public function login(EntityManagerInterface $entityManager, #[CurrentUser] ?Lecteur $user)
     {
@@ -84,7 +89,9 @@ class APIController extends AbstractController
         ];
         return new JsonResponse($response);
     }
-
+    /**
+     * Renvoi les 4 dernières acquisitions de la bibliothèque
+     */
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/books/last_posts', name: 'app_api_last_posts')]
     public function lastPosts(EntityManagerInterface $entityManager)
@@ -98,7 +105,9 @@ class APIController extends AbstractController
         return $livres;
     }
 
-
+    /**
+     * Renvoi la liste des 4 derniers emprunts du lecteur
+     */
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/books/last_emprunts', name: 'app_api_last_emprunts', methods: ['POST'])]
     public function lastEmprunts(EntityManagerInterface $entityManager, Request $request)
@@ -121,7 +130,9 @@ class APIController extends AbstractController
 
         return $emprunts;
     }
-
+    /**
+     * Recherche de livre en fonction du titre de l'oeuvre et du nom de l'auteur
+     */
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/books/research/', name: 'app_api_research', methods: ['GET'])]
     public function research(EntityManagerInterface $entityManager)
