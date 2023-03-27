@@ -12,20 +12,6 @@ function App() {
   const [results, setResults] = useState([]);
   const [Book, setBook] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Footer position at the bottom of the page if the content is too short des qu'on change de
-  const [footerPosition, setFooterPosition] = useState("absolute");
-
- useEffect(() => {
-    if (window.innerHeight > document.body.offsetHeight) {
-      console.log(window.innerHeight);
-      console.log(document.body.offsetHeight);
-      setFooterPosition("relative");
-    } else {
-      setFooterPosition("absolute");
-    }
-  }, []);
-
   
 
   return (
@@ -38,14 +24,14 @@ function App() {
         setResults={setResults}
       />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home setBook={setBook} />} />
         <Route path="/book" element={<BookView Book={Book}  />} />
         <Route path="/results" element={<SearchResults results={results} setBook={setBook} setSearchTerm={setSearchTerm}  />} />
         <Route path="/amis" element={<FriendsView />} />
         <Route path="/connexion" element={<Connexion />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      <Footer footerPosition={footerPosition} />
+      <Footer />
     </BrowserRouter>
   );
 }

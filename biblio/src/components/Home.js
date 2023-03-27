@@ -2,7 +2,7 @@ import { React, useEffect, useState } from "react";
 import axios from "axios";
 import Book from "./Book";
 
-function Home() {
+function Home({ setBook}) {
   const [derniersLivres, setDerniersLivres] = useState([]);
   const [derniersEmprunts, setDerniersEmprunts] = useState([]);
 
@@ -61,7 +61,7 @@ function Home() {
             {derniersLivres.map((livre) => {
               return (
                 <div className="w-60" key={livre.id}>
-                  <Book props={livre} />
+                  <Book props={livre} setBook={setBook} />
                 </div>
               );
             })}
