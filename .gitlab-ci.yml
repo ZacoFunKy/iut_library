@@ -23,7 +23,7 @@ security-checker:
 
 phpcs:
     stage: CodingStandards
-    script:
+    script:        
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
@@ -54,3 +54,7 @@ pages:
       - vendor\*
   only:
     - master
+unittest:
+    stage: UnitTests
+    script: 
+        - php bin/phpunit
