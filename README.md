@@ -1,92 +1,74 @@
-# SAE4_Equipe9
+# SAE 4 - IUT Bibliothèque Bordeaux
+
+## Table des matières
+
+ 1. [Présentation des membres de l'équipe]()
+ 2. [Description du projet]()
+ 3. [Fonctionnalités principales]()
+ 4. [Évaluation du projet]()
 
 
+## 1. Présentation des membres de l'équipe 
 
-## Getting started
+Notre équipe était composé de 6 membres : 
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+ - Mael JEGU
+ - Aurelien LUXEY
+ - Yanis MERCIER-TALLET
+ - Romain CORDIER
+ - Edouard SENSE
+ - Zachary TANJI
+ 
+Nous avons travaillé ensemble pendant une semaine et demi sur ce projet.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 2. Description du projet 
 
-## Add your files
+Le projet consiste à créer un site internet pour la bibliothèque de l'IUT de Bordeaux, qui proposera des fonctionnalités classiques telles que la recherche de livres, la visualisation d'informations liées aux livres et les dernières acquisitions de la bibliothèque.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+ 
 
-```
-cd existing_repo
-git remote add origin https://gitlab-ce.iut.u-bordeaux.fr/majegu/sae4_equipe9.git
-git branch -M main
-git push -uf origin main
-```
+## 3. Fonctionnalités principales 
 
-## Integrate with your tools
+ - Partie Front-End : 
+	 - [X] Utilisation du framework React pour le développement de la partie front du site internet.
+	 - [X] Utilisation du package "react-router-dom" pour permettre une navigation multi-pages.
+	 - [ ] Utilisation de TypeScript (optionnel).
+	 - [ ] Qualité de code à respecter avec l'outil d'audit de votre navigateur.
 
-- [ ] [Set up project integrations](https://gitlab-ce.iut.u-bordeaux.fr/majegu/sae4_equipe9/-/settings/integrations)
+ - Partie Back-End : 
+	 - [ ] Qualité de code à respecter avec l'outil d'audit de votre navigateur.
+	 - [ ] Importation des données des livres via l'API Google Books.
+	 - [ ] Génération d'une base de données représentative d'une base réelle avec 200 livres, 50 auteurs différents, chaque livre n'étant présent qu'une fois dans la base.
+	 - [ ] Génération d'une base de données représentative d'une base réelle avec 200 livres, 50 auteurs différents, chaque livre n'étant présent qu'une fois dans la base.
+	 - [ ] Création de notre propre API.
+	 - [ ] Documentation de l'API au format OpenAPI.
 
-## Collaborate with your team
+ - Partie BD : 
+	 - [X] Conception des données avec un schéma entité-association.
+	 - [X] Utilisation de MariaDB ou MySQL.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+ - Partie Gestion devops :
+	 - [X] Utilisation d'un pipeline pour vérifier le respect des données générées, analyser le code PHP avec php-cs-fixer.
+	 - [ ]  Faire des tests unitaires en PHP (optionnel).
+	 - [ ] Suivi du workflow suivant : ticket/merge-request-review et CI, merge dans principal.
 
-## Test and Deploy
+## 4. Évaluation du projet 
 
-Use the built-in continuous integration in GitLab.
+Planing des **rendu** : 
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+|24 mars| 27 mars |
+|--|--|
+| à partir de 16H : ● Evaluation de la chaîne CI mise en place sur votre GitLab par Pierre Ramet. ● Vous recevrez un retour sur la qualité de la chaîne mise en place dans les issues de votre gitlab | Démonstration fonctionnelle du MVP entre 14H et 18H ● 20 minutes Front : vous devez a minima montrer une fonctionnalité opérationnelle (un composant, utilisation d’une route de l’API, modification de la base). ● 20 minutes Back: vous présenterez la structure de votre API, la manière dont elle est documentée, et les tests mis en place pour valider son fonctionnement |
+|Critères d'acceptation pour la partie CI : - pipeline opérationnel - la production d’une image docker adaptée au projet - preuve de concept avec 2 ou 3 tests intégrés (scripts BD, tests back, …) - configuration des Merge Request avec la CI Bien sur, toute la suite du Dev devra s’appuyer sur cette CI et respecter l’organisation du développement avec le Workflow Gitlab utilisant les Issues et Merge Requests Les tests devront être ajoutés au fur et à mesure du Dev. Aucune Merge Request ne sera acceptée sans respecter la CI.|pour 18H Sur votre GitLab, rédiger dans le README un texte indiquant comment : ● vous avez décidé d’ordonner les comptes à suivre qui sont proposés ● ce que vous proposez comme fonctionnalité de proposition de nouvelles lectures Livrable BD (déposer un document sur votre dépôt GitLab) contenant les informations suivantes : ● un schéma entité-association (avec les éventuelles contraintes d’intégrité non exprimées dans le schéma ou commentaires) ● un script SQL permettant de créer toute la base de données (tables et contraintes d’intégrité, et éventuels privilèges, vues, déclencheurs, procédures/fonctions stockées, index) et des données N. B. : en cas de dénormalisation, justifiez impérativement vos choix ● des requêtes d’interrogation SQL indiquant le nombre de tuples de chaque table, à intégrer aux tests  |
 
-***
 
-# Editing this README
+Le 31 mars : Présentation technique de 15 minutes de votre travail :
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+-   Les fonctionnalités développées via le VPS
+-   La chaîne CI
+-   La partie Back/BD
+-   La partie Front
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+15 minutes de questions :
 
-## Name
-Choose a self-explaining name for your project.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.

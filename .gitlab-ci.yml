@@ -27,6 +27,7 @@ phpcbf:
         - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
+
 phpcs:
     stage: CodingStandards
     script:
