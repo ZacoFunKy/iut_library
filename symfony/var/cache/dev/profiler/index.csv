@@ -949,3 +949,5 @@ b9d524,::1,GET,https://localhost:8000/api/authors/research/?name=l,1679919871,,2
 bb16da,::1,GET,https://localhost:8000/api/authors/research/?name=Laurence%20G.%20Thompson,1679919875,,200
 5ca4f5,::1,GET,https://localhost:8000/api/books/last_emprunts,1679927621,005cfc,405
 005cfc,::1,GET,https://localhost:8000/api/books/last_emprunts,1679927621,,405
+6167b4,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929130,959d46,405
+959d46,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929130,,405
