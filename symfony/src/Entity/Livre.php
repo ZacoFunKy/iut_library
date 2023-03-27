@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
@@ -14,43 +15,53 @@ class Livre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['livre_basic'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 500)]
+    #[Groups(['livre_basic'])]
     private ?string $titre = null;
 
     #[ORM\Column(length: 2555, nullable: true)]
+    #[Groups(['livre_basic'])]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $couverture = null;
-
+    #[ORM\Column(length: 2555, nullable: true)]
+    #[Groups(['livre_basic'])]
+    private ?string $couverture = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['livre_basic'])]
     private ?int $page = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['livre_basic'])]
     private ?\DateTimeInterface $dateAcquisition = null;
 
     #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class, orphanRemoval: true)]
     private Collection $emprunts;
 
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'livres')]
+    #[ORM\JoinTable(name: 'livre_categorie')]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['livre_basic'])]
     private ?Langue $langue = null;
 
 
     #[ORM\ManyToMany(targetEntity: Auteur::class, inversedBy: 'livres')]
+    #[Groups(['livre_basic'])]
     private Collection $auteurs;
 
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
+    #[Groups(['livre_basic'])]
     private ?Editeur $editeur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['livre_basic'])]
     private ?\DateTimeInterface $dateParution = null;
 
 
@@ -87,18 +98,6 @@ class Livre
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getCouverture()
-    {
-        return $this->couverture;
-    }
-
-    public function setCouverture($couverture): self
-    {
-        $this->couverture = $couverture;
 
         return $this;
     }
@@ -240,6 +239,18 @@ class Livre
     public function setDateParution(?\DateTimeInterface $dateParution): self
     {
         $this->dateParution = $dateParution;
+
+        return $this;
+    }
+
+    public function getCouverture(): ?string
+    {
+        return $this->couverture;
+    }
+
+    public function setCouverture(?string $couverture): self
+    {
+        $this->couverture = $couverture;
 
         return $this;
     }
