@@ -87,7 +87,7 @@ class APIController extends AbstractController
 
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/api/books', name: 'app_api_books')]
-    public function books(EntityManagerInterface $entityManager) : Response
+    public function books(EntityManagerInterface $entityManager): Response
     {
         $livres = $entityManager->getRepository(Livre::class)->findBy([], [], 10);
 
@@ -111,7 +111,7 @@ class APIController extends AbstractController
         return $this->json($livres, 200, [], ['groups' => 'livre_basic']);
     }
 
-   
+
 
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/books/last_emprunts', name: 'app_api_last_emprunts', methods: ['POST'])]
@@ -141,19 +141,19 @@ class APIController extends AbstractController
     public function research(EntityManagerInterface $entityManager)
     {
         $name = $_GET['name'];
-        if($name == null){
+        if ($name == null) {
             return $this->json(['message' => 'No books found'], 404);
         }
         $livres_titre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
         $livres_titre = $entityManager->createQuery($livres_titre)->setParameter('name', $name . '%')->getResult();
-        if($livres_titre == null){
+        if ($livres_titre == null) {
             $livres_titre = [];
         }
         $author = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
         $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getResult();
-        if($author == null){
+        if ($author == null) {
             $livre_author = [];
-        }else{
+        } else {
             $i = 0;
             $livre_author = [];
             foreach ($author as $a) {
@@ -163,7 +163,7 @@ class APIController extends AbstractController
                 }
             }
         }
-        $livres = array_unique(array_merge($livres_titre,$livre_author), SORT_REGULAR);
+        $livres = array_unique(array_merge($livres_titre, $livre_author), SORT_REGULAR);
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
@@ -177,14 +177,14 @@ class APIController extends AbstractController
     public function researchAuthor(EntityManagerInterface $entityManager)
     {
         $name = $_GET['name'];
-        if($name == null){
+        if ($name == null) {
             return $this->json(['message' => 'No authors found'], 404);
         }
         $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
         $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')->getResult();
-        if($authors == null){
+        if ($authors == null) {
             return $this->json(['message' => 'No authors found'], 404);
-        } 
+        }
 
         return $this->json($authors, 200, [], ['groups' => 'auteur_basic']);
     }
