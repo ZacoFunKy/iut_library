@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Livre;
 use FOS\RestBundle\Controller\Annotations\View;
 
+#[Route('/api')]
 class APIController extends AbstractController
 {
     #[Route('/a/p/i', name: 'app_a_p_i')]
@@ -20,10 +21,24 @@ class APIController extends AbstractController
     }
 
     #[View(serializerGroups: ['livre_basic'])]
-    #[Route('/api/books/last_posts', name: 'app_api_last_posts')]
+    #[Route('/books/last_posts', name: 'app_api_last_posts')]
     public function lastPosts(EntityManagerInterface $entityManager)
     {
         $livres = $entityManager->getRepository(Livre::class)->findBy([], ['dateAcquisition' => 'DESC'], 4);
+
+        if (empty($livres)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $livres;
+    }
+
+
+    #[View(serializerGroups: ['livre_basic'])]
+    #[Route('/books/last_emprunts', name: 'app_api_last_emprunts')]
+    public function lastEmprunts(EntityManagerInterface $entityManager)
+    {
+        $livres = $entityManager->getRepository(Livre::class)->findBy(['lecteur' => $lecteur], ['dateEmprunt' => 'DESC'], 4);
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
