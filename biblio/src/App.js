@@ -14,8 +14,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");  
   const [indexPage, setIndex] = useState(0);
   
- 
-
   return (
     <BrowserRouter basename="/">
       <Header
