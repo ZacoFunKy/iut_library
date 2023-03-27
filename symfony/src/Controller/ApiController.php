@@ -25,8 +25,7 @@ class ApiController extends AbstractController
         ValidatorInterface $v,
         UserPasswordHasherInterface $uPH,
         SerializerInterface $serializer
-    )
-        {
+    ){
         $json = $request->getContent();
         $lecteur = $serializer->deserialize($json, Lecteur::class, 'json');
         $errors = $v->validate($lecteur);
