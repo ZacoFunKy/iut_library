@@ -881,3 +881,15 @@ bd365e,::1,GET,https://localhost:8000/api/authors/research/?name=International%2
 db45ca,::1,GET,https://localhost:8000/api/books/last_posts,1679918968,,200
 b4674c,::1,GET,https://localhost:8000/api/books/last_emprunts,1679918969,c63a63,405
 c63a63,::1,GET,https://localhost:8000/api/books/last_emprunts,1679918969,,405
+147d93,::1,GET,https://localhost:8000/api/books/research/?name=a,1679919266,,200
+7e4663,::1,GET,https://localhost:8000/api/authors/research/?name=a,1679919268,,200
+ff85fb,::1,GET,https://localhost:8000/api/authors/research/?name=al,1679919268,,200
+bed712,::1,GET,https://localhost:8000/api/books/research/?name=al,1679919270,,200
+f722b7,::1,GET,https://localhost:8000/api/books/research/?name=Alison%20Firth,1679919273,,200
+17d461,::1,GET,https://localhost:8000/api/authors/research/?name=Alison%20Firth,1679919273,,200
+b67b9e,::1,GET,https://localhost:8000/api/books/research/?name=l,1679919458,,200
+e210e7,::1,GET,https://localhost:8000/api/authors/research/?name=l,1679919459,,200
+9d711e,::1,GET,https://localhost:8000/api/books/research/?name=la,1679919461,,200
+0d6b0d,::1,GET,https://localhost:8000/api/authors/research/?name=la,1679919462,,200
+3d6921,::1,GET,https://localhost:8000/api/books/research/?name=Levi%20Heywood%20Memorial%20Library%2C%20Gardner%2C%20Mass,1679919462,,200
+a86736,::1,GET,https://localhost:8000/api/authors/research/?name=Levi%20Heywood%20Memorial%20Library%2C%20Gardner%2C%20Mass,1679919463,,200

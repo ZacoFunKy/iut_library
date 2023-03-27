@@ -20,11 +20,12 @@ function BookView({ Book }) {
           ) : null}
           <div className="book m-5 md:flex-row flex-col flex">
             {Book.couverture !== null ? (
-              <div className="book__image border">
+              <div className="flex justify-center mb-5">
                 <img
                   src={Book.couverture}
                   alt="couverture du livre"
                   style={{
+                    border: "1.5px solid #009999",
                     minWidth: "250px",
                     maxWidth: "300px",
                     height: "50vh",
@@ -46,12 +47,12 @@ function BookView({ Book }) {
             <div className=" ml-0 md:ml-20">
               {Book.auteurs.length !== 0 ? (
                 <div>
-                  <span>Auteur(s) : </span>
+                  <span className="text-xl">Auteur(s) : </span>
                   {Book.auteurs.map((aut) => {
                     return (
                       <div key={aut.id}>
                         {aut.intituleAuteur !== null ? (
-                          <div className="book__author text-xl">
+                          <div className="book__author text-lg">
                             <span className="text-[#009999]">
                               {aut.intituleAuteur}
                             </span>
