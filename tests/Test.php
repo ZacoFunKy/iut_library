@@ -36,7 +36,7 @@ class ProductRepositoryTest extends KernelTestCase
 
         $bookCount = $this->entityManager->getRepository(Livre::class)->count([]);
 
-        $this->assertGreaterThanOrEqual(200, $bookCount);
+        $this->assertGreaterThanOrEqual(200000, $bookCount);
     }
 
     function testUserCount()
