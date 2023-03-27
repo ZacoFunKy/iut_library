@@ -20,13 +20,15 @@ class Emprunt
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateRendu = null;
 
-    #[ORM\ManyToOne(inversedBy: 'emprunts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Lecteur $lecteur = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'emprunts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Livre $livre = null;
+
+    #[ORM\ManyToOne(inversedBy: 'emprunts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Lecteur $lecteur = null;
 
     public function getId(): ?int
     {
@@ -57,18 +59,6 @@ class Emprunt
         return $this;
     }
 
-    public function getLecteur(): ?Lecteur
-    {
-        return $this->lecteur;
-    }
-
-    public function setLecteur(?Lecteur $lecteur): self
-    {
-        $this->lecteur = $lecteur;
-
-        return $this;
-    }
-
     public function getLivre(): ?Livre
     {
         return $this->livre;
@@ -77,6 +67,18 @@ class Emprunt
     public function setLivre(?Livre $livre): self
     {
         $this->livre = $livre;
+
+        return $this;
+    }
+
+    public function getLecteur(): ?Lecteur
+    {
+        return $this->lecteur;
+    }
+
+    public function setLecteur(?Lecteur $lecteur): self
+    {
+        $this->lecteur = $lecteur;
 
         return $this;
     }
