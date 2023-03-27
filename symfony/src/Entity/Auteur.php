@@ -17,10 +17,11 @@ class Auteur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre_basic'])]
+    #[Groups(['auteur_basic', "livre_basic"])]
     private ?string $intituleAuteur = null;
 
     #[ORM\ManyToMany(targetEntity: Livre::class, mappedBy: 'auteurs')]
+    #[Groups(['auteur_basic'])]
     private Collection $livres;
 
     public function __construct()

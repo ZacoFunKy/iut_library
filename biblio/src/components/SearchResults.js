@@ -1,24 +1,36 @@
 import React, { Fragment } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-function SearchResults({ results }) {
-
+function SearchResults({ results, setBook,setSearchTerm }) {
   console.log(results);
+  const navigation = useNavigate();
 
   return (
     <Fragment>
-      <div>
+      <div className="m-5">
         {results.length > 0 ? (
-          <div>
+          <ol>
             {results.map((book) => (
-              <div>
-                {book.titre !== null ? (
-                  <span>{book.titre}</span>
-                ) : (
-                  <span>Titre non renseigné</span>
-                )}
-              </div>
+              <li key={book.id}>
+                <Link
+                  
+                  className="p-2 text-black hover:cursor-pointer hover:bg-slate-400"
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                    setBook(book);
+                    navigation("/book");
+                    setSearchTerm("");
+                  }}
+                >
+                  {book.titre !== null ? (
+                    <span>{book.titre}</span>
+                  ) : (
+                    <span>Titre non renseigné</span>
+                  )}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ol>
         ) : (
           <span>Résultats</span>
         )}

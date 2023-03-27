@@ -20,6 +20,7 @@ return [
         '/api/books/last_posts' => [[['_route' => 'app_api_last_posts', '_controller' => 'App\\Controller\\APIController::lastPosts'], null, null, null, false, false, null]],
         '/api/books/last_emprunts' => [[['_route' => 'app_api_last_emprunts', '_controller' => 'App\\Controller\\APIController::lastEmprunts'], null, ['POST' => 0], null, false, false, null]],
         '/api/books/research' => [[['_route' => 'app_api_research', '_controller' => 'App\\Controller\\APIController::research'], null, ['GET' => 0], null, true, false, null]],
+        '/api/authors/research' => [[['_route' => 'app_api_research_author', '_controller' => 'App\\Controller\\APIController::researchAuthor'], null, ['GET' => 0], null, true, false, null]],
         '/hello' => [[['_route' => 'app_hello', '_controller' => 'App\\Controller\\HelloController::index'], null, null, null, false, false, null]],
         '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
     ],

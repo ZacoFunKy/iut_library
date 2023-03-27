@@ -42,11 +42,9 @@ function Home() {
         {derniersEmprunts !== undefined && derniersLivres.length > 0 ? (
           <div className="flex flex-row justify-around m-5">
             {derniersEmprunts.map((livre) => {
-              return (
-                <div className="w-60" key={livre.id}>
-                  <Book props={livre} />
-                </div>
-              );
+              <div className="w-60" key={livre.id}>
+                <Book props={livre} />
+              </div>;
             })}
           </div>
         ) : null}
@@ -56,11 +54,9 @@ function Home() {
         {derniersLivres !== undefined && derniersLivres.length > 0 ? (
           <div className="flex flex-row justify-around m-5">
             {derniersLivres.map((livre) => {
-              return (
-                <div className="w-60" key={livre.id}>
-                  <Book props={livre} />
-                </div>
-              );
+              <div className="w-60" key={livre.id}>
+                <Book props={livre} />
+              </div>;
             })}
           </div>
         ) : null}

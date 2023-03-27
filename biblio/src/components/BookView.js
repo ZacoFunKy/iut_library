@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import pasDeCouv from "../assets/pas-de-couv.png";
 
 function BookView({ Book }) {
   console.log(Book);
@@ -7,53 +8,73 @@ function BookView({ Book }) {
     <Fragment>
       {Book.length !== 0 ? (
         <div className="flex flex-col items-center">
-          {Book.volumeInfo.title !== null &&
-          Book.volumeInfo.title.length > 30 ? (
+          {Book.titre !== null && Book.titre.length > 30 ? (
             <div className="w-max text-2xl md:text-3xl m-3 ml-5">
-              {Book.volumeInfo.title.substr(0, 30)}...
+              {Book.titre.substr(0, 30)}...
             </div>
           ) : null}
-          {Book.volumeInfo.title !== null &&
-          Book.volumeInfo.title.length <= 30 ? (
+          {Book.titre !== null && Book.titre.length <= 30 ? (
             <div className="w-max text-2xl md:text-3xl m-3 ml-5">
-              {Book.volumeInfo.title}
+              {Book.titre}
             </div>
           ) : null}
           <div className="book m-5 md:flex-row flex-col flex">
-            {Book.volumeInfo.imageLinks !== undefined ? (
-              <div className="book__image">
+            {Book.couverture !== null ? (
+              <div className="book__image border">
                 <img
-                  src={Book.volumeInfo.imageLinks.thumbnail}
+                  src={Book.couverture}
                   alt="couverture du livre"
-                  style={{ minWidth: "350px", maxWidth:"400px", height: "65vh" }}
+                  style={{
+                    minWidth: "250px",
+                    maxWidth: "300px",
+                    height: "50vh",
+                  }}
                 />
               </div>
             ) : (
-              <p>Pas d'image disponible</p>
+              <img
+                src={pasDeCouv}
+                alt="couverture du livre"
+                style={{
+                  minWidth: "200px",
+                  maxHeight: "250px",
+                  height: "65vh",
+                }}
+              />
             )}
+
             <div className=" ml-0 md:ml-20">
-              {Book.volumeInfo.authors !== null ? (
-                <div className="book__author text-xl">
-                  <span>Auteur : </span>
-                  <span className="text-[#009999]">
-                    {Book.volumeInfo.authors}
-                  </span>
+              {Book.auteurs.length !== 0 ? (
+                <div>
+                  <span>Auteur(s) : </span>
+                  {Book.auteurs.map((aut) => {
+                    return (
+                      <div key={aut.id}>
+                        {aut.intituleAuteur !== null ? (
+                          <div className="book__author text-xl">
+                            <span className="text-[#009999]">
+                              {aut.intituleAuteur}
+                            </span>
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
                 </div>
               ) : null}
+
               <div>
                 <span className="text-xl">Nombre de pages : </span>{" "}
-                {Book.volumeInfo.pageCount !== undefined ? (
-                  <span className="text-[#009999]">
-                    {Book.volumeInfo.pageCount}
-                  </span>
+                {Book.page !== undefined ? (
+                  <span className="text-[#009999]">{Book.page}</span>
                 ) : (
                   <p>Pas défini</p>
                 )}
               </div>
-              {Book.volumeInfo.description !== undefined ? (
+              {Book.description !== undefined ? (
                 <div className="flex flex-col max-w-sm">
                   <span className="text-2xl">Résumé</span>
-                  <p>{Book.volumeInfo.description.substr(0, 200)}...</p>
+                  <p>{Book.description.substr(0, 200)}...</p>
                 </div>
               ) : null}
             </div>

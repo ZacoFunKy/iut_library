@@ -171,4 +171,21 @@ class APIController extends AbstractController
 
         return $livres;
     }
+
+    // route qui retourne les auteurs qui correspondent au nom passé en paramètre
+    #[Route('/authors/research/', name: 'app_api_research_author', methods: ['GET'])]
+    public function researchAuthor(EntityManagerInterface $entityManager)
+    {
+        $name = $_GET['name'];
+        if($name == null){
+            return $this->json(['message' => 'No authors found'], 404);
+        }
+        $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
+        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')->getResult();
+        if($authors == null){
+            return $this->json(['message' => 'No authors found'], 404);
+        } 
+
+        return $this->json($authors, 200, [], ['groups' => 'auteur_basic']);
+    }
 }

@@ -39,8 +39,8 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/book" element={<BookView Book={Book} />} />
-        <Route path="/results" element={<SearchResults results={results} />} />
+        <Route path="/book" element={<BookView Book={Book}  />} />
+        <Route path="/results" element={<SearchResults results={results} setBook={setBook} setSearchTerm={setSearchTerm}  />} />
         <Route path="/amis" element={<FriendsView />} />
         <Route path="/connexion" element={<Connexion />} />
         <Route path="*" element={<Navigate to="/" />} />

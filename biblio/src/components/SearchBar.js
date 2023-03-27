@@ -26,13 +26,30 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
         .then((response) => response.json())
         .then((data) => {
           setResults(data);
-          setListSuggestions(data);
+          
           console.log(data);
         });
     } else {
       setResults([]);
     }
   }, [searchTerm, setResults]);
+
+  useEffect(() => {
+    if (searchTerm.length >= 1) {
+      fetch(
+        `https://localhost:8000/api/authors/research/?name=${searchTerm}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setListSuggestions(data.slice(0,5));
+          console.log(data);
+        });
+    } else {
+      setListSuggestions([]);
+    }
+  }, [searchTerm, setListSuggestions]);
+
+  // 
 
 
   return (
@@ -75,12 +92,15 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
                   onMouseDown={(event) => {
                     event.preventDefault();
                     setBook(suggestion);
-                    setSearchTerm("");
+                    setSearchTerm(suggestion.intituleAuteur);
                     setListSuggestions([]);
-                    navigation("/book");
+                    navigation("/results");
                   }}
                 >
-                  <p>{suggestion.titre}</p>
+                  { suggestion.intituleAuteur.length > 20 ? (
+                  <p>{suggestion.intituleAuteur.substr(0,20)}...</p>) : (
+                    <p>{suggestion.intituleAuteur}</p>
+                  )}
                 </Link>
               );
             })}

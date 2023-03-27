@@ -22,6 +22,7 @@ return [
     'app_api_last_posts' => [[], ['_controller' => 'App\\Controller\\APIController::lastPosts'], [], [['text', '/api/books/last_posts']], [], [], []],
     'app_api_last_emprunts' => [[], ['_controller' => 'App\\Controller\\APIController::lastEmprunts'], [], [['text', '/api/books/last_emprunts']], [], [], []],
     'app_api_research' => [[], ['_controller' => 'App\\Controller\\APIController::research'], [], [['text', '/api/books/research/']], [], [], []],
+    'app_api_research_author' => [[], ['_controller' => 'App\\Controller\\APIController::researchAuthor'], [], [['text', '/api/authors/research/']], [], [], []],
     'app_hello' => [[], ['_controller' => 'App\\Controller\\HelloController::index'], [], [['text', '/hello']], [], [], []],
     'app_register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/register']], [], [], []],
 ];
