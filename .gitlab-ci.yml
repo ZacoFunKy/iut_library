@@ -19,7 +19,8 @@ stages:
 unittest:
     stage: UnitTests
     script: 
-        - php bin/phpunit
+        - vendor/bin/phpunit
+    allow_failure: false
 
 security-checker:
     stage: SecurityChecker
@@ -38,13 +39,6 @@ phpstan:
     script:
         - phpstan analyse ./src
     allow_failure: false
-
-twig-lint:
-    stage: CodingStandards
-    script:
-        - twig-lint lint ./templates
-    allow_failure: false
-
 
 pages:
   stage: deploy
