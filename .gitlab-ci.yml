@@ -1,5 +1,6 @@
 image: jakzal/phpqa:php8.1
 
+
 before_script:
   - cd symfony
   - composer install
