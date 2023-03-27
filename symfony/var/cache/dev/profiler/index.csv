@@ -1449,3 +1449,5 @@ dd602c,::1,GET,https://localhost:8000/api/books/last_emprunts,1679928561,368de1,
 005cfc,::1,GET,https://localhost:8000/api/books/last_emprunts,1679927621,,405
 6167b4,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929130,959d46,405
 959d46,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929130,,405
+6307ad,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929841,87d7cf,405
+87d7cf,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929841,,405
