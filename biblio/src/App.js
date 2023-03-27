@@ -1,4 +1,11 @@
-import { BrowserRouter, Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import SearchResults from "./components/SearchResults";
@@ -16,7 +23,7 @@ function App() {
   // Footer position at the bottom of the page if the content is too short des qu'on change de
   const [footerPosition, setFooterPosition] = useState("absolute");
 
- useEffect(() => {
+  useEffect(() => {
     if (window.innerHeight > document.body.offsetHeight) {
       console.log(window.innerHeight);
       console.log(document.body.offsetHeight);
@@ -25,8 +32,6 @@ function App() {
       setFooterPosition("absolute");
     }
   }, []);
-
-  
 
   return (
     <BrowserRouter basename="/">
@@ -39,8 +44,17 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/book" element={<BookView Book={Book}  />} />
-        <Route path="/results" element={<SearchResults results={results} setBook={setBook} setSearchTerm={setSearchTerm}  />} />
+        <Route path="/book" element={<BookView Book={Book} />} />
+        <Route
+          path="/results"
+          element={
+            <SearchResults
+              results={results}
+              setBook={setBook}
+              setSearchTerm={setSearchTerm}
+            />
+          }
+        />
         <Route path="/amis" element={<FriendsView />} />
         <Route path="/connexion" element={<Connexion />} />
         <Route path="*" element={<Navigate to="/" />} />
