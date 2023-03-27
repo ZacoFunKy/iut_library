@@ -161,12 +161,10 @@ class APIController extends AbstractController
                 }
             }
         }
-        $livres = array_unique( $livre_author, SORT_REGULAR);
-
+        $livres = array_unique($livre_author, SORT_REGULAR);
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
         }
-
         return $livres;
     }
 

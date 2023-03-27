@@ -1390,3 +1390,5 @@ b6f104,::1,GET,https://localhost:8000/api/books/research/?name=l,1679927588,,200
 20b769,::1,GET,https://localhost:8000/api/books/research/?name=la,1679927589,,200
 28696a,::1,GET,https://localhost:8000/api/books/last_emprunts,1679927595,204ae2,405
 204ae2,::1,GET,https://localhost:8000/api/books/last_emprunts,1679927595,,405
+6f09c3,::1,GET,https://localhost:8000/api/books/last_emprunts,1679927867,268220,405
+268220,::1,GET,https://localhost:8000/api/books/last_emprunts,1679927867,,405
