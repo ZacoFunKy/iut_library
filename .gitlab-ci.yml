@@ -1,9 +1,10 @@
 image: jakzal/phpqa:php8.1
 
 before_script:
-    - cd symfony
-    - composer install
-    - composer require --dev squizlabs/php_codesniffer
+  - cd symfony
+  - composer install
+  - composer require --dev squizlabs/php_codesniffer
+  - composer require --dev phpunit/phpunit
 
 cache:
     paths:
@@ -14,6 +15,11 @@ stages:
     - CodingStandards
     - UnitTests
     - deploy
+
+unittest:
+    stage: UnitTests
+    script: 
+        - php bin/phpunit
 
 security-checker:
     stage: SecurityChecker
@@ -54,7 +60,4 @@ pages:
       - vendor\*
   only:
     - master
-unittest:
-    stage: UnitTests
-    script: 
-        - php bin/phpunit
+
