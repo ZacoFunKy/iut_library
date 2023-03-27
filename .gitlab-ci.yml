@@ -18,8 +18,8 @@ stages:
 
 unittest:
     stage: UnitTests
-    script: 
-        - vendor/bin/phpunit
+    script:
+        - vendor/bin/phpunit ./tests 
     allow_failure: false
 
 security-checker:
