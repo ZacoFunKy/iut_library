@@ -18,12 +18,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use FOS\RestBundle\Controller\Annotations\View;
 
-
-
 #[Route('/api')]
 class APIController extends AbstractController
 {
-
 
     #[Route('/register', name: 'api_reg', methods: ['POST'])]
     public function register(
