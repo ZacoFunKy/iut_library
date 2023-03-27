@@ -138,22 +138,22 @@ class APIController extends AbstractController
     public function research(EntityManagerInterface $entityManager)
     {
         $name = $_GET['name'];
-        if($name == null){
+        if ($name == null) {
             return $this->json(['message' => 'No books found'], 404);
         }
         $livres_titre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
         $livres_titre = $entityManager->createQuery($livres_titre)->setParameter('name', $name . '%')->getResult();
-        if($livres_titre == null){
+        if ($livres_titre == null) {
             $livres_titre = [];
         }
         $author = "SELECT a FROM App\Entity\Auteur a WHERE a.nom LIKE :name";
         $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getOneOrNullResult();
-        if($author == null){
+        if ($author == null) {
             $livre_author = [];
-        }else{
+        } else {
             $livre_author = $author->getLivres();
         }
-        $livres = array_unique(array_merge($livres_titre,$livre_author), SORT_REGULAR);
+        $livres = array_unique(array_merge($livres_titre, $livre_author), SORT_REGULAR);
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
