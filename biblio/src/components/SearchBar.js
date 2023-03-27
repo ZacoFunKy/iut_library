@@ -46,7 +46,7 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults, indexPage }
       )
         .then((response) => response.json())
         .then((data) => {
-          setListSuggestions(data.slice(0,5));
+          setListSuggestions(data.slice(0,10));
           console.log(data);
         });
     } else {
