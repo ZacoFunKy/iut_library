@@ -16,4 +16,8 @@ return [
     '_profiler_router' => [['token'], ['_controller' => 'web_profiler.controller.router::panelAction'], [], [['text', '/router'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::body'], [], [['text', '/exception'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
+    'app_a_p_i' => [[], ['_controller' => 'App\\Controller\\APIController::index'], [], [['text', '/a/p/i']], [], [], []],
+    'app_api_books' => [[], ['_controller' => 'App\\Controller\\APIController::books'], [], [['text', '/api/books']], [], [], []],
+    'app_api_last_posts' => [[], ['_controller' => 'App\\Controller\\APIController::lastPosts'], [], [['text', '/api/books/last_posts']], [], [], []],
+    'app_hello' => [[], ['_controller' => 'App\\Controller\\HelloController::index'], [], [['text', '/hello']], [], [], []],
 ];

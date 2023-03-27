@@ -20,6 +20,19 @@ class APIController extends AbstractController
     }
 
     #[View(serializerGroups: ['livre_basic'])]
+    #[Route('/api/books', name: 'app_api_books')]
+    public function books(EntityManagerInterface $entityManager) : Response
+    {
+        $livres = $entityManager->getRepository(Livre::class)->findAll();
+
+        if (empty($livres)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $this->json($livres, 200, [], ['groups' => 'livre_basic']);
+    }
+
+    #[View(serializerGroups: ['livre_basic'])]
     #[Route('/api/books/last_posts', name: 'app_api_last_posts')]
     public function lastPosts(EntityManagerInterface $entityManager)
     {
@@ -29,6 +42,6 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No books found'], 404);
         }
 
-        return $livres;
+        return $this->json($livres, 200, [], ['groups' => 'livre_basic']);
     }
 }

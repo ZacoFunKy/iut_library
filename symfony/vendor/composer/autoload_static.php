@@ -115,10 +115,19 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
             'PhpParser\\' => 10,
             'PHPStan\\PhpDocParser\\' => 21,
         ),
+        'N' => 
+        array (
+            'Nelmio\\CorsBundle\\' => 18,
+            'Negotiation\\' => 12,
+        ),
         'M' => 
         array (
             'Monolog\\' => 8,
             'Masterminds\\' => 12,
+        ),
+        'F' => 
+        array (
+            'FOS\\RestBundle\\' => 15,
         ),
         'E' => 
         array (
@@ -135,11 +144,13 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
             'Doctrine\\Deprecations\\' => 22,
             'Doctrine\\DBAL\\' => 14,
             'Doctrine\\Common\\Lexer\\' => 22,
+            'Doctrine\\Common\\DataFixtures\\' => 29,
             'Doctrine\\Common\\Collections\\' => 28,
             'Doctrine\\Common\\Cache\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
             'Doctrine\\Common\\' => 16,
             'Doctrine\\Bundle\\MigrationsBundle\\' => 33,
+            'Doctrine\\Bundle\\FixturesBundle\\' => 31,
             'Doctrine\\Bundle\\DoctrineBundle\\' => 31,
             'DeepCopy\\' => 9,
         ),
@@ -465,6 +476,14 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
         array (
             0 => __DIR__ . '/..' . '/phpstan/phpdoc-parser/src',
         ),
+        'Nelmio\\CorsBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nelmio/cors-bundle',
+        ),
+        'Negotiation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -472,6 +491,10 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
         'Masterminds\\' => 
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
+        ),
+        'FOS\\RestBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle',
         ),
         'Egulias\\EmailValidator\\' => 
         array (
@@ -513,6 +536,10 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
         array (
             0 => __DIR__ . '/..' . '/doctrine/lexer/src',
         ),
+        'Doctrine\\Common\\DataFixtures\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/data-fixtures/lib/Doctrine/Common/DataFixtures',
+        ),
         'Doctrine\\Common\\Collections\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/collections/src',
@@ -534,6 +561,10 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
         array (
             0 => __DIR__ . '/..' . '/doctrine/doctrine-migrations-bundle',
         ),
+        'Doctrine\\Bundle\\FixturesBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/doctrine-fixtures-bundle',
+        ),
         'Doctrine\\Bundle\\DoctrineBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle',
@@ -549,6 +580,16 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'J' => 
+        array (
+            'JsonpCallbackValidator' => 
+            array (
+                0 => __DIR__ . '/..' . '/willdurand/jsonp-callback-validator/src',
+            ),
         ),
     );
 
@@ -1194,6 +1235,7 @@ class ComposerStaticInit49c3814fd96d074668237f4aba6dac22
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit49c3814fd96d074668237f4aba6dac22::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit49c3814fd96d074668237f4aba6dac22::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit49c3814fd96d074668237f4aba6dac22::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit49c3814fd96d074668237f4aba6dac22::$classMap;
 
         }, null, ClassLoader::class);

@@ -2,13 +2,14 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use App\Entity\Livre;
 use App\Entity\Auteur;
 use App\Entity\Categorie;
 use App\Entity\Editeur;
 use App\Entity\Langue;
+use App\Entity\Livre;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+
 
 class BookFixtures extends Fixture
 {
