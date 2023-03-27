@@ -4,10 +4,10 @@ function Book({ props }) {
   return (
     <Fragment>
       <div className="flex flex-col items-center" >
-        {props.volumeInfo.imageLinks !== undefined ? (
-          <img src={props.volumeInfo.imageLinks.thumbnail} alt="book" />
+        {props.couverture !== null ? (
+          <img src={props.couverture} alt="book" />
         ) : <p>Pas d'image dispo</p>}
-        <p> {props.volumeInfo.title} </p>
+        <p> {props.titre} </p>
       </div>
     </Fragment>
   );
