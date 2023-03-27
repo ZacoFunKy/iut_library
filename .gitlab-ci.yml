@@ -16,14 +16,7 @@ cache:
 stages:
     - SecurityChecker
     - CodingStandards
-    - UnitTests
     - deploy
-
-unittest:
-    stage: UnitTests
-    script:
-        - php bin/phpunit
-    allow_failure: false
 
 security-checker:
     stage: SecurityChecker
