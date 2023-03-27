@@ -5,6 +5,9 @@ before_script:
   - composer install
   - composer require --dev squizlabs/php_codesniffer
   - composer require --dev phpunit/phpunit
+  - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" > .env.local
+  - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" >> .env.test
+
 
 cache:
     paths:
