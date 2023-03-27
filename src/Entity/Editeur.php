@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Editeur
  *
- * @ORM\Table(name="EDITEUR")
+ * @ORM\Table(name="editeur")
  * @ORM\Entity
  */
 class Editeur
@@ -15,34 +15,18 @@ class Editeur
     /**
      * @var int
      *
-     * @ORM\Column(name="ID_EDITEUR", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idEditeur;
+    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="NOMEDITEUR", type="string", length=255, nullable=false, options={"fixed"=true})
+     * @ORM\Column(name="nom_editeur", type="string", length=255, nullable=false)
      */
-    private $nomediteur;
+    private $nomEditeur;
 
-    public function getIdEditeur(): ?int
-    {
-        return $this->idEditeur;
-    }
-
-    public function getNomediteur(): ?string
-    {
-        return $this->nomediteur;
-    }
-
-    public function setNomediteur(string $nomediteur): self
-    {
-        $this->nomediteur = $nomediteur;
-
-        return $this;
-    }
 
 }

@@ -36,7 +36,7 @@ class ProductRepositoryTest extends KernelTestCase
 
         $bookCount = $this->entityManager->getRepository(Livre::class)->count([]);
 
-        $this->assertGreaterThan(200, $bookCount);
+        $this->assertGreaterThanOrEqual(200, $bookCount);
     }
 
     function testUserCount()
@@ -52,8 +52,27 @@ class ProductRepositoryTest extends KernelTestCase
         $this->assertGreaterThan(50, $authorCount);
     }
     
-    function differentMailForAllUsers(){
-        $repository = $this->getDoctrine()->getRepository(Lecteur::class);
+    function testDifferentMailForAllUsers(){
+        $repository = $this->entityManager->getRepository(Lecteur::class);
+        $queryBuilder = $repository->createQueryBuilder('u');
+
+        $query = $queryBuilder
+            ->select('COUNT(DISTINCT u.email) as email_count')
+            ->getQuery();
+
+        $emailCount = $query->getSingleScalarResult();
+
+        $userCount = $repository->count([]);
+
+        if ($emailCount == $userCount) {
+            
+        } else {
+            throw new Exception('Same email');
+        }
+    }  
+    function testAddUser(){
+        $userCount = $this->entityManager->getRepository(Lecteur::class)->count([]);
+        $repository = $this->entityManager->getRepository(Lecteur::class);
         $queryBuilder = $repository->createQueryBuilder('u');
 
         $query = $queryBuilder

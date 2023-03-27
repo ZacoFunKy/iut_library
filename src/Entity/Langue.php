@@ -7,44 +7,33 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Langue
  *
- * @ORM\Table(name="LANGUE")
+ * @ORM\Table(name="langue")
  * @ORM\Entity
  */
 class Langue
 {
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="LIBELLELANGUE", type="string", length=32, nullable=false, options={"fixed"=true})
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $libellelangue;
+    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="NOMLANGUE", type="string", length=255, nullable=false, options={"fixed"=true})
+     * @ORM\Column(name="libelle_langue", type="string", length=255, nullable=false)
      */
-    private $nomlangue;
+    private $libelleLangue;
 
-    public function getLibellelangue(): ?string
-    {
-        return $this->libellelangue;
-    }
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom_langue", type="string", length=255, nullable=false)
+     */
+    private $nomLangue;
 
-    public function getNomlangue(): ?string
-    {
-        return $this->nomlangue;
-    }
-
-    public function setNomlangue(string $nomlangue): self
-    {
-        $this->nomlangue = $nomlangue;
-
-        return $this;
-    }
-
-    
 
 }

@@ -2,81 +2,45 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Categorie
  *
- * @ORM\Table(name="CATEGORIE")
+ * @ORM\Table(name="categorie")
  * @ORM\Entity
  */
 class Categorie
 {
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="NOMCATEGORIE", type="string", length=32, nullable=false, options={"fixed"=true})
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $nomcategorie;
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom_categorie", type="string", length=255, nullable=false)
+     */
+    private $nomCategorie;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Livre", mappedBy="nomcategorie")
+     * @ORM\ManyToMany(targetEntity="Livre", mappedBy="categorie")
      */
-    private $idLivre = array();
+    private $livre = array();
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->idLivre = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->livre = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    public function getNomcategorie(): ?string
-    {
-        return $this->nomcategorie;
-    }
-
-    /**
-     * @return Collection|Livre[]
-     */
-    public function getIdLivre(): Collection
-    {
-        return $this->idLivre;
-    }
-
-    public function addIdLivre(Livre $idLivre): self
-    {
-        if (!$this->idLivre->contains($idLivre)) {
-            $this->idLivre[] = $idLivre;
-            $idLivre->addNomcategorie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdLivre(Livre $idLivre): self
-    {
-        if ($this->idLivre->contains($idLivre)) {
-            $this->idLivre->removeElement($idLivre);
-            $idLivre->removeNomcategorie($this);
-        }
-
-        return $this;
-    }
-    public function setNomcategorie(string $nomcategorie): self
-    {
-        $this->nomcategorie = $nomcategorie;
-
-        return $this;
-    }
-
-
-    
 
 }
