@@ -19,8 +19,11 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ApiController extends AbstractController
 {
     #[Route('/register', name: 'api_reg', methods: ['POST'])]
-    public function register(EntityManagerInterface $em, Request $request,
-        ValidatorInterface $v, UserPasswordHasherInterface $uPH, SerializerInterface $serializer
+    public function register(EntityManagerInterface $em,
+        Request $request,
+        ValidatorInterface $v,
+        UserPasswordHasherInterface $uPH,
+        SerializerInterface $serializer
     )
     {
         $json = $request->getContent();
@@ -31,7 +34,7 @@ class ApiController extends AbstractController
             $errorsString = (string) $errors;
             return new Response($errorsString);
         }
-        if ($em->getRepository(Lecteur::class)->findBy(['email' => $lecteur->getEmail()])!=null) {
+        if ($em->getRepository(Lecteur::class)->findBy(['email' => $lecteur->getEmail()]) != null) {
             return new Response("Cette adresse est déjà prise");
         }
 
@@ -58,14 +61,13 @@ class ApiController extends AbstractController
     }
 
     #[Route('/login', name: 'api_login', methods: ['POST'])]
-    public function login(EntityManagerInterface $entityManager,#[CurrentUser] ?Lecteur $user)
+    public function login(EntityManagerInterface $entityManager, #[CurrentUser] ?Lecteur $user)
     {
         if (null === $user) {
             return $this->json([
                 'message' => 'missing credentials',
             ], Response::HTTP_UNAUTHORIZED);
         }
-        
         $token = uniqid();
         $user->setToken($token);
         $entityManager->persist($user);
