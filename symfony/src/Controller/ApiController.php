@@ -19,7 +19,8 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ApiController extends AbstractController
 {
     #[Route('/register', name: 'api_reg', methods: ['POST'])]
-    public function register(EntityManagerInterface $em,
+    public function register(
+        EntityManagerInterface $em,
         Request $request,
         ValidatorInterface $v,
         UserPasswordHasherInterface $uPH,
