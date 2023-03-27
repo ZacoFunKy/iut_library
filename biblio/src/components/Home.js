@@ -32,19 +32,24 @@ function Home() {
 
   return (
     <div className="home">
-      <h1>Bienvenue sur Biblio !</h1>
-      <p>
-        Vous pouvez rechercher des livres, ajouter des amis, et bien plus encore
-        !
-      </p>
+      <div className="m-auto w-max text-center mt-5">
+        <h1 className="md:text-2xl text-xl mb-2">Bienvenue sur Biblio !</h1>
+        <p>
+          Vous pouvez rechercher des livres, ajouter des amis, et bien plus
+          encore !
+        </p>
+      </div>
+
       <div className="derniers-emprunts m-20">
         <h2>Derniers livres empruntés</h2>
         {derniersEmprunts !== undefined && derniersLivres.length > 0 ? (
           <div className="flex flex-row justify-around m-5">
             {derniersEmprunts.map((livre) => {
-              <div className="w-60" key={livre.id}>
-                <Book props={livre} />
-              </div>;
+              return (
+                <div className="w-60" key={livre.id}>
+                  <Book props={livre} />
+                </div>
+              );
             })}
           </div>
         ) : null}
@@ -54,9 +59,11 @@ function Home() {
         {derniersLivres !== undefined && derniersLivres.length > 0 ? (
           <div className="flex flex-row justify-around m-5">
             {derniersLivres.map((livre) => {
-              <div className="w-60" key={livre.id}>
-                <Book props={livre} />
-              </div>;
+              return (
+                <div className="w-60" key={livre.id}>
+                  <Book props={livre} />
+                </div>
+              );
             })}
           </div>
         ) : null}
