@@ -149,12 +149,19 @@ class APIController extends AbstractController
         if($livres_titre == null){
             $livres_titre = [];
         }
-        $author = "SELECT a FROM App\Entity\Auteur a WHERE a.nom LIKE :name";
-        $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getOneOrNullResult();
+        $author = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
+        $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getResult();
         if($author == null){
             $livre_author = [];
         }else{
-            $livre_author = $author->getLivres();
+            $i = 0;
+            $livre_author = [];
+            foreach ($author as $a) {
+                foreach ($a->getLivres() as $l) {
+                    $livre_author[$i] = $l;
+                    $i++;
+                }
+            }
         }
         $livres = array_unique(array_merge($livres_titre,$livre_author), SORT_REGULAR);
 

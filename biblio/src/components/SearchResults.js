@@ -1,10 +1,13 @@
 import React, { Fragment } from "react";
 
 function SearchResults({ results }) {
+
+  console.log(results);
+
   return (
     <Fragment>
       <div>
-        {results !== undefined ? (
+        {results.length > 0 ? (
           <div>
             {results.map((book) => (
               <div>

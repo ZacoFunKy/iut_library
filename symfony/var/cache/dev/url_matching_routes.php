@@ -14,10 +14,14 @@ return [
         '/_profiler/phpinfo' => [[['_route' => '_profiler_phpinfo', '_controller' => 'web_profiler.controller.profiler::phpinfoAction'], null, null, null, false, false, null]],
         '/_profiler/xdebug' => [[['_route' => '_profiler_xdebug', '_controller' => 'web_profiler.controller.profiler::xdebugAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
-        '/a/p/i' => [[['_route' => 'app_a_p_i', '_controller' => 'App\\Controller\\APIController::index'], null, null, null, false, false, null]],
-        '/api/books' => [[['_route' => 'app_api_books', '_controller' => 'App\\Controller\\APIController::books'], null, null, null, false, false, null]],
+        '/api/register' => [[['_route' => 'api_reg', '_controller' => 'App\\Controller\\APIController::register'], null, ['POST' => 0], null, false, false, null]],
+        '/api/login' => [[['_route' => 'api_login', '_controller' => 'App\\Controller\\APIController::login'], null, ['POST' => 0], null, false, false, null]],
+        '/api/api/books' => [[['_route' => 'app_api_books', '_controller' => 'App\\Controller\\APIController::books'], null, null, null, false, false, null]],
         '/api/books/last_posts' => [[['_route' => 'app_api_last_posts', '_controller' => 'App\\Controller\\APIController::lastPosts'], null, null, null, false, false, null]],
+        '/api/books/last_emprunts' => [[['_route' => 'app_api_last_emprunts', '_controller' => 'App\\Controller\\APIController::lastEmprunts'], null, ['POST' => 0], null, false, false, null]],
+        '/api/books/research' => [[['_route' => 'app_api_research', '_controller' => 'App\\Controller\\APIController::research'], null, ['GET' => 0], null, true, false, null]],
         '/hello' => [[['_route' => 'app_hello', '_controller' => 'App\\Controller\\HelloController::index'], null, null, null, false, false, null]],
+        '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'

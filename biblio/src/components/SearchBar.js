@@ -21,11 +21,12 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
   useEffect(() => {
     if (searchTerm.length >= 1) {
       fetch(
-        `https://localhost:8000/api/books/`
+        `https://localhost:8000/api/books/research/?name=${searchTerm}`
       )
         .then((response) => response.json())
         .then((data) => {
           setResults(data);
+          setListSuggestions(data);
           console.log(data);
         });
     } else {
@@ -33,20 +34,6 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
     }
   }, [searchTerm, setResults]);
 
-  useEffect(() => {
-    if (searchTerm.length >= 4) {
-      fetch(
-        `https://localhost:8000/api/books/`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setListSuggestions(data);
-          console.log(data);
-        });
-    } else {
-      setListSuggestions([]);
-    }
-  }, [searchTerm, setResults]);
 
   return (
     <Fragment>
@@ -75,7 +62,7 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
             <p className="text-xs">rechercher</p>
           </button>
         </div>
-        {listSuggestions ? (
+        {listSuggestions.length > 0 ? (
           <div
             className="suggestions flex flex-col absolute top-20 bg-white"
             style={{ display: focused ? "flex" : "none" }}
