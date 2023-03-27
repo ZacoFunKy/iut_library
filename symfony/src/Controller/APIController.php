@@ -23,7 +23,7 @@ class APIController extends AbstractController
     #[Route('/api/books', name: 'app_api_books')]
     public function books(EntityManagerInterface $entityManager) : Response
     {
-        $livres = $entityManager->getRepository(Livre::class)->findAll();
+        $livres = $entityManager->getRepository(Livre::class)->findBy([], [], 10);
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);

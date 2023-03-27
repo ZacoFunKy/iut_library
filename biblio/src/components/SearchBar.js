@@ -21,12 +21,12 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
   useEffect(() => {
     if (searchTerm.length >= 1) {
       fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=inauthor:${searchTerm}`
+        `https://localhost:8000/api/books/`
       )
         .then((response) => response.json())
         .then((data) => {
-          setResults(data.items);
-          console.log(data.items);
+          setResults(data);
+          console.log(data);
         });
     } else {
       setResults([]);
@@ -36,12 +36,12 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
   useEffect(() => {
     if (searchTerm.length >= 4) {
       fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=inauthor:${searchTerm}&maxResults=5`
+        `https://localhost:8000/api/books/`
       )
         .then((response) => response.json())
         .then((data) => {
-          setListSuggestions(data.items);
-          console.log(data.items);
+          setListSuggestions(data);
+          console.log(data);
         });
     } else {
       setListSuggestions([]);
@@ -93,7 +93,7 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults }) {
                     navigation("/book");
                   }}
                 >
-                  <p>{suggestion.volumeInfo.title}</p>
+                  <p>{suggestion.titre}</p>
                 </Link>
               );
             })}

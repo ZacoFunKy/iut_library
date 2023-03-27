@@ -8,8 +8,8 @@ function SearchResults({ results }) {
           <div>
             {results.map((book) => (
               <div>
-                {book.title !== null ? (
-                  <span>{book.volumeInfo.title}</span>
+                {book.titre !== null ? (
+                  <span>{book.titre}</span>
                 ) : (
                   <span>Titre non renseigné</span>
                 )}
