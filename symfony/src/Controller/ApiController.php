@@ -19,7 +19,9 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ApiController extends AbstractController
 {
     #[Route('/register', name: 'api_reg', methods: ['POST'])]
-    public function register(EntityManagerInterface $em, Request $request,ValidatorInterface $v,UserPasswordHasherInterface $uPH, SerializerInterface $serializer)
+    public function register(EntityManagerInterface $em, Request $request,
+        ValidatorInterface $v, UserPasswordHasherInterface $uPH, SerializerInterface $serializer
+    )
     {
         $json = $request->getContent();
         $lecteur = $serializer->deserialize($json, Lecteur::class, 'json');
