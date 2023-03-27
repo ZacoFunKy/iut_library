@@ -130,20 +130,19 @@ class APIController extends AbstractController
         if($name == null){
             return $this->json(['message' => 'No books found'], 404);
         }
-        // Get the books that start with the name
         $livres_titre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
         $livres_titre = $entityManager->createQuery($livres_titre)->setParameter('name', $name . '%')->getResult();
         if($livres_titre == null){
             $livres_titre = [];
         }
-        $author = $entityManager->getRepository(Lecteur::class)->findOneBy(['nomLecteur' => $name]);
+        $author = "SELECT a FROM App\Entity\Auteur a WHERE a.nom LIKE :name";
+        $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getOneOrNullResult();
         if($author == null){
             $livre_author = [];
         }else{
             $livre_author = $author->getLivres();
         }
         $livres = array_unique(array_merge($livres_titre,$livre_author), SORT_REGULAR);
-
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
