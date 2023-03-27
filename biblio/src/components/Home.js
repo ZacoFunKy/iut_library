@@ -2,7 +2,7 @@ import { React, useEffect, useState } from "react";
 import axios from "axios";
 import Book from "./Book";
 
-function Home() {
+function Home({ setBook}) {
   const [derniersLivres, setDerniersLivres] = useState([]);
   const [derniersEmprunts, setDerniersEmprunts] = useState([]);
 
@@ -40,9 +40,9 @@ function Home() {
         </p>
       </div>
 
-      <div className="derniers-emprunts m-20">
+      <div className="derniers-emprunts m-20 items-center">
         <h2>Derniers livres empruntés</h2>
-        {derniersEmprunts !== undefined && derniersLivres.length > 0 ? (
+        {derniersEmprunts.length > 0 ? (
           <div className="flex flex-row justify-around m-5">
             {derniersEmprunts.map((livre) => {
               return (
@@ -52,7 +52,7 @@ function Home() {
               );
             })}
           </div>
-        ) : null}
+        ) : <p className="m-auto w-max">Aucun livre emprunté pour l'instant</p>}
       </div>
       <div className="derniers-ajout m-20">
         <h2>Derniers livres ajoutés</h2>
@@ -61,7 +61,7 @@ function Home() {
             {derniersLivres.map((livre) => {
               return (
                 <div className="w-60" key={livre.id}>
-                  <Book props={livre} />
+                  <Book props={livre} setBook={setBook} />
                 </div>
               );
             })}

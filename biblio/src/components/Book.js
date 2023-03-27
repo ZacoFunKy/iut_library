@@ -1,9 +1,19 @@
-import React, { Fragment } from "react";
+import React from "react";
 import pasDeCouv from "../assets/pas-de-couv.png";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Book({ props }) {
+function Book({ props, setBook }) {
+  const navigation = useNavigate();
+
   return (
-    <Fragment>
+    <Link
+      onMouseDown={(event) => {
+        event.preventDefault();
+        navigation(`/book`);
+        setBook(props);
+      }}
+    >
       <div className="flex flex-col items-center " style={{ width: "15vw" }}>
         {props.couverture !== null ? (
           <img
@@ -34,7 +44,7 @@ function Book({ props }) {
             : props.titre}
         </p>
       </div>
-    </Fragment>
+    </Link>
   );
 }
 
