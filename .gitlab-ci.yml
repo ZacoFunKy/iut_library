@@ -1,20 +1,16 @@
-image: jakzal/phpqa:php8.1
+image: node:18-alpine
 
 before_script:
-    - cd symfony
-    - composer install
-    - composer require --dev squizlabs/php_codesniffer
+    - cd biblio
+    - npm install
+    - npm install --save-dev eslint eslint-formatter-gitlab
 
-cache:
-    paths:
-        - vendor/
 
 stages:
     - ReactCheck
 
 eslint:
     stage: ReactCheck
-    image: node:18-alpine
     script:
         - npm ci
         - npx eslint --format gitlab .
