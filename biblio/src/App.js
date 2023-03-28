@@ -7,6 +7,7 @@ import Connexion from "./components/Connexion";
 import Footer from "./components/Footer";
 import BookView from "./components/BookView";
 import { useState } from "react";
+import Inscription from "./components/Inscription";
 
 function App() {
   const [results, setResults] = useState([]);
@@ -42,6 +43,7 @@ function App() {
             }
           />
           <Route path="/amis" element={<FriendsView />} />
+          <Route path="/inscription" element={<Inscription />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

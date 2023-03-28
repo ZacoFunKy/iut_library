@@ -140,7 +140,7 @@ class APIController extends AbstractController
      */
     public function login(EntityManagerInterface $entityManager, #[CurrentUser] ?Lecteur $user)
     {
-        if (null === $user) {
+        if ($user === null) {
             return $this->json([
                 'message' => 'missing credentials',
             ], Response::HTTP_UNAUTHORIZED);
