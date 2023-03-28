@@ -200,7 +200,7 @@ class APIController extends AbstractController
         $data = json_decode($json, true);
         $token = $data['token'];
         var_dump($token);
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);  
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
         if (null === $lecteur) {
             return $this->json([
                 'message' => 'Pas de lecteur avec ce token',
@@ -214,7 +214,6 @@ class APIController extends AbstractController
             ->orderBy('e.DateEmprunt', 'DESC')
             ->getQuery()
             ->getResult();
-            
         foreach ($q as $emp) {
             array_push($emprunts, $emp->getLivre()->getId());
         }
