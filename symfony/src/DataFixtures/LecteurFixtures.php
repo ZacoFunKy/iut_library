@@ -5,6 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\Lecteur;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Component\PasswordHasher\PasswordEncoder\NativePasswordEncoder;
+use Symfony\Component\PasswordHasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherFactory;
 
 class LecteurFixtures extends Fixture
 {
@@ -20,7 +25,7 @@ class LecteurFixtures extends Fixture
             $lecteur->setPrenomlecteur($result['name']['first']);
             $lecteur->setEmail($result['email']);
             $password = $result['login']['password'];
-            $lecteur->setMotdepasse(hash('sha256', $password));
+            $lecteur->setPassword(hash('sha256', $password));
             $lecteur->setImagedeprofil($result['picture']['large']);
             $manager->persist($lecteur);
         }
