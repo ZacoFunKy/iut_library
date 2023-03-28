@@ -1,2 +1,4 @@
+image: node:latest
+
 job:
   script: echo 'my first job'
