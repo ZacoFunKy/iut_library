@@ -5,18 +5,36 @@ import Book from "./Book";
 function Home({ setBook}) {
   const [derniersLivres, setDerniersLivres] = useState([]);
   const [derniersEmprunts, setDerniersEmprunts] = useState([]);
+  const [indexResp, setIndexResp] = useState(4);
 
   useEffect(() => {
     axios
       .get("https://localhost:8000/api/books/last_posts")
       .then((response) => {
         console.log(response.data);
-        setDerniersLivres(response.data);
+        setDerniersLivres(response.data.slice(0, indexResp));
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [setDerniersLivres]);
+  }, [indexResp, setDerniersLivres]);
+
+  window.addEventListener("resize", resize);
+
+  // changer la valeur de indexResp selon la largeur de l'ecran
+  function resize() {
+    if (window.innerWidth < 1200) {
+      setIndexResp(2);
+    } else if (window.innerWidth < 1500) {
+      setIndexResp(3);
+    } else {
+      setIndexResp(4);
+    }
+  };
+
+  useEffect(() => {
+    resize();
+  }, []);
 
   useEffect(() => {
     axios
@@ -31,14 +49,7 @@ function Home({ setBook}) {
   }, [setDerniersEmprunts]);
 
   return (
-    <div className="home">
-      <div className="m-auto w-max text-center mt-5">
-        <h1 className="md:text-2xl text-xl mb-2">Bienvenue sur Biblio !</h1>
-        <p>
-          Vous pouvez rechercher des livres, ajouter des amis, et bien plus
-          encore !
-        </p>
-      </div>
+    <div className="home relative">
 
       <div className="derniers-emprunts m-20 items-center">
         <h2>Derniers livres empruntés</h2>
@@ -57,7 +68,7 @@ function Home({ setBook}) {
       <div className="derniers-ajout m-20">
         <h2>Derniers livres ajoutés</h2>
         {derniersLivres !== undefined && derniersLivres.length > 0 ? (
-          <div className="flex flex-row justify-around m-5">
+          <div className="flex flex-row flex-wrap justify-around m-5">
             {derniersLivres.map((livre) => {
               return (
                 <div className="w-60" key={livre.id}>

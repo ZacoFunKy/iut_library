@@ -14,35 +14,47 @@ function Book({ props, setBook }) {
         setBook(props);
       }}
     >
-      <div className="flex flex-col items-center " style={{ width: "15vw" }}>
-        {props.couverture !== null ? (
-          <img
-            src={props.couverture}
-            alt="book"
-            style={{
-              width: "125px",
-              height: "175px",
-              border: "1.5px solid #009999",
-              borderRadius: "5px",
-            }}
-          />
-        ) : (
-          <img
-            src={pasDeCouv}
-            alt="book"
-            style={{
-              width: "125px",
-              height: "175px",
-              border: "1.5px #009999 solid",
-              borderRadius: "5px",
-            }}
-          />
-        )}
-        <p className="m-2">
+      <div className="max-w-64 w-64 min-w-64">
+        <p className="m-2 text-center">
           {props.titre.length > 20
             ? props.titre.substr(0, 20) + "..."
             : props.titre}
         </p>
+        <div className="flex flex-row items-center m-auto min-w-32 max-w-32 ">
+          {props.couverture !== null ? (
+            <img
+              src={props.couverture}
+              alt="book"
+              className="border-2 border-[#009999] rounded-md h-48 w-32 object-cover"
+            />
+          ) : (
+            <img
+              src={pasDeCouv}
+              alt="book"
+              className="border-2 border-[#009999] rounded-md h-48 min-w-32 w-32 object-cover"
+            />
+          )}
+
+          <div>
+            <p className="m-2 text-left">
+              <p className="text-md">Par</p>
+              {props.auteurs.length === 0 ? (
+                <p className="text-md">Pas d'auteurs définis</p>
+              ) : (
+                <p className="text-sm text-[#009999]">
+                  {props.auteurs[0].intituleAuteur.split("(")[0]}
+                </p>
+              )}
+            </p>
+            <p className="m-2">
+              {props.dateParution === undefined ? (
+                <p className="text-md">Pas de date définie</p>
+              ) : (
+                <p className="text-md">{props.dateParution.split("-")[0]}</p>
+              )}
+            </p>
+          </div>
+        </div>
       </div>
     </Link>
   );

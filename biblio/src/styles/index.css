@@ -18,9 +18,17 @@
 
 body {
   margin: 0;
+
   font-family: "Alkatra", cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 code {
@@ -46,6 +54,10 @@ code {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   animation: slideIn 0.75s ease-in-out;
+}
+
+.content {
+  position: relative;
 }
 
 @media screen and (max-width: 600px) {
