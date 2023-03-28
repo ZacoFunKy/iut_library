@@ -1,0 +1,3 @@
+<?php //App%255CEntity%255CLivre%2523getCouverture
+
+return [PHP_INT_MAX, []];
