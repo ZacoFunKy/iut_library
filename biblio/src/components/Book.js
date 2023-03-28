@@ -47,7 +47,7 @@ function Book({ props, setBook }) {
               )}
             </p>
             <p className="m-2">
-              {props.dateParution === undefined ? (
+              {props.dateParution === null || props.dateParution === undefined ? (
                 <p className="text-md">Pas de date définie</p>
               ) : (
                 <p className="text-md">{props.dateParution.split("-")[0]}</p>
