@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use App\Entity\Livre;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -19,6 +19,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use FOS\RestBundle\Controller\Annotations\View;
 use OpenApi\Annotations as OA;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/api')]
 class APIController extends AbstractController
@@ -155,6 +156,8 @@ class APIController extends AbstractController
         ];
         return new JsonResponse($response);
     }
+    #[IsGranted("ROLE_USER")]
+    #[Security(name: "Bearer")]
     #[Route('/lastEmprunt', name: 'api_lastEmprunt', methods: ['POST'])]
     /**
      * @OA\Post(
@@ -269,11 +272,11 @@ class APIController extends AbstractController
     {
         $json = $request->getContent();
         $data = json_decode($json, true);
-        $email = $data['email'];
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        $id = $data['id'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['id' => $id]);
         if (null === $lecteur) {
             return $this->json([
-                'message' => 'Pas de lecteur avec cet email',
+                'message' => 'Pas de lecteur avec cet id',
             ], Response::HTTP_UNAUTHORIZED);
         }
         $emprunts = array();
@@ -312,32 +315,6 @@ class APIController extends AbstractController
         return $livres;
     }
 
-    /**
-     * Renvoi la liste des 4 derniers emprunts du lecteur
-     */
-    /*
-    #[View(serializerGroups: ['livre_basic'])]
-    #[Route('/books/last_emprunts', name: 'app_api_last_emprunts', methods: ['POST'])]
-    public function lastEmprunts(EntityManagerInterface $entityManager, Request $request)
-    {
-        $json = $request->getContent();
-        $data = json_decode($json, true);
-        $token = $data['token'];
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
-        if (null === $lecteur) {
-            return $this->json([
-                'message' => 'missing credentials',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-        $emprunts = $lecteur->getEmprunts();
-        $emprunts = array_slice($emprunts->toArray(), 0, 4);
-
-        if (empty($emprunts)) {
-            return $this->json(['message' => 'No books found'], 404);
-        }
-
-        return $emprunts;
-    }*/
     /**
      * Recherche de livre en fonction du titre de l'oeuvre et du nom de l'auteur
      */
