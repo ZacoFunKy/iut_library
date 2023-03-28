@@ -1,20 +1,30 @@
-image: node:18-alpine
-
-before_script:
-    - cd biblio
-    - npm install
-    - npm install --save-dev eslint eslint-formatter-gitlab
-
+image: node:latest
 
 stages:
-    - ReactCheck
+  - build
+  - optimize
 
-eslint:
-    stage: ReactCheck
-    script:
-        - npm ci
-        - npx eslint --format gitlab .
-    artifacts:
-        reports:
-            codequality: gl-codequality.json
+before_script:
+  - cd biblio
+  - npm install
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+
+babel:
+  stage: optimize
+  script:
+    - npm install --save-dev babel-core babel-plugin-transform-imports
+    - npx babel src --out-dir build --plugins "transform-imports"
+  dependencies:
+    - build
+  artifacts:
+    paths:
+      - build/
+
 
