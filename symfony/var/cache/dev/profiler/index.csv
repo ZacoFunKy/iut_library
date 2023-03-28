@@ -1891,3 +1891,16 @@ dd38fe,::1,GET,https://localhost:8000/api/books/last_emprunts,1679994727,,405
 5ee7fb,::1,GET,https://localhost:8000/api/books/research/?name=rob,1679994850,,200
 448a90,::1,GET,https://localhost:8000/api/books/last_emprunts,1679994860,88f053,405
 88f053,::1,GET,https://localhost:8000/api/books/last_emprunts,1679994860,,405
+b425eb,::1,GET,https://localhost:8000/,1679995484,,404
+4dd02d,::1,GET,https://localhost:8000/api/doc,1679995489,71055c,404
+71055c,::1,GET,https://localhost:8000/api/doc,1679995489,,404
+2c9059,::1,GET,https://localhost:8000/favicon.ico,1679995489,500d87,404
+500d87,::1,GET,https://localhost:8000/favicon.ico,1679995489,,404
+c9213a,::1,GET,https://localhost:8000/api/login,1679995568,1ca494,405
+1ca494,::1,GET,https://localhost:8000/api/login,1679995568,,405
+dbc6fc,::1,GET,https://localhost:8000/api/login,1679995575,fda17e,400
+fda17e,::1,POST,https://localhost:8000/api/login,1679995575,,400
+7ba0d5,::1,GET,https://localhost:8000/api/login,1679995648,3485d5,500
+3485d5,::1,POST,https://localhost:8000/api/login,1679995648,,500
+f4835d,::1,POST,https://localhost:8000/api/register,1679995692,,200
+b4a2a2,::1,GET,https://localhost:8000/api/books/research/?name=ro,1679995778,,200
