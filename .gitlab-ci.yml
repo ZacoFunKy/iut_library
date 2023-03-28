@@ -2,7 +2,6 @@ image: node:latest
 
 stages:
   - build
-  - optimize
 
 before_script:
   - cd biblio
@@ -12,17 +11,6 @@ build:
   stage: build
   script:
     - npm run build
-  artifacts:
-    paths:
-      - build/
-
-babel:
-  stage: optimize
-  script:
-    - npm install --save-dev babel-core babel-plugin-transform-imports
-    - npx babel src --out-dir build --plugins "transform-imports"
-  dependencies:
-    - build
   artifacts:
     paths:
       - build/
