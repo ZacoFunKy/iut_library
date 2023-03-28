@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Emprunt;
 use App\Entity\Lecteur;
+use App\Entity\Categorie;
 use App\Repository\LecteurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -402,5 +403,21 @@ class APIController extends AbstractController
         }
 
         return $this->json($authors, 200, [], ['groups' => 'auteur_basic'])->setMaxAge(3600);
+    }
+
+    // Route qui retourne les livres d'une categorie
+    #[Route('/books/category/{id}', name: 'app_api_books_category', methods: ['GET'])]
+    public function booksCategory(EntityManagerInterface $entityManager, $id)
+    {
+        $category = $entityManager->getRepository(Categorie::class)->find($id);
+        if ($category == null) {
+            return $this->json(['message' => 'No category found'], 404);
+        }
+        $livres = $category->getLivres();
+        if (empty($livres)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
     }
 }

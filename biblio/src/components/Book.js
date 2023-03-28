@@ -21,7 +21,7 @@ function Book({ props, setBook }) {
             : props.titre}
         </p>
         <div className="flex flex-row items-center m-auto min-w-32 max-w-32 ">
-          {props.couverture !== null ? (
+          {props.couverture !== undefined && props.couverture !== null ? (
             <img
               src={props.couverture}
               alt="book"

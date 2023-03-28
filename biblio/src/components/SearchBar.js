@@ -12,8 +12,6 @@ function SearchBar({
 }) {
   const [listSuggestions, setListSuggestions] = useState([]);
 
-  console.log(indexPage);
-
   const navigation = useNavigate();
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -35,7 +33,6 @@ function SearchBar({
           .get(`https://localhost:8000/api/books/research/?name=${searchTerm}`)
           .then((response) => {
             setResults(response.data.slice(indexPage, indexPage + 10));
-            console.log(response.data);
           });
       } else {
         setResults([]);
@@ -53,7 +50,6 @@ function SearchBar({
           )
           .then((response) => {
             setListSuggestions(response.data.slice(0, 10));
-            console.log(response.data);
           });
       } else {
         setListSuggestions([]);

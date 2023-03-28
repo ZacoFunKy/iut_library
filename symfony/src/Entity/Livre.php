@@ -42,6 +42,7 @@ class Livre
 
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'livres')]
     #[ORM\JoinTable(name: 'livre_categorie')]
+    #[Groups(['livre_basic'])]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]

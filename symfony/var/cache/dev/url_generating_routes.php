@@ -25,6 +25,7 @@ return [
     'app_api_last_posts' => [[], ['_controller' => 'App\\Controller\\APIController::lastPosts'], [], [['text', '/api/books/last_posts']], [], [], []],
     'app_api_research' => [[], ['_controller' => 'App\\Controller\\APIController::research'], [], [['text', '/api/books/research/']], [], [], []],
     'app_api_research_author' => [[], ['_controller' => 'App\\Controller\\APIController::researchAuthor'], [], [['text', '/api/authors/research/']], [], [], []],
+    'app_api_books_category' => [['id'], ['_controller' => 'App\\Controller\\APIController::booksCategory'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/books/category']], [], [], []],
     'app_hello' => [[], ['_controller' => 'App\\Controller\\HelloController::index'], [], [['text', '/hello']], [], [], []],
     'app_register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/register']], [], [], []],
     'app.swagger_ui' => [[], ['_controller' => 'nelmio_api_doc.controller.swagger_ui'], [], [['text', '/api/doc']], [], [], []],
