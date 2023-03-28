@@ -4,6 +4,7 @@
 
 return [
     '_preview_error' => [['code', '_format'], ['_controller' => 'error_controller::preview', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], [], []],
+    'app.swagger' => [[], ['_controller' => 'nelmio_api_doc.controller.swagger'], [], [['text', '/api/doc.json']], [], [], []],
     '_wdt' => [['token'], ['_controller' => 'web_profiler.controller.profiler::toolbarAction'], [], [['variable', '/', '[^/]++', 'token', true], ['text', '/_wdt']], [], [], []],
     '_profiler_home' => [[], ['_controller' => 'web_profiler.controller.profiler::homeAction'], [], [['text', '/_profiler/']], [], [], []],
     '_profiler_search' => [[], ['_controller' => 'web_profiler.controller.profiler::searchAction'], [], [['text', '/_profiler/search']], [], [], []],
@@ -18,11 +19,13 @@ return [
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     'api_reg' => [[], ['_controller' => 'App\\Controller\\APIController::register'], [], [['text', '/api/register']], [], [], []],
     'api_login' => [[], ['_controller' => 'App\\Controller\\APIController::login'], [], [['text', '/api/login']], [], [], []],
+    'api_lastEmprunt' => [[], ['_controller' => 'App\\Controller\\APIController::lastEmprunt'], [], [['text', '/api/lastEmprunt']], [], [], []],
+    'api_emprunt' => [[], ['_controller' => 'App\\Controller\\APIController::empruntLecteur'], [], [['text', '/api/emprunt']], [], [], []],
     'app_api_books' => [[], ['_controller' => 'App\\Controller\\APIController::books'], [], [['text', '/api/api/books']], [], [], []],
     'app_api_last_posts' => [[], ['_controller' => 'App\\Controller\\APIController::lastPosts'], [], [['text', '/api/books/last_posts']], [], [], []],
-    'app_api_last_emprunts' => [[], ['_controller' => 'App\\Controller\\APIController::lastEmprunts'], [], [['text', '/api/books/last_emprunts']], [], [], []],
     'app_api_research' => [[], ['_controller' => 'App\\Controller\\APIController::research'], [], [['text', '/api/books/research/']], [], [], []],
     'app_api_research_author' => [[], ['_controller' => 'App\\Controller\\APIController::researchAuthor'], [], [['text', '/api/authors/research/']], [], [], []],
     'app_hello' => [[], ['_controller' => 'App\\Controller\\HelloController::index'], [], [['text', '/hello']], [], [], []],
     'app_register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/register']], [], [], []],
+    'app.swagger_ui' => [[], ['_controller' => 'nelmio_api_doc.controller.swagger_ui'], [], [['text', '/api/doc']], [], [], []],
 ];
