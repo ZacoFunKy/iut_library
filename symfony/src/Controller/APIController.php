@@ -47,7 +47,8 @@ class APIController extends AbstractController
      * @OA\JsonContent(
      *  @OA\Property(property="id", type="string",example="1"),
      *  @OA\Property(property="email", type="string", example="mael@gmail.com"),
-     *  @OA\Property(property="password", type="string", example="$2y$13$zGjD.rUXy78g3Ij9dmoH1.w2uenCrjYKhdEMhGQog.xSenjwH9sWO"),
+     *  @OA\Property(property="password", type="string",
+     *  example="$2y$13$zGjD.rUXy78g3Ij9dmoH1.w2uenCrjYKhdEMhGQog.xSenjwH9sWO"),
      *  @OA\Property(property="prenomLecteur", type="string", example="Mael"),
      *  @OA\Property(property="nomLecteur", type="string", example="Jegu"),
      * )
@@ -199,8 +200,7 @@ class APIController extends AbstractController
         $data = json_decode($json, true);
         $token = $data['token'];
         var_dump($token);
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
-        
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);  
         if (null === $lecteur) {
             return $this->json([
                 'message' => 'Pas de lecteur avec ce token',
@@ -215,7 +215,7 @@ class APIController extends AbstractController
             ->getQuery()
             ->getResult();
             
-        foreach ($q as $emp ){
+        foreach ($q as $emp) {
             array_push($emprunts, $emp->getLivre()->getId());
         }
         $emprunts = array_slice($emprunts, 0, 4);
@@ -272,7 +272,6 @@ class APIController extends AbstractController
         $data = json_decode($json, true);
         $email = $data['email'];
         $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
-        
         if (null === $lecteur) {
             return $this->json([
                 'message' => 'Pas de lecteur avec cet email',
@@ -286,7 +285,7 @@ class APIController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        foreach ($q as $emp ){
+        foreach ($q as $emp) {
             array_push($emprunts, $emp->getLivre()->getId());
         }
         $emprunts = array_slice($emprunts, 0, 4);
