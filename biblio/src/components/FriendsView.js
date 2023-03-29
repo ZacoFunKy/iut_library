@@ -34,7 +34,7 @@ function FriendsView() {
         <div className="flex flex-row flex-wrap justify-left m-10">
           {friends.map((item) => {
             return (
-              <Ami item={item} setFriends={setFriends}/>
+              <Ami item={item} key={item.email} setFriends={setFriends}/>
             );
           })}
         </div>

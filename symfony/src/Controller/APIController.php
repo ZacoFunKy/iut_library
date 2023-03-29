@@ -368,7 +368,6 @@ class APIController extends AbstractController
      * )
      * ),
      * @OA\Response(
-     * 
      * response=401,
      * description="L'email n'appartient a personne",
      * @OA\JsonContent(
