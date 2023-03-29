@@ -19,6 +19,7 @@ return [
         '/api/login' => [[['_route' => 'api_login', '_controller' => 'App\\Controller\\APIController::login'], null, ['POST' => 0], null, false, false, null]],
         '/api/lastEmprunt' => [[['_route' => 'api_lastEmprunt', '_controller' => 'App\\Controller\\APIController::lastEmprunt'], null, ['POST' => 0], null, false, false, null]],
         '/api/emprunt' => [[['_route' => 'api_emprunt', '_controller' => 'App\\Controller\\APIController::empruntLecteur'], null, ['POST' => 0], null, false, false, null]],
+        '/api/amis' => [[['_route' => 'api_amis', '_controller' => 'App\\Controller\\APIController::amisLecteur'], null, ['POST' => 0], null, false, false, null]],
         '/api/api/books' => [[['_route' => 'app_api_books', '_controller' => 'App\\Controller\\APIController::books'], null, null, null, false, false, null]],
         '/api/books/last_posts' => [[['_route' => 'app_api_last_posts', '_controller' => 'App\\Controller\\APIController::lastPosts'], null, null, null, false, false, null]],
         '/api/books/research' => [[['_route' => 'app_api_research', '_controller' => 'App\\Controller\\APIController::research'], null, ['GET' => 0], null, true, false, null]],

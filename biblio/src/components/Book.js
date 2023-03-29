@@ -36,7 +36,7 @@ function Book({ props, setBook }) {
           )}
 
           <div>
-            <p className="m-2 text-left">
+            <div className="m-2 text-left">
               <p className="text-md">Par</p>
               {props.auteurs.length === 0 ? (
                 <p className="text-md">Pas d'auteurs définis</p>
@@ -45,14 +45,14 @@ function Book({ props, setBook }) {
                   {props.auteurs[0].intituleAuteur.split("(")[0]}
                 </p>
               )}
-            </p>
-            <p className="m-2">
+            </div>
+            <div className="m-2">
               {props.dateParution === null || props.dateParution === undefined ? (
                 <p className="text-md">Pas de date définie</p>
               ) : (
                 <p className="text-md">{props.dateParution.split("-")[0]}</p>
               )}
-            </p>
+            </div>
           </div>
         </div>
       </div>

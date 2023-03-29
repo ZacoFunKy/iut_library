@@ -201,31 +201,21 @@ class APIController extends AbstractController
         $json = $request->getContent();
         $data = json_decode($json, true);
         $token = $data['token'];
-        var_dump($token);
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
-        if (null === $lecteur) {
+        if (null === $token) {
             return $this->json([
                 'message' => 'Pas de lecteur avec ce token',
             ], Response::HTTP_UNAUTHORIZED);
         }
-        var_dump($lecteur->getId());
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
         $emprunts = array();
-        $q = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
-            ->where('e.lecteur = :l')
-            ->setParameter('l', $lecteur)
-            ->orderBy('e.DateEmprunt', 'DESC')
-            ->getQuery()
-            ->getResult();
-        foreach ($q as $emp) {
-            array_push($emprunts, $emp->getLivre()->getId());
-        }
-        $emprunts = array_slice($emprunts, 0, 4);
+        $emprunts = $lecteur->getEmprunts();
 
         if (empty($emprunts)) {
             return $this->json(['message' => 'No books found'], 404);
         }
 
-        return $emprunts;
+        // renvoie les emrunts sous forme de tableau json avec les groups emprunt_basic et livre_basic combinée et le mettre en cache
+        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']])->setSharedMaxAge(3600);
     }
 
     #[Route('/emprunt', name: 'api_emprunt', methods: ['POST'])]
@@ -278,24 +268,77 @@ class APIController extends AbstractController
                 'message' => 'Pas de lecteur avec cet email',
             ], Response::HTTP_UNAUTHORIZED);
         }
-        $emprunts = array();
-        $q = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
-            ->where('e.lecteur = :l')
-            ->setParameter('l', $lecteur)
-            ->orderBy('e.DateEmprunt', 'DESC')
-            ->getQuery()
-            ->getResult();
 
-        foreach ($q as $emp) {
-            array_push($emprunts, $emp->getLivre()->getId());
-        }
-        $emprunts = array_slice($emprunts, 0, 4);
+        // recupere les emprunt du lecteur
+        $emprunts = $lecteur->getEmprunts();
 
         if (empty($emprunts)) {
             return $this->json(['message' => 'No books found'], 404);
         }
 
         return $emprunts;
+    }
+
+    // route qui renvoie les amis d'un lecteur
+    #[Route('/amis', name: 'api_amis', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/amis",
+     * tags={"amis"},
+     * summary="amis d'un lecteur",
+     * description="Donne les amis d'un lecteur en fonction de son email",
+     * operationId="amis",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"email"},
+     *  @OA\Property(property="email", type="string", example="
+     *  
+     * "),
+     * )
+     * ),
+     * @OA\Response(
+     *  response=201,
+     * description="Les amis de l'utilisateur",
+     * @OA\MediaType(
+     *    mediaType="application/json",
+     *   @OA\Schema(
+     *    type="array",
+     *   @OA\Items(
+     *   type="integer",
+     *  example={805, 701, 632}
+     * )
+     * )
+        * ),
+        * ),
+        * @OA\Response(
+        * response=401,
+        * description="L'email n'appartient a personne",
+        * @OA\JsonContent(
+        * @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
+        * )
+        * )
+        * )
+        */
+    #[View(serializerGroups: ['ami_basic'])]
+    public function amisLecteur(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $email = $data['email'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        if ($lecteur === null) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec cet email',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $amis = $lecteur->getLecteursSuivis();
+
+        if (empty($amis)) {
+            return $this->json(['message' => 'No friends found'], 404);
+        }
+
+        return $this->json($amis, 200, [], ['groups' => 'lecteur_basic']);
     }
 
     /**
@@ -319,6 +362,7 @@ class APIController extends AbstractController
     public function lastPosts(EntityManagerInterface $entityManager)
     {
         $livres = $entityManager->getRepository(Livre::class)->findBy([], ['dateAcquisition' => 'DESC'], 4);
+        $livres = array_slice($livres, 0, 4);
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);

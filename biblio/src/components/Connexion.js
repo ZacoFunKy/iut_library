@@ -25,6 +25,7 @@ function Connexion() {
         console.log(response.data);
         // on stocke le token dans le local storage
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
         // on redirige vers la page d'accueil
         navigation("/");
       })

@@ -14,7 +14,7 @@ function BookView({ Book }) {
             </div>
           ) : null}
           <div className="book m-5 md:flex-row flex-col flex">
-            {Book.couverture !== undefined ? (
+            {Book.couverture !== undefined && Book.couverture !== null ? (
               <div className="flex justify-center mb-5">
                 <img
                   src={Book.couverture}
@@ -32,38 +32,43 @@ function BookView({ Book }) {
 
             <div className="ml-0 md:ml-20 flex-col flex justify-around ">
               <div className="text-left flex flex-col ">
-                <div className="flex justify-around ">
-                  {Book.auteurs.length !== 0 ? (
-                    <div className="w-64 flex flex-col">
-                      <span className="text-xl">Auteur(s) : </span>
-                      {Book.auteurs.map((aut) => {
-                        return (
-                          <div key={aut.id}>
-                            {aut.intituleAuteur !== null ? (
-                              <div className="book__author text-lg">
-                                <span className="text-[#009999]">
-                                  {aut.intituleAuteur}
-                                </span>
-                              </div>
-                            ) : null}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : null}
+                <div className="flex justify-between ">
+                  <div className="flex flex-col">
+                    <span className="text-xl">Auteur(s) : </span>
+                    {Book.auteurs.length !== 0 ? (
+                      <div className="w-64 flex flex-col">
+                        {Book.auteurs.map((aut) => {
+                          return (
+                            <div key={aut.id}>
+                              {aut.intituleAuteur !== null ? (
+                                <div className="book__author text-lg">
+                                  <span className="text-[#009999]">
+                                    {aut.intituleAuteur}
+                                  </span>
+                                </div>
+                              ) : null}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <p>Pas défini</p>
+                    )}
+                  </div>
+
                   <div className="w-64 flex flex-col">
                     <span className="text-xl">Nombre de pages : </span>
-                    {Book.page !== undefined ? (
+                    {Book.page !== null ? (
                       <span className="text-[#009999]">{Book.page}</span>
                     ) : (
                       <p>Pas défini</p>
                     )}
                   </div>
                 </div>
-                <div className="flex justify-around mt-7">
+                <div className="flex justify-between mt-7">
                   <div className="w-64">
                     <span className="text-xl">Editeur :</span>
-                    {Book.editeur !== undefined ? (
+                    {Book.editeur !== undefined && Book.editeur !== null ? (
                       <span className="text-[#009999]">
                         <br></br> {Book.editeur.nomEditeur}
                       </span>

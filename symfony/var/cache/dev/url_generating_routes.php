@@ -21,6 +21,7 @@ return [
     'api_login' => [[], ['_controller' => 'App\\Controller\\APIController::login'], [], [['text', '/api/login']], [], [], []],
     'api_lastEmprunt' => [[], ['_controller' => 'App\\Controller\\APIController::lastEmprunt'], [], [['text', '/api/lastEmprunt']], [], [], []],
     'api_emprunt' => [[], ['_controller' => 'App\\Controller\\APIController::empruntLecteur'], [], [['text', '/api/emprunt']], [], [], []],
+    'api_amis' => [[], ['_controller' => 'App\\Controller\\APIController::amisLecteur'], [], [['text', '/api/amis']], [], [], []],
     'app_api_books' => [[], ['_controller' => 'App\\Controller\\APIController::books'], [], [['text', '/api/api/books']], [], [], []],
     'app_api_last_posts' => [[], ['_controller' => 'App\\Controller\\APIController::lastPosts'], [], [['text', '/api/books/last_posts']], [], [], []],
     'app_api_research' => [[], ['_controller' => 'App\\Controller\\APIController::research'], [], [['text', '/api/books/research/']], [], [], []],

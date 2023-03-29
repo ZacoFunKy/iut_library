@@ -2,43 +2,29 @@ import { React, useEffect, useState } from "react";
 import axios from "axios";
 import Book from "./Book";
 
-function Home({ setBook}) {
+function Home({ setBook }) {
   const [derniersLivres, setDerniersLivres] = useState([]);
   const [derniersEmprunts, setDerniersEmprunts] = useState([]);
-  const [indexResp, setIndexResp] = useState(4);
 
   useEffect(() => {
     axios
       .get("https://localhost:8000/api/books/last_posts")
       .then((response) => {
         console.log(response.data);
-        setDerniersLivres(response.data.slice(0, indexResp));
+        setDerniersLivres(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [indexResp, setDerniersLivres]);
+  }, [setDerniersLivres]);
 
-  window.addEventListener("resize", resize);
 
-  // changer la valeur de indexResp selon la largeur de l'ecran
-  function resize() {
-    if (window.innerWidth < 1200) {
-      setIndexResp(2);
-    } else if (window.innerWidth < 1500) {
-      setIndexResp(3);
-    } else {
-      setIndexResp(4);
-    }
-  };
-
-  useEffect(() => {
-    resize();
-  }, []);
-
+  // récupérer les derniers livres empruntés par un lecteur en post
   useEffect(() => {
     axios
-      .get("https://localhost:8000/api/books/last_emprunts")
+      .post("https://localhost:8000/api/lastEmprunt", {
+        token: localStorage.getItem("token"),
+      })
       .then((response) => {
         console.log(response.data);
         setDerniersEmprunts(response.data);
@@ -50,31 +36,32 @@ function Home({ setBook}) {
 
   return (
     <div className="home relative">
-
-      <div className="derniers-emprunts m-20 items-center">
-        <h2>Derniers livres empruntés</h2>
-        {derniersEmprunts.length > 0 ? (
-          <div className="flex flex-row justify-around m-5">
-            {derniersEmprunts.map((livre) => {
+      <div className="derniers-emprunts m-20 h-auto items-center">
+        <h2 className="md:text-xl text-lg">Derniers livres empruntés</h2>
+        {derniersEmprunts.length > 0 && derniersEmprunts !== undefined? (
+          <div className="flex flex-row justify-around">
+            {derniersEmprunts.map((item) => {
               return (
-                <div className="w-60" key={livre.id}>
-                  <Book props={livre} />
+                <div className="w-60" key={item.livre.titre}>
+                  <Book props={item.livre} setBook={setBook} />
                 </div>
               );
             })}
           </div>
-        ) : <p className="m-auto w-max">Aucun livre emprunté pour l'instant</p>}
+        ) : (
+          <p className=" w-100 text-center m-40">Aucun livre emprunté pour l'instant</p>
+        )}
       </div>
-      <div className="derniers-ajout m-20">
-        <h2>Derniers livres ajoutés</h2>
+      <div className="derniers-ajout m-20 h-min">
+        <h2 className="md:text-xl text-lg">Derniers livres ajoutés</h2>
         {derniersLivres !== undefined && derniersLivres.length > 0 ? (
           <div className="flex flex-row flex-wrap justify-around m-5">
             {derniersLivres.map((livre) => {
-              return (
+                return (
                 <div className="w-60" key={livre.id}>
                   <Book props={livre} setBook={setBook} />
                 </div>
-              );
+                );
             })}
           </div>
         ) : null}
