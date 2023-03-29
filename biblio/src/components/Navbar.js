@@ -53,19 +53,31 @@ function Navbar() {
             >
               Accueil
             </Link>
-            <Link
-              to="/amis"
-              className={`text text-xl m-5 ${
-                location.pathname === "/amis"
-                  ? "text-[#009999] underline underline-offset-8"
-                  : "hover:underline underline-offset-8 "
-              }`}
-              onClick={() => setShowMenu(!showMenu)}
-            >
-              Amis
-            </Link>
             {localStorage.getItem("token") !== null ? (
-              <p>Connecté</p>
+              <Link
+                to="/amis"
+                className={`text text-xl m-5 ${
+                  location.pathname === "/amis"
+                    ? "text-[#009999] underline underline-offset-8"
+                    : "hover:underline underline-offset-8 "
+                }`}
+                onClick={() => setShowMenu(!showMenu)}
+              >
+                Amis
+              </Link>
+            ) : null}
+
+            {localStorage.getItem("token") !== null ? (
+              <div className="flex items-center">
+                <p className="text-xl"> {localStorage.getItem("email")} </p>
+                <button
+                  className="bg-red-600 p-2 rounded-xl text text-xl ml-5 mr-5
+                     hover:bg-red-500"
+                  onMouseDown={() => {handleDeco(); setShowMenu(!showMenu)}}
+                >
+                  Deconnexion
+                </button>
+              </div>
             ) : (
               <Link
                 to="/connexion"
@@ -93,16 +105,18 @@ function Navbar() {
           >
             Accueil
           </Link>
-          <Link
-            to="/amis"
-            className={`text text-xl mr-5 ${
-              location.pathname === "/amis"
-                ? "text-[#009999] underline underline-offset-8"
-                : "hover:underline underline-offset-8 "
-            }`}
-          >
-            Amis
-          </Link>
+          {localStorage.getItem("token") !== null ? (
+            <Link
+              to="/amis"
+              className={`text text-xl m-5 ${
+                location.pathname === "/amis"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8 "
+              }`}
+            >
+              Amis
+            </Link>
+          ) : null}
           {localStorage.getItem("token") !== null ? (
             <div className="flex items-center">
               <p className="text-xl"> {localStorage.getItem("email")} </p>

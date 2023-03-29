@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import pasDeCouv from "../assets/pas-de-couv.png";
+import Ami from "./Ami";
 
 function FriendsView() {
   const [friends, setFriends] = useState([]);
@@ -25,6 +25,8 @@ function FriendsView() {
       });
   }, [setFriends]);
 
+
+
   return (
     <div className="friends-view">
       <h1>Liste des amis</h1>
@@ -32,37 +34,7 @@ function FriendsView() {
         <div className="flex flex-row flex-wrap justify-left m-10">
           {friends.map((item) => {
             return (
-              <div className="w-60 m-5" key={item.email}>
-                <h1 className="text-xl text-center text-[#009999]">
-                  {item.prenomLecteur} {item.nomLecteur}
-                </h1>
-                <div className="flex">
-                  {item.emprunts.map((emprunt) => {
-                    return (
-                      <div className="w-60 text-xs text-center flex flex-col items-center" key={emprunt.livre.titre}>
-                        {emprunt.livre.couverture === null ? (
-                          <img
-                            src={pasDeCouv}
-                            alt="pas-de-couv"
-                            width="50px"
-                            className="h-20"
-                          ></img>
-                        ) : (
-                          <img
-                            src={emprunt.livre.couverture}
-                            alt="couv"
-                            width="50px"
-                            className="h-20"
-                          ></img>
-                        )}
-                        {emprunt.livre.titre.length > 20
-                          ? emprunt.livre.titre.substr(0, 20) + "..."
-                          : emprunt.livre.titre}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              <Ami item={item} setFriends={setFriends}/>
             );
           })}
         </div>

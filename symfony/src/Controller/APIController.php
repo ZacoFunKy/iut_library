@@ -341,6 +341,63 @@ class APIController extends AbstractController
         return $this->json($amis, 200, [ ], ['groups' => 'lecteur_basic'])->setMaxAge(3600);
     }
 
+    // route qui ne permet de ne plus suivre un lecteur
+    #[Route('/amis/delete', name: 'api_amis_delete', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/amis/delete",
+     * tags={"amis"},
+     * summary="supprimer un ami",
+     * description="Supprime un ami d'un lecteur en fonction de son email",
+     * operationId="amis",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"email", "emailAmi"},
+     *  @OA\Property(property="email", type="string", example="
+     * "),
+     * @OA\Property(property="emailAmi", type="string", example="
+     * "),
+     * )
+     * ),
+     * @OA\Response(
+     * response=201,
+     * description="L'ami a été supprimé",
+     * @OA\JsonContent(
+     *  @OA\Property(property="message", type="string", example="L'ami a été supprimé"),
+     * )
+     * ),
+     * @OA\Response(
+     * 
+     * response=401,
+     * description="L'email n'appartient a personne",
+     * @OA\JsonContent(
+     * @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
+     * )
+     * )
+     * )
+     */
+    #[View(serializerGroups: ['ami_basic'])]
+    public function amisLecteurDelete(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $email = $data['email'];
+        $emailAmi = $data['emailAmi'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        $lecteurAmi = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $emailAmi]);
+        if ($lecteur === null) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec cet email',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $lecteur->removeLecteursSuivi($lecteurAmi);
+        $entityManager->persist($lecteur);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'L\'ami a été supprimé'], 201);
+    }
+
     /**
      * Renvoi les 4 dernières acquisitions de la bibliothèque
      */

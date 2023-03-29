@@ -1,10 +1,8 @@
 import {
   BrowserRouter,
-  Router,
   Routes,
   Route,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
@@ -21,7 +19,6 @@ function App() {
   const [Book, setBook] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [indexPage, setIndex] = useState(0);
-
 
   return (
     <BrowserRouter basename="/">
