@@ -349,7 +349,7 @@ class APIController extends AbstractController
      * tags={"amis"},
      * summary="supprimer un ami",
      * description="Supprime un ami d'un lecteur en fonction de son email",
-     * operationId="amis",
+     * operationId="amisDelete",
      * @OA\RequestBody(
      *   required=true,
      *  @OA\JsonContent(
