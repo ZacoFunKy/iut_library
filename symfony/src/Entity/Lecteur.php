@@ -230,9 +230,31 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Emprunt>
      */
-    public function getEmprunts(): Collection
+    public function getEmprunts(): Array
     {
+        return $this->emprunts->slice(0, 3);
+    }
+
+    public function get4DerniersEmprunts(): Array
+    {
+        return $this->emprunts->slice(0, 4);
+    }
+
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getAllEmprunts(): Collection
+    {
+
         return $this->emprunts;
+    }
+
+    public function setEmprunts(Array $newEmprunt): Array
+    {
+        $emprunts = $this->emprunts->toArray();
+        $emprunts = $newEmprunt;
+
+        return $emprunts;
     }
 
     public function addEmprunt(Emprunt $emprunt): self

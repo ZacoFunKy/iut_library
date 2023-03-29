@@ -6,33 +6,39 @@ function Home({ setBook }) {
   const [derniersLivres, setDerniersLivres] = useState([]);
   const [derniersEmprunts, setDerniersEmprunts] = useState([]);
 
+  // fasi pareil que au dessus mais avec fetch
   useEffect(() => {
-    axios
-      .get("https://localhost:8000/api/books/last_posts")
-      .then((response) => {
-        console.log(response.data);
-        setDerniersLivres(response.data);
+    fetch("https://localhost:8000/api/books/last_posts")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setDerniersLivres(data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [setDerniersLivres]);
 
-
-  // récupérer les derniers livres empruntés par un lecteur en post
   useEffect(() => {
-    axios
-      .post("https://localhost:8000/api/lastEmprunt", {
+    fetch("https://localhost:8000/api/lastEmprunt", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         token: localStorage.getItem("token"),
-      })
-      .then((response) => {
-        console.log(response.data);
-        setDerniersEmprunts(response.data);
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setDerniersEmprunts(data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [setDerniersEmprunts]);
+
 
   return (
     <div className="home relative">

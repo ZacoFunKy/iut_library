@@ -8,7 +8,7 @@ function SearchBar({
   searchTerm,
   setSearchTerm,
   setResults,
-  indexPage
+  indexPage,
 }) {
   const [listSuggestions, setListSuggestions] = useState([]);
 
@@ -29,10 +29,13 @@ function SearchBar({
   useEffect(() => {
     const search = setTimeout(() => {
       if (searchTerm.length >= 1) {
-        axios
-          .get(`https://localhost:8000/api/books/research/?name=${searchTerm}`)
-          .then((response) => {
-            setResults(response.data.slice(indexPage, indexPage + 10));
+        fetch(`https://localhost:8000/api/books/research/?name=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setResults(data.slice(indexPage, indexPage + 10));
+          })
+          .catch((error) => {
+            console.log(error);
           });
       } else {
         setResults([]);
@@ -41,15 +44,17 @@ function SearchBar({
     return () => clearTimeout(search);
   }, [indexPage, searchTerm, setResults]);
 
+  // pareil que auddessus mais avec fetch
   useEffect(() => {
     const search = setTimeout(() => {
       if (searchTerm.length >= 4) {
-        axios
-          .get(
-            `https://localhost:8000/api/authors/research/?name=${searchTerm}`
-          )
-          .then((response) => {
-            setListSuggestions(response.data.slice(0, 10));
+        fetch(`https://localhost:8000/api/authors/research/?name=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setListSuggestions(data.slice(0, 10));
+          })
+          .catch((error) => {
+            console.log(error);
           });
       } else {
         setListSuggestions([]);
@@ -58,7 +63,6 @@ function SearchBar({
     return () => clearTimeout(search);
   }, [searchTerm, setListSuggestions]);
 
-  //
 
   return (
     <Fragment>
@@ -73,7 +77,10 @@ function SearchBar({
             onFocus={onFocus}
             onBlur={onBlur}
           />
-          <button className="loupe p-1.5 pl-3 pr-3 rounded-tr-md rounded-br-md" onMouseDown={(e)=> navigation("/results")}>
+          <button
+            className="loupe p-1.5 pl-3 pr-3 rounded-tr-md rounded-br-md"
+            onMouseDown={(e) => navigation("/results")}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 27"

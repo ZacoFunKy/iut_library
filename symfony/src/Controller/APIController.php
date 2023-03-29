@@ -208,7 +208,7 @@ class APIController extends AbstractController
         }
         $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
         $emprunts = array();
-        $emprunts = $lecteur->getEmprunts();
+        $emprunts = $lecteur->get4DerniersEmprunts();
 
         if (empty($emprunts)) {
             return $this->json(['message' => 'No books found'], 404);
@@ -269,7 +269,7 @@ class APIController extends AbstractController
         }
 
         // recupere les emprunt du lecteur
-        $emprunts = $lecteur->getEmprunts();
+        $emprunts = $lecteur->get4DerniersEmprunts();
 
         if (empty($emprunts)) {
             return $this->json(['message' => 'No books found'], 404);
@@ -331,12 +331,14 @@ class APIController extends AbstractController
             ], Response::HTTP_UNAUTHORIZED);
         }
         $amis = $lecteur->getLecteursSuivis();
+        // limiter le nombre d'emprunt de chaque ami a 3
+
 
         if (empty($amis)) {
             return $this->json(['message' => 'No friends found'], 404);
         }
 
-        return $this->json($amis, 200, [], ['groups' => 'lecteur_basic'])->setMaxAge(3600);
+        return $this->json($amis, 200, [ ], ['groups' => 'lecteur_basic'])->setMaxAge(3600);
     }
 
     /**

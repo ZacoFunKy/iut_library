@@ -256,20 +256,38 @@
       </parameter>
     </parameter>
     <parameter key="fos_rest.format_listener.rules">null</parameter>
-    <parameter key="nelmio_cors.map" type="collection"/>
+    <parameter key="nelmio_cors.map" type="collection">
+      <parameter key="^/api/" type="collection">
+        <parameter key="allow_origin">true</parameter>
+        <parameter key="allow_headers" type="collection">
+          <parameter>content-type</parameter>
+          <parameter>authorization</parameter>
+        </parameter>
+        <parameter key="allow_methods" type="collection">
+          <parameter>POST</parameter>
+          <parameter>PUT</parameter>
+          <parameter>GET</parameter>
+          <parameter>DELETE</parameter>
+        </parameter>
+        <parameter key="max_age">3600</parameter>
+        <parameter key="skip_same_as_origin">true</parameter>
+      </parameter>
+    </parameter>
     <parameter key="nelmio_cors.defaults" type="collection">
       <parameter key="allow_origin">true</parameter>
       <parameter key="allow_credentials">false</parameter>
-      <parameter key="allow_headers">true</parameter>
+      <parameter key="allow_headers" type="collection">
+        <parameter>content-type</parameter>
+        <parameter>authorization</parameter>
+      </parameter>
       <parameter key="expose_headers" type="collection"/>
       <parameter key="allow_methods" type="collection">
-        <parameter>GET</parameter>
         <parameter>POST</parameter>
         <parameter>PUT</parameter>
+        <parameter>GET</parameter>
         <parameter>DELETE</parameter>
-        <parameter>OPTIONS</parameter>
       </parameter>
-      <parameter key="max_age">0</parameter>
+      <parameter key="max_age">3600</parameter>
       <parameter key="hosts" type="collection"/>
       <parameter key="origin_regex">false</parameter>
       <parameter key="forced_allow_origin_value">null</parameter>
@@ -6375,7 +6393,7 @@
     </service>
     <service id="nelmio_cors.options_provider.config" class="Nelmio\CorsBundle\Options\ConfigProvider">
       <tag name="nelmio_cors.options_provider" priority="-1"/>
-      <argument type="collection"/>
+      <argument>%nelmio_cors.map%</argument>
       <argument>%nelmio_cors.defaults%</argument>
     </service>
     <service id="nelmio_cors.cacheable_response_vary_listener" class="Nelmio\CorsBundle\EventListener\CacheableResponseVaryListener">
