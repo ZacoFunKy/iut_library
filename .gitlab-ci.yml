@@ -1,18 +1,53 @@
-image: node:latest
-
-stages:
-  - build
+image: jakzal/phpqa:php8.1
 
 before_script:
-  - cd biblio
-  - npm install
+  - cd symfony
+  - composer install
+  - composer require --dev squizlabs/php_codesniffer
+  - composer require --dev phpunit/phpunit
+  - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" > .env.local
+  - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" >> .env.test
 
-build:
-  stage: build
+
+cache:
+    paths:
+        - vendor/
+
+stages:
+    - SecurityChecker
+    - CodingStandards
+    - deploy
+
+security-checker:
+    stage: SecurityChecker
+    script:
+        - local-php-security-checker  --path=./composer.lock
+    allow_failure: false
+
+phpcs:
+    stage: CodingStandards
+    script:        
+        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+    allow_failure: false
+
+phpstan:
+    stage: CodingStandards
+    script:
+        - phpstan analyse ./src
+    allow_failure: false
+
+pages:
+  stage: deploy
+  image: tthor/test
+  before_script:
+    - mkdir -p public
   script:
-    - npm run build
+    - emacs README.org -l htmlize.el --batch --eval "(org-babel-do-load-languages 'org-babel-load-languages '( (python . t) ) )" --eval '(setq org-confirm-babel-evaluate nil)' --eval "(setq org-html-htmlize-output-type 'css)" -f org-html-export-to-html --kill
+    - cp README.html ./public/index.html
+    - cp *.png ./public/
   artifacts:
     paths:
-      - build/
-
+      - vendor\*
+  only:
+    - master
 
