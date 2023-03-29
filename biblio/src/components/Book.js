@@ -13,9 +13,10 @@ function Book({ props, setBook }) {
         navigation(`/book`);
         setBook(props);
       }}
+      className="cursor-pointer w-max "
     >
-      <div className="max-w-64 w-64 min-w-64">
-        <p className="m-2 text-center">
+      <div className=" w-80 bg-opacity-10 bg-slate-400 book p-5 m-2 rounded-xl">
+        <p className="m-2 text-center text-xl">
           {props.titre.length > 20
             ? props.titre.substr(0, 20) + "..."
             : props.titre}
@@ -23,6 +24,7 @@ function Book({ props, setBook }) {
         <div className="flex flex-row items-center m-auto min-w-32 max-w-32 ">
           {props.couverture !== undefined && props.couverture !== null ? (
             <img
+            fetchpriority="hight"
               src={props.couverture}
               alt="book"
               className="border-2 border-[#009999] rounded-md h-48 w-32 object-cover"
@@ -37,9 +39,8 @@ function Book({ props, setBook }) {
 
           <div>
             <div className="m-2 text-left">
-              <p className="text-md">Par</p>
               {props.auteurs.length === 0 ? (
-                <p className="text-md">Pas d'auteurs définis</p>
+                <p className="text-sm">Pas d'auteurs définis</p>
               ) : (
                 <p className="text-sm text-[#009999]">
                   {props.auteurs[0].intituleAuteur.split("(")[0]}

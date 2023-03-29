@@ -13,7 +13,7 @@ function BookView({ Book }) {
               {Book.titre}
             </div>
           ) : null}
-          <div className="book m-5 md:flex-row flex-col flex">
+          <div className="m-5 md:flex-row flex-col flex">
             {Book.couverture !== undefined && Book.couverture !== null ? (
               <div className="flex justify-center mb-5">
                 <img

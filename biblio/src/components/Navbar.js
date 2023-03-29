@@ -68,10 +68,10 @@ function Navbar() {
             ) : null}
 
             {localStorage.getItem("token") !== null ? (
-              <div className="flex items-center">
-                <p className="text-xl"> {localStorage.getItem("email")} </p>
+              <div className="flex flex-col items-center">
+                <p className="text-xl m-2 mb-5"> {localStorage.getItem("email")} </p>
                 <button
-                  className="bg-red-600 p-2 rounded-xl text text-xl ml-5 mr-5
+                  className="bg-red-600 p-2 deco text text-xl ml-5 mr-5
                      hover:bg-red-500"
                   onMouseDown={() => {handleDeco(); setShowMenu(!showMenu)}}
                 >
@@ -97,7 +97,7 @@ function Navbar() {
         <div className="hidden lg:flex flex-row items-center">
           <Link
             to="/"
-            className={`text text-xl mr-5 ${
+            className={`text text-xl ml-5 ${
               location.pathname === "/"
                 ? "text-[#009999] underline underline-offset-8"
                 : "hover:underline underline-offset-8 "
@@ -121,7 +121,7 @@ function Navbar() {
             <div className="flex items-center">
               <p className="text-xl"> {localStorage.getItem("email")} </p>
               <button
-                className="bg-red-600 p-2 rounded-xl text text-xl ml-5 mr-5
+                className="bg-red-600 p-3 deco text text-xl pr-5 pl-5 ml-5 mr-5
                     hover:bg-red-500"
                 onClick={handleDeco}
               >

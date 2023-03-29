@@ -70,6 +70,19 @@ code {
   }
 }
 
+.book:hover {
+  transform: scale(1.05);
+  transition: 0.5s;
+}
+
+.book {
+  transition: 0.5s;
+}
+
+.deco {
+  border-radius: 5px 25px;
+}
+
 .loupe {
   border: #009999 2px solid;
   background-color: #009999;

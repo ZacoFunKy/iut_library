@@ -26,41 +26,47 @@ function Ami(item, setFriends) {
 
   return (
     <div
-      className="w-60 m-5 h-64 flex-col flex justify-between text-center"
+      className="w-60 m-5 h-64 flex-col flex justify-between bg-opacity-10 bg-slate-400 p-5 rounded-xl text-center"
       key={item.item.email}
     >
       <h1 className="text-xl text-center  text-[#009999]">
         {item.item.prenomLecteur} {item.item.nomLecteur}
       </h1>
-      <div className="flex">
-        {item.item.emprunts.map((emprunt) => {
-          return (
-            <div
-              className="w-60 text-xs text-center flex flex-col items-center"
-              key={emprunt.livre.titre}
-            >
-              {emprunt.livre.couverture === null ? (
-                <img
-                  src={pasDeCouv}
-                  alt="pas-de-couv"
-                  width="50px"
-                  className="h-20"
-                ></img>
-              ) : (
-                <img
-                  src={emprunt.livre.couverture}
-                  alt="couv"
-                  width="50px"
-                  className="h-20"
-                ></img>
-              )}
-              {emprunt.livre.titre.length > 20
-                ? emprunt.livre.titre.substr(0, 20) + "..."
-                : emprunt.livre.titre}
-            </div>
-          );
-        })}
-      </div>
+      {item.item.emprunts.length === 0 ? (
+        <p className="text-md">Aucun livre emprunté</p>
+      ) : (
+        <div className="flex">
+          {item.item.emprunts.map((emprunt) => {
+            return (
+              <div
+                className="w-60 text-xs text-center flex flex-col items-center"
+                key={emprunt.livre.titre}
+              >
+                {emprunt.livre.couverture === null ? (
+                  <img
+                    src={pasDeCouv}
+                    alt="pas-de-couv"
+                    width="50px"
+                    className="h-20 border-black rounded border-1"
+                  ></img>
+                ) : (
+                  <img
+                    src={emprunt.livre.couverture}
+                    alt="couv"
+                    width="50px"
+                    className="h-20 border-black rounded border-2"
+                  ></img>
+                )}
+                <div className="mt-2">
+                  {emprunt.livre.titre.length > 20
+                    ? emprunt.livre.titre.substr(0, 20) + "..."
+                    : emprunt.livre.titre}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
       <div>
         <button
           type="button"

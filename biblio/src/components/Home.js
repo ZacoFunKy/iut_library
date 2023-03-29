@@ -47,7 +47,7 @@ function Home({ setBook }) {
           <div className="flex flex-row justify-around">
             {derniersEmprunts.map((item) => {
               return (
-                <div className="w-60" key={item.livre.titre}>
+                <div key={item.livre.titre}>
                   <Book props={item.livre} setBook={setBook} />
                 </div>
               );
@@ -63,7 +63,7 @@ function Home({ setBook }) {
           <div className="flex flex-row flex-wrap justify-around m-5">
             {derniersLivres.map((livre) => {
                 return (
-                <div className="w-60" key={livre.id}>
+                <div key={livre.id}>
                   <Book props={livre} setBook={setBook} />
                 </div>
                 );
