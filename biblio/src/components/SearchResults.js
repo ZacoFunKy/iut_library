@@ -24,7 +24,7 @@ function SearchResults({
         {results.length > 0 ? (
           <div className="flex flex-row flex-wrap justify-center">
             {results.map((book) => (
-              <Book props={book} setBook={setBook} />
+              <Book props={book} key={book.titre} setBook={setBook} />
             ))}
           </div>
         ) : (

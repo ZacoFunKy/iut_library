@@ -1,6 +1,7 @@
 import { React, useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Suggestion from "./Suggestion";
 
 function SearchBar({
   setBook,
@@ -62,7 +63,6 @@ function SearchBar({
     return () => clearTimeout(search);
   }, [searchTerm, setListSuggestions]);
 
-
   return (
     <Fragment>
       <div className="flex flex-col">
@@ -100,23 +100,14 @@ function SearchBar({
           >
             {listSuggestions.map((suggestion) => {
               return (
-                <Link
-                  key={suggestion.id}
-                  className="p-2 hover:bg-[#096969] text-white hover:cursor-pointer"
-                  onMouseDown={(event) => {
-                    event.preventDefault();
-                    setBook(suggestion);
-                    setSearchTerm(suggestion.intituleAuteur);
-                    setListSuggestions([]);
-                    navigation("/results");
-                  }}
-                >
-                  {suggestion.intituleAuteur.length > 20 ? (
-                    <p>{suggestion.intituleAuteur.substr(0, 20)}...</p>
-                  ) : (
-                    <p>{suggestion.intituleAuteur}</p>
-                  )}
-                </Link>
+                <Suggestion
+                  suggestion={suggestion}
+                  setListSuggestions={setListSuggestions}
+                  setBook={setBook}
+                  setSearchTerm={setSearchTerm}
+                  navigation={navigation}
+                  key={suggestion.titre}
+                />
               );
             })}
           </div>

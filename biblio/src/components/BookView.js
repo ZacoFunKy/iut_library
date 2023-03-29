@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import pasDeCouv from "../assets/pas-de-couv.png";
+import Auteur from "./Auteur";
 
 function BookView({ Book }) {
   console.log(Book);
@@ -38,17 +39,7 @@ function BookView({ Book }) {
                     {Book.auteurs.length !== 0 ? (
                       <div className="w-64 flex flex-col">
                         {Book.auteurs.map((aut) => {
-                          return (
-                            <div key={aut.id}>
-                              {aut.intituleAuteur !== null ? (
-                                <div className="book__author text-lg">
-                                  <span className="text-[#009999]">
-                                    {aut.intituleAuteur}
-                                  </span>
-                                </div>
-                              ) : null}
-                            </div>
-                          );
+                          return <Auteur aut={aut} key={aut.id} />;
                         })}
                       </div>
                     ) : (
