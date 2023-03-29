@@ -524,6 +524,8 @@ class APIController extends AbstractController
         return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
     }
 
+
+    
     #[Route('/recommandation', name: 'app_api_recommandation', methods: ['POST'])]
     public function recommandation(EntityManagerInterface $entityManager, Request $request)
     {
@@ -571,4 +573,5 @@ class APIController extends AbstractController
 
         return $emprunts;
     }
+    
 }
