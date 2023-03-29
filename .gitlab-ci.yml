@@ -1,9 +1,13 @@
 image: jakzal/phpqa:php8.1
 
 before_script:
-    - cd symfony
-    - composer install
-    - composer require --dev squizlabs/php_codesniffer
+  - cd symfony
+  - composer install
+  - composer require --dev squizlabs/php_codesniffer
+  - composer require --dev phpunit/phpunit
+  - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" > .env.local
+  - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" >> .env.test
+
 
 cache:
     paths:
@@ -12,7 +16,6 @@ cache:
 stages:
     - SecurityChecker
     - CodingStandards
-    - UnitTests
     - deploy
 
 security-checker:
@@ -21,16 +24,9 @@ security-checker:
         - local-php-security-checker  --path=./composer.lock
     allow_failure: false
 
-phpcbf:
-    stage: CodingStandards
-    script:
-        - phpcbf --standard=PSR12 --ignore=./src/Kernel.php ./src
-    allow_failure: false
-
-
 phpcs:
     stage: CodingStandards
-    script:
+    script:        
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
@@ -54,3 +50,4 @@ pages:
       - vendor\*
   only:
     - master
+

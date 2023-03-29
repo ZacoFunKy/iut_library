@@ -1,7 +1,10 @@
 import { Fragment } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Connexion() {
+  const navigation = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -11,10 +14,25 @@ function Connexion() {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const login = (event) => {
     event.preventDefault();
-    console.log(formData);
-  };
+    axios
+      .post("https://localhost:8000/api/login", {
+        username: formData.username,
+        password: formData.password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        // on stocke le token dans le local storage
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
+        // on redirige vers la page d'accueil
+        navigation("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <Fragment>
@@ -49,7 +67,7 @@ function Connexion() {
             <button
               className="bg-[#009999] hover:bg-[#086969] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
-              onClick={handleSubmit}
+              onClick={login}
             >
               Se connecter
             </button>

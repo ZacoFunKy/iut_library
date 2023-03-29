@@ -959,3 +959,4 @@ d3f186,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929667,4200eb,
 4d4c9e,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093951,,405
 29314d,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093955,1c6dca,405
 1c6dca,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093955,,405
+83d114,::1,POST,https://localhost:8000/api/lastEmprunt,1680094045,,200

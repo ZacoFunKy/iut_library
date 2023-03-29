@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Emprunt;
 use App\Entity\Lecteur;
+use App\Entity\Categorie;
 use App\Repository\LecteurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,11 +19,51 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use FOS\RestBundle\Controller\Annotations\View;
+use OpenApi\Annotations as OA;
 
 #[Route('/api')]
 class APIController extends AbstractController
 {
     #[Route('/register', name: 'api_reg', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/register",
+     * tags={"register"},
+     * summary="Creer un lecteur",
+     * description="Enregistre un nouveau lecteur dans la base de donnée",
+     * operationId="enr",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"email", "prenomLecteur","nomLecteur", "password"},
+     *  @OA\Property(property="email", type="string", example="mael@gmail.com"),
+     *  @OA\Property(property="prenomLecteur", type="string", example="Mael"),
+     *  @OA\Property(property="nomLecteur", type="string", example="Jegu"),
+     *  @OA\Property(property="password", type="string", example="MonMotDePasse6-")
+     * )
+     * ),
+     * @OA\Response(
+     *   response=201,
+     *  description="Lecteur créé",
+     * @OA\JsonContent(
+     *  @OA\Property(property="id", type="string",example="1"),
+     *  @OA\Property(property="email", type="string", example="mael@gmail.com"),
+     *  @OA\Property(property="password", type="string",
+     *  example="$2y$13$zGjD.rUXy78g3Ij9dmoH1.w2uenCrjYKhdEMhGQog.xSenjwH9sWO"),
+     *  @OA\Property(property="prenomLecteur", type="string", example="Mael"),
+     *  @OA\Property(property="nomLecteur", type="string", example="Jegu"),
+     * )
+     * ),
+     * @OA\Response(
+     *   response=401,
+     *  description="Les informations données ne sont pas complètes ou non valides",
+     * @OA\JsonContent(
+     *  @OA\Property(property="error", type="string",
+     *  example="There is already an account with this email (code 23bd9dbf-6b9b-41cd-a99e-4844bcf3077f)"),
+     * )
+     * )
+     * )
+     */
     public function register(
         EntityManagerInterface $em,
         Request $request,
@@ -51,21 +93,54 @@ class APIController extends AbstractController
         $em->flush();
 
         $response = [
-            'user' => [
-                'id' => $lecteur->getId(),
-                'email' => $lecteur->getEmail(),
-                'mdp' => $lecteur->getPassword(),
-                'prenom' => $lecteur->getPrenomLecteur(),
-                'nom' => $lecteur->getNomLecteur(),
-            ]
+            'id' => $lecteur->getId(),
+            'email' => $lecteur->getEmail(),
+            'mdp' => $lecteur->getPassword(),
+            'prenom' => $lecteur->getPrenomLecteur(),
+            'nom' => $lecteur->getNomLecteur(),
         ];
         return new JsonResponse($response);
     }
 
     #[Route('/login', name: 'api_login', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/login",
+     * tags={"login"},
+     * summary="Login un lecteur",
+     * description="Se Login avec un utilisateur en lui générant un token",
+     * operationId="login",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"username", "password"},
+     *  @OA\Property(property="username", type="string", example="mael@gmail.com"),
+     *  @OA\Property(property="password", type="string", example="MonMotDePasse6-")
+     * )
+     * ),
+     * @OA\Response(
+     *   response=201,
+     *  description="Lecteur créé",
+     * @OA\JsonContent(
+     *  @OA\Property(property="id", type="string",example="1"),
+     *  @OA\Property(property="email", type="string", example="mael@gmail.com"),
+     *  @OA\Property(property="password", type="string",
+     *  example="$2y$13$zGjD.rUXy78g3Ij9dmoH1.w2uenCrjYKhdEMhGQog.xSenjwH9sWO"),
+     *  @OA\Property(property="token", type="string", example="6422945aa8c48"),
+     * )
+     * ),
+     * @OA\Response(
+     *   response=401,
+     *  description="Les informations données ne sont pas complètes ou non valides",
+     * @OA\JsonContent(
+     *  @OA\Property(property="error", type="string",example="Invalid credentials."),
+     * )
+     * )
+     * )
+     */
     public function login(EntityManagerInterface $entityManager, #[CurrentUser] ?Lecteur $user)
     {
-        if (null === $user) {
+        if ($user === null) {
             return $this->json([
                 'message' => 'missing credentials',
             ], Response::HTTP_UNAUTHORIZED);
@@ -75,16 +150,200 @@ class APIController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         $response = [
-            'user' => [
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'mdp' => $user->getPassword(),
-                'token' => $token,
-            ]
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'mdp' => $user->getPassword(),
+            'token' => $token,
         ];
         return new JsonResponse($response);
     }
+    #[Route('/lastEmprunt', name: 'api_lastEmprunt', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/lastEmprunt",
+     * tags={"lastEmprunt"},
+     * summary="dernier emprunt d'un lecteur",
+     * description="Donne les dernier emprunt d'un lecteur en fonction de son token",
+     * operationId="lastEmprunt",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"token"},
+     *  @OA\Property(property="token", type="string", example="060dfszdfs0e95f"),
+     * )
+     * ),
+     * @OA\Response(
+     *   response=201,
+     *  description="Les emprunts de l'utilisateur",
+     * @OA\MediaType(
+     *     mediaType="application/json",
+     *     @OA\Schema(
+     *       type="array",
+     *       @OA\Items(
+     *         type="integer",
+     *         example={805, 701, 632}
+     *       )
+     *     )
+     * ),
+     * ),
+     * @OA\Response(
+     *   response=401,
+     *  description="Le token n'appartient a personne",
+     * @OA\JsonContent(
+     *  @OA\Property(property="message  ", type="string",example="Pas de lecteur avec ce token"),
+     * )
+     * )
+     * )
+     */
+    #[View(serializerGroups: ['livre_basic'])]
+    public function lastEmprunt(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $token = $data['token'];
+        if (null === $token) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec ce token',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
+        $emprunts = array();
+        $emprunts = $lecteur->get4DerniersEmprunts();
 
+        if (empty($emprunts)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']])->setMaxAge(3600);
+    }
+
+    #[Route('/emprunt', name: 'api_emprunt', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/emprunt",
+     * tags={"emprunt"},
+     * summary="dernier emprunt d'un lecteur",
+     * description="Donne les dernier emprunt d'un lecteur en fonction de son email",
+     * operationId="emprunt",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"email"},
+     *  @OA\Property(property="email", type="string", example="maeljegu@gmail.com"),
+     * )
+     * ),
+     * @OA\Response(
+     *   response=201,
+     *  description="Les emprunts de l'utilisateur",
+     * @OA\MediaType(
+     *     mediaType="application/json",
+     *     @OA\Schema(
+     *       type="array",
+     *       @OA\Items(
+     *         type="integer",
+     *         example={805, 701, 632}
+     *       )
+     *     )
+     * ),
+     * ),
+     * @OA\Response(
+     *   response=401,
+     *  description="L'email n'appartient a personne",
+     * @OA\JsonContent(
+     *  @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
+     * )
+     * )
+     * )
+     */
+    #[View(serializerGroups: ['livre_basic'])]
+    public function empruntLecteur(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $email = $data['email'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        if (null === $lecteur) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec cet email',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // recupere les emprunt du lecteur
+        $emprunts = $lecteur->get4DerniersEmprunts();
+
+        if (empty($emprunts)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']])->setMaxAge(3600);
+    }
+
+    // route qui renvoie les amis d'un lecteur
+    #[Route('/amis', name: 'api_amis', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/amis",
+     * tags={"amis"},
+     * summary="amis d'un lecteur",
+     * description="Donne les amis d'un lecteur en fonction de son email",
+     * operationId="amis",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"email"},
+     *  @OA\Property(property="email", type="string", example="
+     * "),
+     * )
+     * ),
+     * @OA\Response(
+     *  response=201,
+     * description="Les amis de l'utilisateur",
+     * @OA\MediaType(
+     *    mediaType="application/json",
+     *   @OA\Schema(
+     *    type="array",
+     *   @OA\Items(
+     *   type="integer",
+     *  example={805, 701, 632}
+     * )
+     * )
+     * ),
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="L'email n'appartient a personne",
+     * @OA\JsonContent(
+     * @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
+     * )
+     * )
+     * )
+     */
+    #[View(serializerGroups: ['ami_basic'])]
+    public function amisLecteur(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $email = $data['email'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        if ($lecteur === null) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec cet email',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $amis = $lecteur->getLecteursSuivis();
+        // limiter le nombre d'emprunt de chaque ami a 3
+
+
+        if (empty($amis)) {
+            return $this->json(['message' => 'No friends found'], 404);
+        }
+
+        return $this->json($amis, 200, [ ], ['groups' => 'lecteur_basic'])->setMaxAge(3600);
+    }
+
+    /**
+     * Renvoi les 4 dernières acquisitions de la bibliothèque
+     */
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/api/books', name: 'app_api_books')]
     public function books(EntityManagerInterface $entityManager): Response
@@ -103,16 +362,20 @@ class APIController extends AbstractController
     public function lastPosts(EntityManagerInterface $entityManager)
     {
         $livres = $entityManager->getRepository(Livre::class)->findBy([], ['dateAcquisition' => 'DESC'], 4);
+        $livres = array_slice($livres, 0, 4);
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
         }
 
-        return $this->json($livres, 200, [], ['groups' => 'livre_basic']);
+        return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
     }
 
 
-
+    /**
+     * Renvoi la liste des 4 derniers emprunts du lecteur
+     */
+    /*
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/books/last_emprunts', name: 'app_api_last_emprunts', methods: ['POST'])]
     public function lastEmprunts(EntityManagerInterface $entityManager, Request $request)
@@ -130,25 +393,24 @@ class APIController extends AbstractController
         $emprunts = array_slice($emprunts->toArray(), 0, 4);
 
         if (empty($emprunts)) {
-            return $this->json(['message' => 'No books found'], 404);
+            return $this->json(['message' => 'No books found'], 404)->setMaxAge(3600);
         }
 
         return $emprunts;
-    }
-
+    }*/
+    /**
+     * Recherche de livre en fonction du nom de l'auteur
+     */
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/books/research/', name: 'app_api_research', methods: ['GET'])]
     public function research(EntityManagerInterface $entityManager)
     {
         $name = $_GET['name'];
+
         if ($name == null) {
             return $this->json(['message' => 'No books found'], 404);
         }
-        $livres_titre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
-        $livres_titre = $entityManager->createQuery($livres_titre)->setParameter('name', $name . '%')->getResult();
-        if ($livres_titre == null) {
-            $livres_titre = [];
-        }
+
         $author = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
         $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getResult();
         if ($author == null) {
@@ -163,12 +425,10 @@ class APIController extends AbstractController
                 }
             }
         }
-        $livres = array_unique(array_merge($livres_titre, $livre_author), SORT_REGULAR);
-
+        $livres = array_unique($livre_author, SORT_REGULAR);
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
         }
-
         return $livres;
     }
 
@@ -186,6 +446,22 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No authors found'], 404);
         }
 
-        return $this->json($authors, 200, [], ['groups' => 'auteur_basic']);
+        return $this->json($authors, 200, [], ['groups' => 'auteur_basic'])->setMaxAge(3600);
+    }
+
+    // Route qui retourne les livres d'une categorie
+    #[Route('/books/category/{id}', name: 'app_api_books_category', methods: ['GET'])]
+    public function booksCategory(EntityManagerInterface $entityManager, $id)
+    {
+        $category = $entityManager->getRepository(Categorie::class)->find($id);
+        if ($category == null) {
+            return $this->json(['message' => 'No category found'], 404);
+        }
+        $livres = $category->getLivres();
+        if (empty($livres)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
     }
 }
