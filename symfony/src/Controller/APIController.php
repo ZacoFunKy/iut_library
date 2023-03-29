@@ -219,7 +219,7 @@ class APIController extends AbstractController
     }
 
     #[Route('/emprunt', name: 'api_emprunt', methods: ['POST'])]
-   /**
+    /**
      * @OA\Post(
      * path="/api/emprunt",
      * tags={"emprunt"},
@@ -309,17 +309,17 @@ class APIController extends AbstractController
      *  example={805, 701, 632}
      * )
      * )
-        * ),
-        * ),
-        * @OA\Response(
-        * response=401,
-        * description="L'email n'appartient a personne",
-        * @OA\JsonContent(
-        * @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
-        * )
-        * )
-        * )
-        */
+     * ),
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="L'email n'appartient a personne",
+     * @OA\JsonContent(
+     * @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
+     * )
+     * )
+     * )
+     */
     #[View(serializerGroups: ['ami_basic'])]
     public function amisLecteur(EntityManagerInterface $entityManager, Request $request)
     {
