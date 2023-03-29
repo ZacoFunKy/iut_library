@@ -346,4 +346,54 @@ class APIController extends AbstractController
 
         return $livres;
     }
+
+    #[Route('/recommandation', name: 'app_api_recommandation', methods: ['POST'])]
+    public function recommandation(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $token = $data['token'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
+        if (null === $lecteur) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec ce token',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $personnes = array();
+        var_dump(sizeof($lecteur->getLecteursSuivis()));
+        $q = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
+            ->where('e.lecteur = :lecteur')
+            ->setParameter('lecteur', $lecteur)
+            ->getQuery()
+            ->getResult();
+        $listLivre=array();
+        foreach ($q as $myE) {
+            array_push($listLivre, $myE->getLivre());
+        }
+        $q2 = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
+            ->where('e.livre IN (:list)')
+            ->setParameter('list', $listLivre)
+            ->groupBy('e.lecteur')
+            ->orderBy("Count('e.livre')", "DESC")
+            ->getQuery()
+            ->getResult();
+        var_dump("ici");
+        var_dump(sizeof($q2));
+        foreach ($q2 as $t) {
+            var_dump($t->getLecteur()->getNomlecteur());
+        }
+        var_dump(sizeof($q));
+        foreach ($q as $emp) {
+            array_push($personnes, $emp->getId());
+        }
+        //$emprunts = array_slice($emprunts, 0, 4);
+
+        if (empty($emprunts)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $emprunts;
+    }
+    
+
 }
