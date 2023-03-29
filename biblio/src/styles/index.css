@@ -60,6 +60,10 @@ code {
   position: relative;
 }
 
+.retour {
+  border-radius: 5px 20px;
+}
+
 @media screen and (max-width: 768px) {
   .text {
     display: none;

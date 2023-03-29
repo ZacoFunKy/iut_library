@@ -97,7 +97,7 @@ function Navbar() {
         <div className="hidden lg:flex flex-row items-center">
           <Link
             to="/"
-            className={`text text-xl ml-5 ${
+            className={`text text-xl m-5 ${
               location.pathname === "/"
                 ? "text-[#009999] underline underline-offset-8"
                 : "hover:underline underline-offset-8 "
@@ -108,7 +108,7 @@ function Navbar() {
           {localStorage.getItem("token") !== null ? (
             <Link
               to="/amis"
-              className={`text text-xl m-5 ${
+              className={`text text-xl mr-5 ${
                 location.pathname === "/amis"
                   ? "text-[#009999] underline underline-offset-8"
                   : "hover:underline underline-offset-8 "

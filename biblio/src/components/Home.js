@@ -18,11 +18,14 @@ function Home({ setBook }) {
       });
   }, [setDerniersLivres]);
 
+  // fais pareil que au dessus mais avec un bearer token
   useEffect(() => {
     fetch("https://localhost:8000/api/lastEmprunt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        // mettre le bearer token
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
         token: localStorage.getItem("token"),
@@ -37,6 +40,7 @@ function Home({ setBook }) {
         console.log(error);
       });
   }, [setDerniersEmprunts]);
+
 
 
   return (
