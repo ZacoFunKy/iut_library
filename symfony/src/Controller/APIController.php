@@ -366,7 +366,7 @@ class APIController extends AbstractController
             ->setParameter('lecteur', $lecteur)
             ->getQuery()
             ->getResult();
-        $listLivre=array();
+        $listLivre = array();
         foreach ($q as $myE) {
             array_push($listLivre, $myE->getLivre());
         }
@@ -394,6 +394,4 @@ class APIController extends AbstractController
 
         return $emprunts;
     }
-    
-
 }
