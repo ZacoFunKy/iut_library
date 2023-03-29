@@ -960,3 +960,8 @@ d3f186,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929667,4200eb,
 29314d,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093955,1c6dca,405
 1c6dca,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093955,,405
 83d114,::1,POST,https://localhost:8000/api/lastEmprunt,1680094045,,200
+96056a,::1,POST,https://localhost:8000/api/lastEmprunt,1680094153,,200
+dd2704,::1,POST,https://localhost:8000/api/amis,1680094157,,200
+d8b96c,::1,POST,https://localhost:8000/api/lastEmprunt,1680094160,,200
+026abb,::1,POST,https://localhost:8000/api/amis,1680094162,,200
+82a9c2,::1,POST,https://localhost:8000/api/lastEmprunt,1680094171,,200
