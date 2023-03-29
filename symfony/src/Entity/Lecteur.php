@@ -68,6 +68,8 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lecteursSuivis = new ArrayCollection();
         $this->lecteursQuiMeSuivent = new ArrayCollection();
         $this->emprunts = new ArrayCollection();
+        $ro = ["ROLE_USER"];
+        $this->setRoles($ro);
     }
 
     public function getId(): ?int

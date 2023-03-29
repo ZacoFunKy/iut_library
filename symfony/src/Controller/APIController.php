@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use App\Entity\Livre;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -20,6 +20,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use FOS\RestBundle\Controller\Annotations\View;
 use OpenApi\Annotations as OA;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/api')]
 class APIController extends AbstractController
@@ -157,6 +158,8 @@ class APIController extends AbstractController
         ];
         return new JsonResponse($response);
     }
+    #[IsGranted("ROLE_USER")]
+    #[Security(name: "Bearer")]
     #[Route('/lastEmprunt', name: 'api_lastEmprunt', methods: ['POST'])]
     /**
      * @OA\Post(
@@ -260,11 +263,11 @@ class APIController extends AbstractController
     {
         $json = $request->getContent();
         $data = json_decode($json, true);
-        $email = $data['email'];
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        $id = $data['id'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['id' => $id]);
         if (null === $lecteur) {
             return $this->json([
-                'message' => 'Pas de lecteur avec cet email',
+                'message' => 'Pas de lecteur avec cet id',
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -519,5 +522,53 @@ class APIController extends AbstractController
         }
 
         return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
+    }
+
+    #[Route('/recommandation', name: 'app_api_recommandation', methods: ['POST'])]
+    public function recommandation(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $token = $data['token'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
+        if (null === $lecteur) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec ce token',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $personnes = array();
+        var_dump(sizeof($lecteur->getLecteursSuivis()));
+        $q = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
+            ->where('e.lecteur = :lecteur')
+            ->setParameter('lecteur', $lecteur)
+            ->getQuery()
+            ->getResult();
+        $listLivre = array();
+        foreach ($q as $myE) {
+            array_push($listLivre, $myE->getLivre());
+        }
+        $q2 = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
+            ->where('e.livre IN (:list)')
+            ->setParameter('list', $listLivre)
+            ->groupBy('e.lecteur')
+            ->orderBy("Count('e.livre')", "DESC")
+            ->getQuery()
+            ->getResult();
+        var_dump("ici");
+        var_dump(sizeof($q2));
+        foreach ($q2 as $t) {
+            var_dump($t->getLecteur()->getNomlecteur());
+        }
+        var_dump(sizeof($q));
+        foreach ($q as $emp) {
+            array_push($personnes, $emp->getId());
+        }
+        //$emprunts = array_slice($emprunts, 0, 4);
+
+        if (empty($emprunts)) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+
+        return $emprunts;
     }
 }
