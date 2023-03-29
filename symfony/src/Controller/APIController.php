@@ -359,7 +359,6 @@ class APIController extends AbstractController
                 'message' => 'Pas de lecteur avec ce token',
             ], Response::HTTP_UNAUTHORIZED);
         }
-        
         $q = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
             ->where('e.lecteur = :lecteur')
             ->setParameter('lecteur', $lecteur)
@@ -382,7 +381,7 @@ class APIController extends AbstractController
                 ->setMaxResults(4)
                 ->getQuery()
                 ->getResult();
-        }else {
+        } else {
             $q3 = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e2')
                 ->where('e2.livre IN (:list)')
                 ->setParameter('list', $listLivre)
@@ -394,7 +393,6 @@ class APIController extends AbstractController
                 ->getQuery()
                 ->getResult();
         }
-        
         $result = array();
         foreach ($q3 as $t) {
             array_push($result, $t->getLecteur()->getId());
@@ -410,10 +408,9 @@ class APIController extends AbstractController
                 ->setParameter('lecteur', $lecteur)
                 ->getQuery()
                 ->getScalarResult();
-            
             $result = array();
             while (count($result) < 4) {
-                $rand = rand(0, count($q2)-1);
+                $rand = rand(0, count($q2) - 1);
                 if (!in_array($q2[$rand], $result)) {
                     array_push($result, $q2[$rand]);
                 }
