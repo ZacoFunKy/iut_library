@@ -28,7 +28,7 @@ class APIController extends AbstractController
     /**
      * @OA\Post(
      * path="/api/register",
-     * tags={"register"},
+     * tags={"Lecteur"},
      * summary="Creer un lecteur",
      * description="Enregistre un nouveau lecteur dans la base de donnée",
      * operationId="enr",
@@ -105,7 +105,7 @@ class APIController extends AbstractController
     /**
      * @OA\Post(
      * path="/api/login",
-     * tags={"login"},
+     * tags={"Lecteur"},
      * summary="Login un lecteur",
      * description="Se Login avec un utilisateur en lui générant un token",
      * operationId="login",
@@ -162,7 +162,7 @@ class APIController extends AbstractController
     /**
      * @OA\Post(
      * path="/api/lastEmprunt",
-     * tags={"lastEmprunt"},
+     * tags={"Lecteur"},
      * summary="dernier emprunt d'un lecteur",
      * description="Donne les dernier emprunt d'un lecteur en fonction de son token",
      * operationId="lastEmprunt",
@@ -230,10 +230,10 @@ class APIController extends AbstractController
     }
 
     #[Route('/emprunt', name: 'api_emprunt', methods: ['POST'])]
-   /**
+    /**
      * @OA\Post(
      * path="/api/emprunt",
-     * tags={"emprunt"},
+     * tags={"Lecteur"},
      * summary="dernier emprunt d'un lecteur",
      * description="Donne les dernier emprunt d'un lecteur en fonction de son email",
      * operationId="emprunt",
@@ -262,7 +262,7 @@ class APIController extends AbstractController
      *   response=401,
      *  description="L'email n'appartient a personne",
      * @OA\JsonContent(
-     *  @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
+     *  @OA\Property(property="message ", type="string",example="Pas de lecteur avec cet email"),
      * )
      * )
      * )
@@ -272,12 +272,15 @@ class APIController extends AbstractController
     {
         $json = $request->getContent();
         $data = json_decode($json, true);
-        $id = $data['id'];
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['id' => $id]);
+        $email = $data['email'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
         if (null === $lecteur) {
-            return $this->json([
-                'message' => 'Pas de lecteur avec cet id',
-            ], Response::HTTP_UNAUTHORIZED);
+            return $this->json(
+                [
+                    'message' => 'Pas de lecteur avec cet email',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
         }
         $emprunts = array();
         $q = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
@@ -302,8 +305,39 @@ class APIController extends AbstractController
     /**
      * Renvoi les 4 dernières acquisitions de la bibliothèque
      */
-    #[View(serializerGroups: ['lecteur_basic'])]
-    #[Route('/books/last_posts', name: 'app_api_last_posts')]
+    #[View(serializerGroups: ['livre_basic'])]
+    #[Route('/books/last_posts', name: 'app_api_last_posts', methods: ['GET'])]
+    /**
+     * @OA\Get(
+     * path="/api/books/last_posts",
+     * tags={"Livre"},
+     * summary="dernier livres ajoutés",
+     * description="Donne les dernier livres ajoutés",
+     * operationId="last_posts",
+     * @OA\Response(
+     *  response=200,
+     * description="Les livres",
+     * @OA\MediaType(
+     *    mediaType="application/json",
+     * ),
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Pas de livres",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="No books found"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Erreur de requête",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Bad request"),
+     * )
+     * )
+     * )
+     * )
+     */
     public function lastPosts(EntityManagerInterface $entityManager)
     {
         $livres = $entityManager->getRepository(Livre::class)->findBy([], ['dateAcquisition' => 'DESC'], 4);
@@ -314,12 +348,52 @@ class APIController extends AbstractController
 
         return $livres;
     }
-
     /**
      * Recherche de livre en fonction du titre de l'oeuvre et du nom de l'auteur
      */
     #[View(serializerGroups: ['livre_basic'])]
-    #[Route('/books/research/', name: 'app_api_research', methods: ['GET'])]
+    #[Route('/books/research', name: 'app_api_research', methods: ['GET'])]
+    /**
+     * @OA\Get(
+     * path="/api/books/research",
+     * tags={"Livre"},
+     * summary="Recherche de livre",
+     * description="Recherche de livre en fonction du titre de l'oeuvre et du nom de l'auteur",
+     * operationId="research",
+     * @OA\Parameter(
+     * name="name",
+     * in="query",
+     * description="Nom du livre ou de l'auteur",
+     * required=true,
+     * @OA\Schema(
+     * type="string",
+     * example="Harry Potter"
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Les livres",
+     * @OA\MediaType(
+     *   mediaType="application/json",
+     * ),
+     * ),
+     * @OA\Response(
+     *  response=404,
+     * description="Pas de livres",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="No books found"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Erreur de requête",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Bad request"),
+     * )
+     * )
+     * )
+     * )
+     */
     public function research(EntityManagerInterface $entityManager)
     {
         $name = $_GET['name'];
@@ -331,7 +405,7 @@ class APIController extends AbstractController
         if ($livres_titre == null) {
             $livres_titre = [];
         }
-        $author = "SELECT a FROM App\Entity\Auteur a WHERE a.nom LIKE :name";
+        $author = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
         $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getOneOrNullResult();
         if ($author == null) {
             $livre_author = [];
@@ -339,15 +413,368 @@ class APIController extends AbstractController
             $livre_author = $author->getLivres();
         }
         $livres = array_unique(array_merge($livres_titre, $livre_author), SORT_REGULAR);
+        $livres[] = ['TotalResponse' => count($livres)];
 
         if (empty($livres)) {
             return $this->json(['message' => 'No books found'], 404);
         }
-
         return $livres;
     }
+
+    #[Route('/books/{id}', name: 'app_api_book', methods: ['GET'])]
+    /**
+     * @OA\Get(
+     * path="/api/books/{id}",
+     * tags={"Livre"},
+     * summary="Renvoi un livre",
+     * description="Renvoi un livre en fonction de son id",
+     *  operationId="book",
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="id du livre",
+     *  required=true,
+     * @OA\Schema(
+     * type="integer",
+     * example="1"
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Le livre",
+     * @OA\MediaType(
+     *  mediaType="application/json",
+     * ),
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Pas de livres",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="No books found"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Erreur de requête",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Bad request"),
+     * )
+     * )
+     * )
+     * )
+     */
+    public function book(EntityManagerInterface $entityManager, $id, SerializerInterface $serializer)
+    {
+        $livre = $entityManager->getRepository(Livre::class)->find($id);
+        if (null === $livre) {
+            return $this->json(['message' => 'No books found'], 404);
+        }
+        $json = $serializer->serialize($livre, 'json', ['groups' => 'livre_basic']);
+        return new JsonResponse($json, 200, [], true);
+    }
+
+
+    #[View(serializerGroups: ['livre_basic'])]
+    #[Route('/friends', name: 'app_api_return', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/friends",
+     * tags={"Friends"},
+     * summary="Renvoi la liste des amis",
+     * description="Renvoi la liste des amis d'un utilisateur",
+     * operationId="return",
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * @OA\Property(property="token",   type="string", example="fzsef"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="La liste des amis",
+     * @OA\MediaType(
+     * mediaType="application/json",
+     * ),
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Pas d'amis",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="You don't have any friends"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Erreur de requête",
+     * @OA\JsonContent(
+     *
+     * @OA\Property(property="message", type="string", example="missing credentials"),
+     * )
+     * )
+     * )
+     * )
+     */
+    public function listfriends(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        if (!isset($data['token'])) {
+            return $this->json(
+                [
+                    'message' => 'missing credentials',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $token = $data['token'];
+        $user = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
+        if (null === $user) {
+            return $this->json(
+                [
+                    'message' => 'No user found',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $friends = $user->getLecteursQuiMeSuivent();
+        if (empty($friends)) {
+            return new JsonResponse(["message" => "You don't have any friends"]);
+        }
+        $response = [];
+        foreach ($friends as $friend) {
+            $emprunts = [];
+            foreach ($friend->getEmprunts() as $emprunt) {
+                $author = [];
+                foreach ($emprunt->getLivre()->getAuteurs() as $auteur) {
+                    $author[] = $auteur->getIntituleAuteur();
+                }
+                $emprunts[] = [
+                    'id' => $emprunt->getId(),
+                    'dateEmprunt' => $emprunt->getDateEmprunt(),
+                    'titre' => $emprunt->getLivre()->getTitre(),
+                    'description' => $emprunt->getLivre()->getDescription(),
+                    'auteur' => $author,
+                    'dateAcquisition' => $emprunt->getLivre()->getDateAcquisition(),
+                ];
+            }
+            $response[] = [
+                'email' => $friend->getEmail(),
+                'prenom' => $friend->getPrenomLecteur(),
+                'nom' => $friend->getNomLecteur(),
+                'photoProfil' => $friend->getImagedeprofil(),
+                'TotalEmprunts' => count($friend->getEmprunts()),
+                'empreunts' => $emprunts
+            ];
+        }
+
+        return new JsonResponse($response);
+    }
+
+
+    #[Route('/add_friend', name: 'app_api_add_friend', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/add_friend",
+     * tags={"Friends"},
+     * summary="Ajoute un ami",
+     * description="Ajoute un ami à un utilisateur",
+     * operationId="add_friend",
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * @OA\Property(property="token",     type="string", example="fzsef"),
+     * @OA\Property(property="id_freind", type="integer", example="605"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="L'ami a été ajouté",
+     * @OA\JsonContent(
+     * @OA\Property(property="message",   type="string", example="Friend added"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Pas d'amis",
+     * @OA\JsonContent(
+     * @OA\Property(property="message",   type="string", example="Your freind is not in the database"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Erreur de requête",
+     * @OA\JsonContent(
+     * @OA\Property(property="message",   type="string", example="missing credentials"),
+     * )
+     * )
+     * )
+     * )
+     */
+    public function addfriend(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        if (!isset($data['token'])) {
+            return $this->json(
+                [
+                    'message' => 'missing credentials',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $token = $data['token'];
+        $user = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
+        if (null === $user) {
+            return $this->json(
+                [
+                    'message' => 'No user found',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $friend = $entityManager->getRepository(Lecteur::class)->findOneBy(['id' => $data['id_freind']]);
+        if (null === $friend) {
+            return $this->json(
+                [
+                    'message' => 'Your freind is not in the database',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $user->addLecteursSuivi($friend);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new JsonResponse(["message" => "Friend added"]);
+    }
+
+    #[Route('/delete_friend', name: 'app_api_delete_friend', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/delete_friend",
+     * tags={"Friends"},
+     * summary="Supprime un ami",
+     * description="Supprime un ami à un utilisateur",
+     * operationId="delete_friend",
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * @OA\Property(property="token",     type="string", example="fzsef"),
+     * @OA\Property(property="id_freind", type="integer", example="605"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="L'ami a été supprimé",
+     * @OA\JsonContent(
+     * @OA\Property(property="message",   type="string", example="Friend deleted"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Pas d'amis",
+     * @OA\JsonContent(
+     * @OA\Property(property="message",   type="string", example="Your freind is not in the database"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Erreur de requête",
+     * @OA\JsonContent(
+     * @OA\Property(property="message",   type="string", example="missing credentials"),
+     * )
+     * )
+     * )
+     * )
+     */
+    public function deletefriend(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        if (!isset($data['token'])) {
+            return $this->json(
+                [
+                    'message' => 'missing credentials',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $token = $data['token'];
+        $user = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
+        if (null === $user) {
+            return $this->json(
+                [
+                    'message' => 'No user found',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $friend = $entityManager->getRepository(Lecteur::class)->findOneBy(['id' => $data['id_freind']]);
+        if (null === $friend) {
+            return $this->json(
+                [
+                    'message' => 'Your freind is not in the database',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $friends = $user->getLecteursQuiMeSuivent();
+        if (empty($friends)) {
+            return new JsonResponse(["message" => "You don't have any friends"]);
+        }
+        $response = [];
+        foreach ($friends as $friend) {
+            $response[] = $friend->getId();
+        }
+        if (!in_array($data['id_freind'], $response)) {
+            return new JsonResponse(["message" => "You don't have this friend"]);
+        }
+        $user->removeLecteursSuivi($friend);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new JsonResponse(["message" => "Friend deleted"]);
+    }
+
     #[View(serializerGroups: ['lecteur_basic'])]
     #[Route('/recommandation', name: 'app_api_recommandation', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/recommandation",
+     * tags={"Lecteur"},
+     * summary="Recommandation d'utilisateur en fonction de ses emprunts",
+     * description="Donne les recommandation d'utilisateur en fonction de ses emprunts",
+     * operationId="recommandation",
+     * @OA\RequestBody(
+     *  required=true,
+     * @OA\JsonContent(
+     * required={"token"},
+     * @OA\Property(property="token", type="string", example="token"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=201,
+     * description="Les recommandations de l'utilisateur",
+     * @OA\MediaType(
+     * mediaType="application/json",
+     * @OA\Schema(
+     * type="array",
+     * @OA\Items(
+     * type="integer",
+     * example={805, 701, 632}
+     * )
+     * )
+     * ),
+     * ),
+     * @OA\Response(
+     *  response=401,
+     *  description="L'email n'appartient a personne",
+     * @OA\JsonContent(
+     * @OA\Property(property="message  ", type="string",example="Pas de lecteur avec ce token"),
+     * )
+     * )
+     * )
+     * )
+     * 
+     */
     public function recommandation(EntityManagerInterface $entityManager, Request $request)
     {
         $json = $request->getContent();
