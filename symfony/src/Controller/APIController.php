@@ -302,7 +302,7 @@ class APIController extends AbstractController
     /**
      * Renvoi les 4 dernières acquisitions de la bibliothèque
      */
-    #[View(serializerGroups: ['livre_basic'])]
+    #[View(serializerGroups: ['lecteur_basic'])]
     #[Route('/books/last_posts', name: 'app_api_last_posts')]
     public function lastPosts(EntityManagerInterface $entityManager)
     {
@@ -346,7 +346,7 @@ class APIController extends AbstractController
 
         return $livres;
     }
-
+    #[View(serializerGroups: ['lecteur_basic'])]
     #[Route('/recommandation', name: 'app_api_recommandation', methods: ['POST'])]
     public function recommandation(EntityManagerInterface $entityManager, Request $request)
     {
@@ -359,8 +359,7 @@ class APIController extends AbstractController
                 'message' => 'Pas de lecteur avec ce token',
             ], Response::HTTP_UNAUTHORIZED);
         }
-        $personnes = array();
-        var_dump(sizeof($lecteur->getLecteursSuivis()));
+        
         $q = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
             ->where('e.lecteur = :lecteur')
             ->setParameter('lecteur', $lecteur)
@@ -370,28 +369,57 @@ class APIController extends AbstractController
         foreach ($q as $myE) {
             array_push($listLivre, $myE->getLivre());
         }
-        $q2 = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e')
-            ->where('e.livre IN (:list)')
-            ->setParameter('list', $listLivre)
-            ->groupBy('e.lecteur')
-            ->orderBy("Count('e.livre')", "DESC")
-            ->getQuery()
-            ->getResult();
-        var_dump("ici");
-        var_dump(sizeof($q2));
-        foreach ($q2 as $t) {
-            var_dump($t->getLecteur()->getNomlecteur());
+        if (count($lecteur->getLecteursSuivis()) > 0) {
+            $q3 = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e2')
+                ->where('e2.livre IN (:list)')
+                ->setParameter('list', $listLivre)
+                ->andwhere('e2.lecteur != :lecteur')
+                ->setParameter('lecteur', $lecteur)
+                ->andwhere('e2.lecteur NOT IN (:listLec)')
+                ->setParameter('listLec', $lecteur->getLecteursSuivis())
+                ->groupBy('e2.lecteur')
+                ->orderBy("Count('e.livre')", "DESC")
+                ->setMaxResults(4)
+                ->getQuery()
+                ->getResult();
+        }else {
+            $q3 = $entityManager->getRepository(Emprunt::class)->createQueryBuilder('e2')
+                ->where('e2.livre IN (:list)')
+                ->setParameter('list', $listLivre)
+                ->andwhere('e2.lecteur != :lecteur')
+                ->setParameter('lecteur', $lecteur)
+                ->groupBy('e2.lecteur')
+                ->orderBy("Count('e.livre')", "DESC")
+                ->setMaxResults(4)
+                ->getQuery()
+                ->getResult();
         }
-        var_dump(sizeof($q));
-        foreach ($q as $emp) {
-            array_push($personnes, $emp->getId());
+        
+        $result = array();
+        foreach ($q3 as $t) {
+            array_push($result, $t->getLecteur()->getId());
         }
-        //$emprunts = array_slice($emprunts, 0, 4);
 
-        if (empty($emprunts)) {
-            return $this->json(['message' => 'No books found'], 404);
+        if (empty($result)) {
+            var_dump("tertqsgqfgqsdf");
+            $q2 = $entityManager->getRepository(Lecteur::class)->createQueryBuilder('l')
+                ->select('l.id')
+                ->andwhere('l != :lecteur')
+                ->setParameter('lecteur', $lecteur)
+                ->andwhere(':lecteur NOT MEMBER OF l.lecteursQuiMeSuivent')
+                ->setParameter('lecteur', $lecteur)
+                ->getQuery()
+                ->getScalarResult();
+            
+            $result = array();
+            while (count($result) < 4) {
+                $rand = rand(0, count($q2)-1);
+                if (!in_array($q2[$rand], $result)) {
+                    array_push($result, $q2[$rand]);
+                }
+            }
+            return $result;
         }
-
-        return $emprunts;
+        return $result;
     }
 }
