@@ -214,8 +214,7 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No books found'], 404);
         }
 
-        // renvoie les emrunts sous forme de tableau json avec les groups emprunt_basic et livre_basic combinée et le mettre en cache
-        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']])->setSharedMaxAge(3600);
+        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']]);
     }
 
     #[Route('/emprunt', name: 'api_emprunt', methods: ['POST'])]
@@ -293,7 +292,6 @@ class APIController extends AbstractController
      *  @OA\JsonContent(
      *   required={"email"},
      *  @OA\Property(property="email", type="string", example="
-     *  
      * "),
      * )
      * ),
