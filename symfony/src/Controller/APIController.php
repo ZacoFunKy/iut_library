@@ -214,7 +214,7 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No books found'], 404);
         }
 
-        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']]);
+        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']])->setMaxAge(3600);
     }
 
     #[Route('/emprunt', name: 'api_emprunt', methods: ['POST'])]
@@ -275,7 +275,7 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No books found'], 404);
         }
 
-        return $emprunts;
+        return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']])->setMaxAge(3600);
     }
 
     // route qui renvoie les amis d'un lecteur

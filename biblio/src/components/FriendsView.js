@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import pasDeCouv from "../assets/pas-de-couv.png";
 
 function FriendsView() {
   const [friends, setFriends] = useState([]);
 
-
   // fais la meme requete que au dessus mais en fetch
-   useEffect(() => {
+  useEffect(() => {
     fetch("https://localhost:8000/api/amis", {
       method: "POST",
       headers: {
@@ -27,7 +25,6 @@ function FriendsView() {
       });
   }, [setFriends]);
 
-
   return (
     <div className="friends-view">
       <h1>Liste des amis</h1>
@@ -42,19 +39,25 @@ function FriendsView() {
                 <div className="flex">
                   {item.emprunts.map((emprunt) => {
                     return (
-                      <div className="w-60" key={emprunt.livre.titre}>
-                        {emprunt.livre.titre.length > 20
-                          ? emprunt.livre.titre.substr(0, 20) + "..."
-                          : emprunt.livre.titre}
+                      <div className="w-60 text-xs text-center flex flex-col items-center" key={emprunt.livre.titre}>
                         {emprunt.livre.couverture === null ? (
-                          <img src={pasDeCouv} alt="pas-de-couv" width="50px"></img>
+                          <img
+                            src={pasDeCouv}
+                            alt="pas-de-couv"
+                            width="50px"
+                            className="h-20"
+                          ></img>
                         ) : (
                           <img
                             src={emprunt.livre.couverture}
                             alt="couv"
                             width="50px"
+                            className="h-20"
                           ></img>
                         )}
+                        {emprunt.livre.titre.length > 20
+                          ? emprunt.livre.titre.substr(0, 20) + "..."
+                          : emprunt.livre.titre}
                       </div>
                     );
                   })}

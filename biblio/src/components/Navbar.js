@@ -104,11 +104,11 @@ function Navbar() {
             Amis
           </Link>
           {localStorage.getItem("token") !== null ? (
-            <div className="flex">
+            <div className="flex items-center">
               <p className="text-xl"> {localStorage.getItem("email")} </p>
               <button
-                className="text text-xl ml-5 mr-5
-                    hover:underline underline-offset-8"
+                className="bg-red-600 p-2 rounded-xl text text-xl ml-5 mr-5
+                    hover:bg-red-500"
                 onClick={handleDeco}
               >
                 Deconnexion
