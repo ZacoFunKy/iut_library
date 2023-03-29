@@ -17,7 +17,7 @@ class Auteur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['auteur_basic', "livre_basic"])]
+    #[Groups(['auteur_basic', 'livre_basic'])]
     private ?string $intituleAuteur = null;
 
     #[ORM\ManyToMany(targetEntity: Livre::class, mappedBy: 'auteurs')]

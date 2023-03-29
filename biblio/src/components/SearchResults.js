@@ -1,52 +1,32 @@
 import React, { Fragment } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Book from "./Book";
 
 function SearchResults({
   results,
   setBook,
-  setSearchTerm,
   indexPage,
   setIndex,
 }) {
-  const navigation = useNavigate();
 
   // page navigation suivante
   const nextPage = () => {
     setIndex(indexPage + 10);
-    console.log(indexPage);
   };
 
   // page navigation précédente
   const previousPage = () => {
     setIndex(indexPage - 10);
-    console.log(indexPage);
   };
 
   return (
     <Fragment>
-      <div className="m-5">
+      <div className="m-12  flex-row flex-wrap justify-center">
         {results.length > 0 ? (
-          <ol>
+          <div className="flex flex-row flex-wrap justify-center">
             {results.map((book) => (
-              <li key={book.id} className="m-5">
-                <Link
-                  className="p-2 text-black hover:cursor-pointer hover:bg-slate-400"
-                  onMouseDown={(event) => {
-                    event.preventDefault();
-                    setBook(book);
-                    navigation("/book");
-                    setSearchTerm("");
-                  }}
-                >
-                  {book.titre !== null ? (
-                    <span>{book.titre}</span>
-                  ) : (
-                    <span>Titre non renseigné</span>
-                  )}
-                </Link>
-              </li>
+              <Book props={book} setBook={setBook} />
             ))}
-          </ol>
+          </div>
         ) : (
           <span>Aucun livre pour cette auteur</span>
         )}

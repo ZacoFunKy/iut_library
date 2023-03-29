@@ -5,6 +5,11 @@ function Navbar() {
   const location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
 
+  function handleDeco() {
+    localStorage.clear();
+    window.location.reload();
+  }
+
   return (
     <div className="">
       <button
@@ -59,17 +64,21 @@ function Navbar() {
             >
               Amis
             </Link>
-            <Link
-              to="/connexion"
-              className={`text text-xl m-5 ${
-                location.pathname === "/connexion"
-                  ? "text-[#009999] underline underline-offset-8"
-                  : "hover:underline underline-offset-8"
-              }`}
-              onClick={() => setShowMenu(!showMenu)}
-            >
-              Connexion
-            </Link>
+            {localStorage.getItem("token") !== null ? (
+              <p>Connecté</p>
+            ) : (
+              <Link
+                to="/connexion"
+                className={`text text-xl m-5 ${
+                  location.pathname === "/connexion"
+                    ? "text-[#009999] underline underline-offset-8"
+                    : "hover:underline underline-offset-8"
+                }`}
+                onClick={() => setShowMenu(!showMenu)}
+              >
+                Connexion
+              </Link>
+            )}
           </div>
         </div>
       ) : (
@@ -94,16 +103,29 @@ function Navbar() {
           >
             Amis
           </Link>
-          <Link
-            to="/connexion"
-            className={`text text-xl mr-5 ${
-              location.pathname === "/connexion"
-                ? "text-[#009999] underline underline-offset-8"
-                : "hover:underline underline-offset-8"
-            }`}
-          >
-            Connexion
-          </Link>
+          {localStorage.getItem("token") !== null ? (
+            <div className="flex items-center">
+              <p className="text-xl"> {localStorage.getItem("email")} </p>
+              <button
+                className="bg-red-600 p-2 rounded-xl text text-xl ml-5 mr-5
+                    hover:bg-red-500"
+                onClick={handleDeco}
+              >
+                Deconnexion
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/connexion"
+              className={`text text-xl mr-5 ${
+                location.pathname === "/connexion"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8"
+              }`}
+            >
+              Connexion
+            </Link>
+          )}
         </div>
       )}
     </div>

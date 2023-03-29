@@ -2,10 +2,14 @@ import { React, useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function SearchBar({ setBook, searchTerm, setSearchTerm, setResults, indexPage }) {
+function SearchBar({
+  setBook,
+  searchTerm,
+  setSearchTerm,
+  setResults,
+  indexPage,
+}) {
   const [listSuggestions, setListSuggestions] = useState([]);
-
-  console.log(indexPage);
 
   const navigation = useNavigate();
   const [focused, setFocused] = useState(false);
@@ -21,40 +25,42 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults, indexPage }
     }
   };
 
-
-
   useEffect(() => {
-    if (searchTerm.length >= 1) {
-      fetch(
-        `https://localhost:8000/api/books/research/?name=${searchTerm}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setResults(data.slice(indexPage, indexPage + 10));
-          
-          console.log(data);
-        });
-    } else {
-      setResults([]);
-    }
+    const search = setTimeout(() => {
+      if (searchTerm.length >= 1) {
+        fetch(`https://localhost:8000/api/books/research/?name=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setResults(data.slice(indexPage, indexPage + 10));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        setResults([]);
+      }
+    }, 1000);
+    return () => clearTimeout(search);
   }, [indexPage, searchTerm, setResults]);
 
+  // pareil que auddessus mais avec fetch
   useEffect(() => {
-    if (searchTerm.length >= 1) {
-      fetch(
-        `https://localhost:8000/api/authors/research/?name=${searchTerm}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setListSuggestions(data.slice(0,10));
-          console.log(data);
-        });
-    } else {
-      setListSuggestions([]);
-    }
+    const search = setTimeout(() => {
+      if (searchTerm.length >= 4) {
+        fetch(`https://localhost:8000/api/authors/research/?name=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setListSuggestions(data.slice(0, 10));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        setListSuggestions([]);
+      }
+    }, 1000);
+    return () => clearTimeout(search);
   }, [searchTerm, setListSuggestions]);
-
-  // 
 
 
   return (
@@ -70,7 +76,10 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults, indexPage }
             onFocus={onFocus}
             onBlur={onBlur}
           />
-          <button className="loupe p-1.5 pl-3 pr-3 rounded-tr-md rounded-br-md">
+          <button
+            className="loupe p-1.5 pl-3 pr-3 rounded-tr-md rounded-br-md"
+            onMouseDown={(e) => navigation("/results")}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 27"
@@ -102,8 +111,9 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults, indexPage }
                     navigation("/results");
                   }}
                 >
-                  { suggestion.intituleAuteur.length > 20 ? (
-                  <p>{suggestion.intituleAuteur.substr(0,20)}...</p>) : (
+                  {suggestion.intituleAuteur.length > 20 ? (
+                    <p>{suggestion.intituleAuteur.substr(0, 20)}...</p>
+                  ) : (
                     <p>{suggestion.intituleAuteur}</p>
                   )}
                 </Link>
@@ -112,7 +122,6 @@ function SearchBar({ setBook, searchTerm, setSearchTerm, setResults, indexPage }
           </div>
         ) : null}
       </div>
-     
     </Fragment>
   );
 }

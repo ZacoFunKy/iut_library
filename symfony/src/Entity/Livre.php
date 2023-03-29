@@ -18,7 +18,7 @@ class Livre
     private ?int $id = null;
 
     #[ORM\Column(length: 500)]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $titre = null;
 
     #[ORM\Column(length: 2555, nullable: true)]
@@ -26,7 +26,7 @@ class Livre
     private ?string $description = null;
 
     #[ORM\Column(length: 2555, nullable: true)]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $couverture = null;
 
     #[ORM\Column(nullable: true)]
@@ -42,6 +42,7 @@ class Livre
 
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'livres')]
     #[ORM\JoinTable(name: 'livre_categorie')]
+    #[Groups(['livre_basic'])]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
