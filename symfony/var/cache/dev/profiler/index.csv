@@ -953,3 +953,9 @@ bb16da,::1,GET,https://localhost:8000/api/authors/research/?name=Laurence%20G.%2
 959d46,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929130,,405
 d3f186,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929667,4200eb,405
 4200eb,::1,GET,https://localhost:8000/api/books/last_emprunts,1679929667,,405
+050877,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093930,8de6d2,405
+8de6d2,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093930,,405
+144e6b,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093951,4d4c9e,405
+4d4c9e,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093951,,405
+29314d,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093955,1c6dca,405
+1c6dca,::1,GET,https://localhost:8000/api/books/last_emprunts,1680093955,,405
