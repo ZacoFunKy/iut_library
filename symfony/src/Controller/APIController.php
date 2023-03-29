@@ -336,7 +336,7 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No friends found'], 404);
         }
 
-        return $this->json($amis, 200, [], ['groups' => 'lecteur_basic']);
+        return $this->json($amis, 200, [], ['groups' => 'lecteur_basic'])->setMaxAge(3600);
     }
 
     /**
