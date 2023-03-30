@@ -28,7 +28,7 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['livre_basic'])]
     private ?string $email = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
     /**
@@ -48,7 +48,7 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['livre_basic'])]
     private ?string $prenomLecteur = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
+    #[ORM\Column(length: 2555, nullable: true)]
     #[Groups(['livre_basic'])]
     private $imageDeProfil = null;
 

@@ -40,7 +40,7 @@ class LecteurTest extends KernelTestCase
 
     function testAjoutEtRetraitAmi(){
         $existeDateRendu=false;
-        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='7' ";
+        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='2' ";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
@@ -49,14 +49,14 @@ class LecteurTest extends KernelTestCase
         } catch(PDOException $e) {
             echo "Query failed: " . $e->getMessage();
         }
-        $sql = "INSERT INTO test_lecteur_lecteur (lecteur_source, lecteur_target) VALUES ('7', '5')";
+        $sql = "INSERT INTO test_lecteur_lecteur (lecteur_source, lecteur_target) VALUES ('2', '5')";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
         } catch(PDOException $e) {
             echo "Query failed: " . $e->getMessage();
         }
-        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='7'";
+        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='2'";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
@@ -65,14 +65,14 @@ class LecteurTest extends KernelTestCase
         } catch(PDOException $e) {
             echo "Query failed: " . $e->getMessage();
         }
-        $sql = "INSERT INTO test_lecteur_lecteur (lecteur_source, lecteur_target) VALUES ('7', '6')";
+        $sql = "INSERT INTO test_lecteur_lecteur (lecteur_source, lecteur_target) VALUES ('2', '6')";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
         } catch(PDOException $e) {
             echo "Query failed: " . $e->getMessage();
         }
-        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='7'";
+        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='2'";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
@@ -81,13 +81,13 @@ class LecteurTest extends KernelTestCase
         } catch(PDOException $e) {
             echo "Query failed: " . $e->getMessage();
         }
-        $sql = "DELETE FROM `test_lecteur_lecteur` WHERE lecteur_source='7'";
+        $sql = "DELETE FROM `test_lecteur_lecteur` WHERE lecteur_source='2'";
         try {
             $stmt = $this->pdo->query($sql);    
         } catch(PDOException $e) {
             echo "Query failed: " . $e->getMessage();
         }
-        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='7' ";
+        $sql = "SELECT * FROM `test_lecteur_lecteur` WHERE lecteur_source='2' ";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
