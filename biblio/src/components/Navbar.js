@@ -11,6 +11,12 @@ function Navbar() {
     retourMenu("/");
     window.location.reload();
   }
+  
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 1024) {
+      setShowMenu(false);
+    }
+  });
 
   return (
     <div className="">
@@ -42,11 +48,11 @@ function Navbar() {
       </button>
 
       {showMenu ? (
-        <div className="fixed inset-0 z-10 flex items-center justify-center bg-white">
-          <div className="lg:hidden flex flex-col items-center">
+        <div className="fixed inset-0 z-10 flex items-center ">
+          <div className="lg:hidden flex flex-col items-center justify-center bg-white h-full w-full ">
             <Link
               to="/"
-              className={`text text-xl m-5 ${
+              className={`text text-xl mb-5 ${
                 location.pathname === "/"
                   ? "text-[#009999] underline underline-offset-8"
                   : "hover:underline underline-offset-8 "
@@ -58,7 +64,7 @@ function Navbar() {
             {localStorage.getItem("token") !== null ? (
               <Link
                 to="/amis"
-                className={`text text-xl m-5 ${
+                className={`text text-xl mb-5 ${
                   location.pathname === "/amis"
                     ? "text-[#009999] underline underline-offset-8"
                     : "hover:underline underline-offset-8 "
@@ -83,7 +89,7 @@ function Navbar() {
             ) : (
               <Link
                 to="/connexion"
-                className={`text text-xl m-5 ${
+                className={`text text-xl mb-5 ${
                   location.pathname === "/connexion"
                     ? "text-[#009999] underline underline-offset-8"
                     : "hover:underline underline-offset-8"
