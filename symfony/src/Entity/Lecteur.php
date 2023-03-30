@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LecteurRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -20,11 +21,13 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['livre_basic'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Groups(['lecteur_basic'])]
+    #[Groups(['livre_basic'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -40,14 +43,17 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Groups(['lecteur_basic'])]
+    #[Groups(['livre_basic'])]
     private ?string $nomLecteur = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Groups(['lecteur_basic'])]
+    #[Groups(['livre_basic'])]
     private ?string $prenomLecteur = null;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
+    #[Groups(['livre_basic'])]
     private $imageDeProfil = null;
 
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'lecteursQuiMeSuivent')]
