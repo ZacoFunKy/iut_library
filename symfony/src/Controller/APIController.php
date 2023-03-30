@@ -344,7 +344,7 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No friends found'], 404);
         }
 
-        return $this->json($amis, 200, [ ], ['groups' => 'lecteur_basic'])->setMaxAge(3600);
+        return $this->json($amis, 200, [], ['groups' => 'lecteur_basic'])->setMaxAge(3600);
     }
 
     // route qui ne permet de ne plus suivre un lecteur
@@ -590,7 +590,7 @@ class APIController extends AbstractController
         $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
         // limiter le nb de resuts a 10
         $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')
-                    ->setMaxResults($maxResults)->getResult();
+            ->setMaxResults($maxResults)->getResult();
         if ($authors == null) {
             return $this->json(['message' => 'No authors found'], 404);
         }
@@ -737,7 +737,7 @@ class APIController extends AbstractController
         foreach ($q3 as $t) {
             if (!in_array($t->getLecteur(), $result)) {
                 array_push($result, $t->getLecteur());
-            } 
+            }
         }
 
         if (empty($result)) {
@@ -760,6 +760,6 @@ class APIController extends AbstractController
             return $result;
         }
         // retourner les quatre recommandations sous forme de json de lecteur
-        return $this->json($result,200, [], ['groups' => 'lecteur_basic']);
+        return $this->json($result, 200, [], ['groups' => 'lecteur_basic']);
     }
 }
