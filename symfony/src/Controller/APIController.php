@@ -773,7 +773,6 @@ class APIController extends AbstractController
      * )
      * )
      * )
-     * 
      */
     public function recommandation(EntityManagerInterface $entityManager, Request $request)
     {
