@@ -56,7 +56,7 @@ function SearchBar({
         setResults([]);
         setNbLivres(0);
       }
-    }, 1000);
+    }, 250);
     return () => clearTimeout(search);
   }, [indexPage, searchTerm, setNbLivres, setResults, setTextSearch]);
 
@@ -77,7 +77,7 @@ function SearchBar({
       } else {
         setListSuggestions([]);
       }
-    }, 1000);
+    }, 250);
     return () => clearTimeout(search);
   }, [searchTerm, setListSuggestions]);
 

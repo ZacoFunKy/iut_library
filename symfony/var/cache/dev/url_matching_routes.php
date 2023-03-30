@@ -22,10 +22,12 @@ return [
         '/api/amis' => [[['_route' => 'api_amis', '_controller' => 'App\\Controller\\APIController::amisLecteur'], null, ['POST' => 0], null, false, false, null]],
         '/api/amis/delete' => [[['_route' => 'api_amis_delete', '_controller' => 'App\\Controller\\APIController::amisLecteurDelete'], null, ['POST' => 0], null, false, false, null]],
         '/api/amis/add' => [[['_route' => 'api_amis_add', '_controller' => 'App\\Controller\\APIController::amisLecteurAdd'], null, ['POST' => 0], null, false, false, null]],
-        '/api/api/books' => [[['_route' => 'app_api_books', '_controller' => 'App\\Controller\\APIController::books'], null, null, null, false, false, null]],
         '/api/books/last_posts' => [[['_route' => 'app_api_last_posts', '_controller' => 'App\\Controller\\APIController::lastPosts'], null, null, null, false, false, null]],
-        '/api/books/research' => [[['_route' => 'app_api_research', '_controller' => 'App\\Controller\\APIController::research'], null, ['GET' => 0], null, true, false, null]],
+        '/api/books/research' => [[['_route' => 'app_api_research', '_controller' => 'App\\Controller\\APIController::research'], null, ['GET' => 0], null, false, false, null]],
         '/api/authors/research' => [[['_route' => 'app_api_research_author', '_controller' => 'App\\Controller\\APIController::researchAuthor'], null, ['GET' => 0], null, true, false, null]],
+        '/api/friends' => [[['_route' => 'app_api_return', '_controller' => 'App\\Controller\\APIController::listfriends'], null, ['POST' => 0], null, false, false, null]],
+        '/api/add_friend' => [[['_route' => 'app_api_add_friend', '_controller' => 'App\\Controller\\APIController::addfriend'], null, ['POST' => 0], null, false, false, null]],
+        '/api/delete_friend' => [[['_route' => 'app_api_delete_friend', '_controller' => 'App\\Controller\\APIController::deletefriend'], null, ['POST' => 0], null, false, false, null]],
         '/api/recommandation' => [[['_route' => 'app_api_recommandation', '_controller' => 'App\\Controller\\APIController::recommandation'], null, ['POST' => 0], null, false, false, null]],
         '/hello' => [[['_route' => 'app_hello', '_controller' => 'App\\Controller\\HelloController::index'], null, null, null, false, false, null]],
         '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
@@ -48,6 +50,7 @@ return [
                         .'|(*:159)'
                     .')'
                 .')'
+                .'|/api/books/([^/]++)(*:188)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -57,8 +60,9 @@ return [
         116 => [[['_route' => '_profiler_router', '_controller' => 'web_profiler.controller.router::panelAction'], ['token'], null, null, false, false, null]],
         136 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception_panel::body'], ['token'], null, null, false, false, null]],
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
-        159 => [
-            [['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null],
+        159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
+        188 => [
+            [['_route' => 'app_api_book', '_controller' => 'App\\Controller\\APIController::book'], ['id'], ['GET' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

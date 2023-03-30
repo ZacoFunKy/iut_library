@@ -1,12 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Navbar() {
   const location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
+  const retourMenu = useNavigate();
 
   function handleDeco() {
     localStorage.clear();
+    retourMenu("/");
     window.location.reload();
   }
 

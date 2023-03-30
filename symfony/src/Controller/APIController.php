@@ -329,8 +329,8 @@ class APIController extends AbstractController
     {
         $json = $request->getContent();
         $data = json_decode($json, true);
-        $email = $data['email'];
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        $token = $data['token'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
         if ($lecteur === null) {
             return $this->json([
                 'message' => 'Pas de lecteur avec cet email',
@@ -979,8 +979,6 @@ class APIController extends AbstractController
                 ->setParameter('lecteur', $lecteur)
                 ->andwhere('e2.lecteur NOT IN (:listLec)')
                 ->setParameter('listLec', $lecteur->getLecteursSuivis())
-                ->groupBy('e2.lecteur')
-                ->orderBy("Count('e.livre')", "DESC")
                 ->setMaxResults(4)
                 ->getQuery()
                 ->getResult();
@@ -998,13 +996,13 @@ class APIController extends AbstractController
         }
         $result = array();
         foreach ($q3 as $t) {
-            array_push($result, $t->getLecteur()->getId());
+            array_push($result, $t->getLecteur());
         }
 
         if (empty($result)) {
             var_dump("tertqsgqfgqsdf");
             $q2 = $entityManager->getRepository(Lecteur::class)->createQueryBuilder('l')
-                ->select('l.id')
+                ->select('l.id, l.nomLecteur')
                 ->andwhere('l != :lecteur')
                 ->setParameter('lecteur', $lecteur)
                 ->andwhere(':lecteur NOT MEMBER OF l.lecteursQuiMeSuivent')
@@ -1020,6 +1018,7 @@ class APIController extends AbstractController
             }
             return $result;
         }
-        return $result;
+        // retourner les quatre recommandations sous forme de json de lecteur
+        return $this->json($result,200, [], ['groups' => 'lecteur_basic']);
     }
 }

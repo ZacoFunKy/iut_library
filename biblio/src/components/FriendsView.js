@@ -3,6 +3,7 @@ import Ami from "./Ami";
 
 function FriendsView() {
   const [friends, setFriends] = useState([]);
+  const [recommandations, setRecommandations] = useState([]);
 
   // fais la meme requete que au dessus mais en fetch
   useEffect(() => {
@@ -12,7 +13,7 @@ function FriendsView() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: localStorage.getItem("email"),
+        token: localStorage.getItem("token"),
       }),
     })
       .then((response) => response.json())
@@ -24,6 +25,28 @@ function FriendsView() {
         console.log(error);
       });
   }, [setFriends]);
+
+  // mettre des recommandations d'amis avec interrogation api
+   useEffect(() => {
+    fetch("https://localhost:8000/api/recommandation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem("token"),
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setRecommandations(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [setRecommandations]);
+
 
 
 

@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: LecteurRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -26,7 +26,6 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
-    #[Groups(['lecteur_basic'])]
     #[Groups(['livre_basic'])]
     private ?string $email = null;
 
@@ -42,14 +41,12 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['lecteur_basic'])]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $nomLecteur = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['lecteur_basic'])]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $prenomLecteur = null;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
