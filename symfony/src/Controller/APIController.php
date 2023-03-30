@@ -996,13 +996,15 @@ class APIController extends AbstractController
         }
         $result = array();
         foreach ($q3 as $t) {
-            array_push($result, $t->getLecteur());
+            if (!in_array($t->getLecteur(), $result)) {
+                array_push($result, $t->getLecteur());
+            } 
         }
 
         if (empty($result)) {
             var_dump("tertqsgqfgqsdf");
             $q2 = $entityManager->getRepository(Lecteur::class)->createQueryBuilder('l')
-                ->select('l.id, l.nomLecteur')
+                ->select('l.id')
                 ->andwhere('l != :lecteur')
                 ->setParameter('lecteur', $lecteur)
                 ->andwhere(':lecteur NOT MEMBER OF l.lecteursQuiMeSuivent')
