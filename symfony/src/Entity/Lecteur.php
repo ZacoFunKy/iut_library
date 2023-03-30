@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LecteurRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -25,7 +25,7 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::JSON)]
@@ -40,16 +40,20 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $nomLecteur = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $prenomLecteur = null;
 
     #[ORM\Column(length: 2555, nullable: true)]
+<<<<<<< HEAD
     #[Groups(['livre_basic'])]
+=======
+    #[Groups(['livre_basic', 'lecteur_basic'])]
+>>>>>>> front
     private $imageDeProfil = null;
 
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'lecteursQuiMeSuivent')]
@@ -59,6 +63,7 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $lecteursQuiMeSuivent;
 
     #[ORM\OneToMany(mappedBy: 'lecteur', targetEntity: Emprunt::class, orphanRemoval: true)]
+    #[Groups(['lecteur_basic'])]
     private Collection $emprunts;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -233,9 +238,31 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Emprunt>
      */
-    public function getEmprunts(): Collection
+    public function getEmprunts(): array
     {
+        return $this->emprunts->slice(0, 3);
+    }
+
+    public function get4DerniersEmprunts(): array
+    {
+        return $this->emprunts->slice(0, 4);
+    }
+
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getAllEmprunts(): Collection
+    {
+
         return $this->emprunts;
+    }
+
+    public function setEmprunts(array $newEmprunt): array
+    {
+        $emprunts = $this->emprunts->toArray();
+        $emprunts = $newEmprunt;
+
+        return $emprunts;
     }
 
     public function addEmprunt(Emprunt $emprunt): self

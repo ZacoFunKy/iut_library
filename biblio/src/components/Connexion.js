@@ -1,7 +1,10 @@
 import { Fragment } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Connexion() {
+  const navigation = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -11,10 +14,26 @@ function Connexion() {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const login = (event) => {
     event.preventDefault();
-    console.log(formData);
-  };
+    axios
+      .post("https://localhost:8000/api/login", {
+        username: formData.username,
+        password: formData.password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        // on stocke le token dans le local storage
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
+        // on redirige vers la page d'accueil
+        navigation("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Email ou mot de passe incorrect")
+      });
+  }
 
   return (
     <Fragment>
@@ -25,7 +44,7 @@ function Connexion() {
               Connexion
             </h2>
             <input
-              className="border-gray-300 placeholder-[#009999] appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="border-gray-300 appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="username"
               name="username"
               type="text"
@@ -36,7 +55,7 @@ function Connexion() {
           </div>
           <div className="mb-6">
             <input
-              className="border-gray-300 placeholder-[#009999] appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="border-gray-300 appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               name="password"
               type="password"
@@ -45,11 +64,11 @@ function Connexion() {
               onChange={handleChange}
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button
               className="bg-[#009999] hover:bg-[#086969] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
-              onClick={handleSubmit}
+              onClick={login}
             >
               Se connecter
             </button>

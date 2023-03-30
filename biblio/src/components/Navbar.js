@@ -1,19 +1,32 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Navbar() {
   const location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
+  const retourMenu = useNavigate();
+
+  function handleDeco() {
+    localStorage.clear();
+    retourMenu("/");
+    window.location.reload();
+  }
+  
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 1024) {
+      setShowMenu(false);
+    }
+  });
 
   return (
     <div className="">
       <button
         type="button"
-        className="block lg:hidden relative"
+        className="block lg:hidden relative z-20 ml-5"
         onClick={() => setShowMenu(!showMenu)}
       >
         <svg
-          className="h-6 w-6 fill-current"
+          className="h-6 w-6 fill-current m-auto"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -31,69 +44,110 @@ function Navbar() {
             />
           )}
         </svg>
+        <p className="text-xs">Menu</p>
       </button>
 
       {showMenu ? (
-      <div className="fixed inset-0 flex items-center justify-center bg-white">
-        <div className="lg:hidden flex flex-col items-center">
-          <Link
-            to="/"
-            className={`text text-xl mr-5 ${location.pathname === "/"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
-            }`}
-          >
-            Accueil
-          </Link>
-          <Link
-            to="/amis"
-            className={`text text-xl mr-5 ${location.pathname === "/amis"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
-            }`}
-          >
-            Amis
-          </Link>
-          <Link
-            to="/connexion"
-            className={`text text-xl mr-5 ${location.pathname === "/connexion"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8"
-            }`}
-          >
-            Connexion
-          </Link>
+        <div className="fixed inset-0 z-10 flex items-center ">
+          <div className="lg:hidden flex flex-col items-center justify-center bg-white h-full w-full ">
+            <Link
+              to="/"
+              className={`text text-xl mb-5 ${
+                location.pathname === "/"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8 "
+              }`}
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              Accueil
+            </Link>
+            {localStorage.getItem("token") !== null ? (
+              <Link
+                to="/amis"
+                className={`text text-xl mb-5 ${
+                  location.pathname === "/amis"
+                    ? "text-[#009999] underline underline-offset-8"
+                    : "hover:underline underline-offset-8 "
+                }`}
+                onClick={() => setShowMenu(!showMenu)}
+              >
+                Amis
+              </Link>
+            ) : null}
+
+            {localStorage.getItem("token") !== null ? (
+              <div className="flex flex-col items-center">
+                <p className="text-xl m-2 mb-5"> {localStorage.getItem("email")} </p>
+                <button
+                  className="bg-red-600 p-2 deco text text-xl ml-5 mr-5
+                     hover:bg-red-500"
+                  onMouseDown={() => {handleDeco(); setShowMenu(!showMenu)}}
+                >
+                  Deconnexion
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/connexion"
+                className={`text text-xl mb-5 ${
+                  location.pathname === "/connexion"
+                    ? "text-[#009999] underline underline-offset-8"
+                    : "hover:underline underline-offset-8"
+                }`}
+                onClick={() => setShowMenu(!showMenu)}
+              >
+                Connexion
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
       ) : (
         <div className="hidden lg:flex flex-row items-center">
           <Link
             to="/"
-            className={`text text-xl mr-5 ${location.pathname === "/"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
+            className={`text text-xl m-5 ${
+              location.pathname === "/"
+                ? "text-[#009999] underline underline-offset-8"
+                : "hover:underline underline-offset-8 "
             }`}
           >
             Accueil
           </Link>
-          <Link
-            to="/amis"
-            className={`text text-xl mr-5 ${location.pathname === "/amis"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8 "
-            }`}
-          >
-            Amis
-          </Link>
-          <Link
-            to="/connexion"
-            className={`text text-xl mr-5 ${location.pathname === "/connexion"
-              ? "text-[#009999] underline underline-offset-8"
-              : "hover:underline underline-offset-8"
-            }`}
-          >
-            Connexion
-          </Link>
+          {localStorage.getItem("token") !== null ? (
+            <Link
+              to="/amis"
+              className={`text text-xl mr-5 ${
+                location.pathname === "/amis"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8 "
+              }`}
+            >
+              Amis
+            </Link>
+          ) : null}
+          {localStorage.getItem("token") !== null ? (
+            <div className="flex items-center">
+              <p className="text-xl"> {localStorage.getItem("email")} </p>
+              <button
+                className="bg-red-600 p-3 deco text text-xl pr-5 pl-5 ml-5 mr-5
+                    hover:bg-red-500"
+                onClick={handleDeco}
+              >
+                Deconnexion
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/connexion"
+              className={`text text-xl mr-5 ${
+                location.pathname === "/connexion"
+                  ? "text-[#009999] underline underline-offset-8"
+                  : "hover:underline underline-offset-8"
+              }`}
+            >
+              Connexion
+            </Link>
+          )}
         </div>
       )}
     </div>
