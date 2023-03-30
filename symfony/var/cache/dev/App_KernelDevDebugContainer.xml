@@ -6981,13 +6981,13 @@
         <argument key="uPH" type="service_closure" id="security.user_password_hasher"/>
       </argument>
     </service>
-    <service id=".service_locator.SS_fojL" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.g2.sxqS" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\APIController::amisLecteur" type="service_closure" id=".service_locator.CsMkqUa"/>
+        <argument key="App\Controller\APIController::amisLecteurAdd" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController::amisLecteurDelete" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController::books" type="service_closure" id=".service_locator.CsMkqUa"/>
-        <argument key="App\Controller\APIController::booksCategory" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController::empruntLecteur" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController::lastEmprunt" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController::lastPosts" type="service_closure" id=".service_locator.CsMkqUa"/>
@@ -7002,9 +7002,9 @@
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Controller\APIController:amisLecteur" type="service_closure" id=".service_locator.CsMkqUa"/>
+        <argument key="App\Controller\APIController:amisLecteurAdd" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController:amisLecteurDelete" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController:books" type="service_closure" id=".service_locator.CsMkqUa"/>
-        <argument key="App\Controller\APIController:booksCategory" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController:empruntLecteur" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController:lastEmprunt" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\APIController:lastPosts" type="service_closure" id=".service_locator.CsMkqUa"/>
@@ -7910,12 +7910,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.SS_fojL"/>
+      <argument type="service" id=".service_locator.g2.sxqS"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.SS_fojL"/>
+      <argument type="service" id=".service_locator.g2.sxqS"/>
     </service>
     <service id="debug.traced.messenger.bus.default.inner" class="Symfony\Component\Messenger\MessageBus">
       <argument type="iterator">
@@ -8888,7 +8888,7 @@
     <service id="nelmio_api_doc.generator" alias="nelmio_api_doc.generator.default" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.SS_fojL"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.g2.sxqS"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -8915,7 +8915,7 @@
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.FJAuTmW" alias=".service_locator.ERCKR8I"/>
     <service id=".service_locator.HP2qlpT" alias=".service_locator.pOptczf"/>
-    <service id=".service_locator.b1ofo.i" alias=".service_locator.SS_fojL"/>
+    <service id=".service_locator.kJofG3w" alias=".service_locator.g2.sxqS"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.yj07qm_" alias=".service_locator.ZyXYEQR"/>
     <service id=".service_locator.XW18Svm" alias=".service_locator.TcKhdzh"/>

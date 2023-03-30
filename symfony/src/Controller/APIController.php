@@ -400,6 +400,64 @@ class APIController extends AbstractController
         return $this->json(['message' => 'L\'ami a été supprimé'], 201);
     }
 
+
+    // route qui permet de suivre un lecteur
+    #[Route('/amis/add', name: 'api_amis_add', methods: ['POST'])]
+    /**
+     * @OA\Post(
+     * path="/api/amis/add",
+     * tags={"amis"},
+     * summary="ajouter un ami",
+     * description="Ajoute un ami d'un lecteur en fonction de son email",
+     * operationId="amisAdd",
+     * @OA\RequestBody(
+     *   required=true,
+     *  @OA\JsonContent(
+     *   required={"email", "emailAmi"},
+     *  @OA\Property(property="email", type="string", example="
+     * "),
+     * @OA\Property(property="emailAmi", type="string", example="
+     * "),
+     * )
+     * ),
+     * @OA\Response(
+     * response=201,
+     * description="L'ami a été ajouté",
+     * @OA\JsonContent(
+     *  @OA\Property(property="message", type="string", example="L'ami a été ajouté"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="L'email n'appartient a personne",
+     * @OA\JsonContent(
+     * @OA\Property(property="message  ", type="string",example="Pas de lecteur avec cet email"),
+     * )
+     * )
+     * )
+     */
+    #[View(serializerGroups: ['ami_basic'])]
+    public function amisLecteurAdd(EntityManagerInterface $entityManager, Request $request)
+    {
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        $email = $data['email'];
+        $emailAmi = $data['emailAmi'];
+        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $email]);
+        $lecteurAmi = $entityManager->getRepository(Lecteur::class)->findOneBy(['email' => $emailAmi]);
+        if ($lecteur === null) {
+            return $this->json([
+                'message' => 'Pas de lecteur avec cet email',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $lecteur->addLecteursSuivi($lecteurAmi);
+        $entityManager->persist($lecteur);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'L\'ami a été ajouté'], 201);
+    }
+
+
     /**
      * Renvoi les 4 dernières acquisitions de la bibliothèque
      */
@@ -465,30 +523,29 @@ class APIController extends AbstractController
     public function research(EntityManagerInterface $entityManager)
     {
         $name = $_GET['name'];
-
-        if ($name == null) {
-            return $this->json(['message' => 'No books found'], 404);
-        }
+        $max = $_GET['maxResults'];
+        $startIndex = $_GET['startIndex'];
 
         $author = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
+        // recuperer tous les livres ecris par un auteur dont le nom ressembe a $name en sql
         $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getResult();
-        if ($author == null) {
-            $livre_author = [];
-        } else {
-            $i = 0;
-            $livre_author = [];
-            foreach ($author as $a) {
-                foreach ($a->getLivres() as $l) {
-                    $livre_author[$i] = $l;
-                    $i++;
-                }
-            }
+
+        $livres = [];
+        foreach ($author as $auteur) {
+            $livres = array_merge($livres, $auteur->getLivres()->toArray());
         }
-        $livres = array_unique($livre_author, SORT_REGULAR);
-        if (empty($livres)) {
+        $nbResults = 0;
+        foreach ($livres as $livre) {
+            $nbResults++;
+        }
+ 
+        $livres = array_slice($livres, $startIndex, $max);
+
+        if ($livres == null) {
             return $this->json(['message' => 'No books found'], 404);
         }
-        return $livres;
+
+        return $this->json(['livres' => $livres, 'nbResults' => $nbResults], 200, [], ['groups' => 'livre_basic']);
     }
 
     // route qui retourne les auteurs qui correspondent au nom passé en paramètre
@@ -496,11 +553,14 @@ class APIController extends AbstractController
     public function researchAuthor(EntityManagerInterface $entityManager)
     {
         $name = $_GET['name'];
+        $maxResults = $_GET['maxResults'];
+
         if ($name == null) {
             return $this->json(['message' => 'No authors found'], 404);
         }
         $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
-        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')->getResult();
+        // limiter le nb de resuts a 10
+        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')->setMaxResults($maxResults)->getResult();
         if ($authors == null) {
             return $this->json(['message' => 'No authors found'], 404);
         }
@@ -508,21 +568,6 @@ class APIController extends AbstractController
         return $this->json($authors, 200, [], ['groups' => 'auteur_basic'])->setMaxAge(3600);
     }
 
-    // Route qui retourne les livres d'une categorie
-    #[Route('/books/category/{id}', name: 'app_api_books_category', methods: ['GET'])]
-    public function booksCategory(EntityManagerInterface $entityManager, $id)
-    {
-        $category = $entityManager->getRepository(Categorie::class)->find($id);
-        if ($category == null) {
-            return $this->json(['message' => 'No category found'], 404);
-        }
-        $livres = $category->getLivres();
-        if (empty($livres)) {
-            return $this->json(['message' => 'No books found'], 404);
-        }
-
-        return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
-    }
 
 
     

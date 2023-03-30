@@ -19,6 +19,7 @@ function App() {
   const [Book, setBook] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [indexPage, setIndex] = useState(0);
+  const [nbLivres, setNbLivres] = useState(0);
 
   return (
     <BrowserRouter basename="/">
@@ -29,6 +30,9 @@ function App() {
         setBook={setBook}
         setResults={setResults}
         indexPage={indexPage}
+        setIndex={setIndex}
+        setNbLivres={setNbLivres}
+
       />
       <div className="content">
         <Routes>
@@ -43,6 +47,7 @@ function App() {
                 results={results}
                 setBook={setBook}
                 setSearchTerm={setSearchTerm}
+                nbLivres={nbLivres}
               />
             }
           />

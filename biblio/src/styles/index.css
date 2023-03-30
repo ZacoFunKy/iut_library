@@ -60,6 +60,10 @@ code {
   position: relative;
 }
 
+.resultsResearch {
+  min-height: 70vh;
+}
+
 .retour {
   border-radius: 5px 20px;
 }

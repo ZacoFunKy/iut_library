@@ -1,6 +1,5 @@
 import { React, useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import Suggestion from "./Suggestion";
 
 function SearchBar({
@@ -9,6 +8,8 @@ function SearchBar({
   setSearchTerm,
   setResults,
   indexPage,
+  setIndex,
+  setNbLivres
 }) {
   const [listSuggestions, setListSuggestions] = useState([]);
 
@@ -16,6 +17,7 @@ function SearchBar({
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
+
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -29,29 +31,36 @@ function SearchBar({
   useEffect(() => {
     const search = setTimeout(() => {
       if (searchTerm.length >= 1) {
-        fetch(`https://localhost:8000/api/books/research/?name=${searchTerm}`)
+        fetch(
+          `https://localhost:8000/api/books/research/?name=${searchTerm}&&startIndex=${indexPage}&&maxResults=8`
+        )
           .then((response) => response.json())
           .then((data) => {
-            setResults(data.slice(indexPage, indexPage + 10));
+            console.log(data);
+            setResults(data.livres);
+            setNbLivres(data.nbResults); //
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
         setResults([]);
+        setNbLivres(0);
       }
     }, 1000);
     return () => clearTimeout(search);
-  }, [indexPage, searchTerm, setResults]);
+  }, [indexPage, searchTerm, setNbLivres, setResults]);
 
   // pareil que auddessus mais avec fetch
   useEffect(() => {
     const search = setTimeout(() => {
       if (searchTerm.length >= 4) {
-        fetch(`https://localhost:8000/api/authors/research/?name=${searchTerm}`)
+        fetch(
+          `https://localhost:8000/api/authors/research/?name=${searchTerm}&&maxResults=10`
+        )
           .then((response) => response.json())
           .then((data) => {
-            setListSuggestions(data.slice(0, 10));
+            setListSuggestions(data);
           })
           .catch((error) => {
             console.log(error);
@@ -63,6 +72,10 @@ function SearchBar({
     return () => clearTimeout(search);
   }, [searchTerm, setListSuggestions]);
 
+  const rebootIndex = () => {
+    setIndex(0);
+  };
+
   return (
     <Fragment>
       <div className="flex flex-col">
@@ -72,7 +85,10 @@ function SearchBar({
             type="text"
             placeholder="Rechercher un auteur/livre"
             value={searchTerm}
-            onChange={handleChange}
+            onChange={(event) => {
+              handleChange(event);
+              rebootIndex();
+            }}
             onFocus={onFocus}
             onBlur={onBlur}
           />

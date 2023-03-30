@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
 function Suggestion({ suggestion, setBook, setSearchTerm, setListSuggestions, navigation}) {
+
+
+
+
   return (
     <Link
       key={suggestion.id}
