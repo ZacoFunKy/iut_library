@@ -57,7 +57,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'tags' => [
                 [
-                    'emprunt',
+                    'Lecteur',
                 ],
             ],
             'summary' => [
@@ -232,7 +232,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'property' => [
                 9 => 'email',
-                30 => 'message  ',
+                30 => 'message ',
             ],
             'response' => [
                 12 => 201,

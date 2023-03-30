@@ -69,7 +69,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'tags' => [
                 [
-                    'login',
+                    'Lecteur',
                 ],
             ],
             'summary' => [
