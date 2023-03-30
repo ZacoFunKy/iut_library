@@ -49,11 +49,8 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenomLecteur = null;
 
     #[ORM\Column(length: 2555, nullable: true)]
-<<<<<<< HEAD
-    #[Groups(['livre_basic'])]
-=======
+
     #[Groups(['livre_basic', 'lecteur_basic'])]
->>>>>>> front
     private $imageDeProfil = null;
 
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'lecteursQuiMeSuivent')]
