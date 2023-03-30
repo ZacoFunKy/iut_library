@@ -53,27 +53,45 @@ function FriendsView() {
           <div className="flex flex-row flex-wrap justify-left m-10 overflow-x-auto">
             {friends.map((item) => {
               return (
-                <Ami friends={friends} item={item} key={item.email} setFriends={setFriends} />
+                <Ami
+                  friends={friends}
+                  item={item}
+                  key={item.email}
+                  setFriends={setFriends}
+                />
               );
             })}
           </div>
         ) : (
           <div className="w-60">
-            <p className="m-auto w-full h-full overflow-x-auto">Aucun ami pour l'instant</p>
+            <p className="m-auto w-full h-full overflow-x-auto">
+              Aucun ami pour l'instant
+            </p>
           </div>
         )}
       </div>
       <div className="min-h-96 ml-10">
-      <h2 className="md:text-xl text-lg">Recommandations</h2>
+        <h2 className="md:text-xl text-lg">Recommandations</h2>
         {recommandations.length > 0 && recommandations !== undefined ? (
           <div className="flex flex-row flex-wrap justify-left m-10">
             {recommandations.map((item) => {
               return (
-                <Ami friends={friends} item={item} key={item.email} setFriends={setFriends} />
+                <Ami
+                  friends={friends}
+                  item={item}
+                  key={item.email}
+                  setFriends={setFriends}
+                />
               );
             })}
           </div>
-        ) : null}
+        ) : (
+          <div className="w-60">
+            <p className="m-auto w-full h-full overflow-x-auto">
+              Aucune recommandation
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

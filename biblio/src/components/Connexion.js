@@ -31,6 +31,7 @@ function Connexion() {
       })
       .catch((error) => {
         console.log(error);
+        alert("Email ou mot de passe incorrect")
       });
   }
 
