@@ -1,0 +1,3 @@
+<?php //App%255CEntity%255CAuteur%2523setIntituleAuteur
+
+return [PHP_INT_MAX, []];
