@@ -9,7 +9,8 @@ function SearchBar({
   setResults,
   indexPage,
   setIndex,
-  setNbLivres
+  setNbLivres,
+  setTextSearch,
 }) {
   const [listSuggestions, setListSuggestions] = useState([]);
 
@@ -17,7 +18,6 @@ function SearchBar({
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -37,8 +37,17 @@ function SearchBar({
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
-            setResults(data.livres);
-            setNbLivres(data.nbResults); //
+            if (data.livres === undefined) {
+              setResults([]);
+              setTextSearch("Aucun résultat pour l'auteur : " + searchTerm);
+            } else {
+              setResults(data.livres);
+            }
+            if (data.nbResults === undefined) {
+              setNbLivres(0);
+            } else {
+              setNbLivres(data.nbResults);
+            }
           })
           .catch((error) => {
             console.log(error);
@@ -49,7 +58,7 @@ function SearchBar({
       }
     }, 1000);
     return () => clearTimeout(search);
-  }, [indexPage, searchTerm, setNbLivres, setResults]);
+  }, [indexPage, searchTerm, setNbLivres, setResults, setTextSearch]);
 
   // pareil que auddessus mais avec fetch
   useEffect(() => {

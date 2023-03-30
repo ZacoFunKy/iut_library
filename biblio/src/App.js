@@ -20,6 +20,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [indexPage, setIndex] = useState(0);
   const [nbLivres, setNbLivres] = useState(0);
+  const [textSearch, setTextSearch] = useState("Aucune recherche");
 
   return (
     <BrowserRouter basename="/">
@@ -32,6 +33,7 @@ function App() {
         indexPage={indexPage}
         setIndex={setIndex}
         setNbLivres={setNbLivres}
+        setTextSearch={setTextSearch}
 
       />
       <div className="content">
@@ -48,6 +50,7 @@ function App() {
                 setBook={setBook}
                 setSearchTerm={setSearchTerm}
                 nbLivres={nbLivres}
+                textSearch={textSearch}
               />
             }
           />

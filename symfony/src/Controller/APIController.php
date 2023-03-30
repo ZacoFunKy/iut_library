@@ -538,7 +538,7 @@ class APIController extends AbstractController
         foreach ($livres as $livre) {
             $nbResults++;
         }
- 
+
         $livres = array_slice($livres, $startIndex, $max);
 
         if ($livres == null) {
@@ -560,7 +560,8 @@ class APIController extends AbstractController
         }
         $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
         // limiter le nb de resuts a 10
-        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')->setMaxResults($maxResults)->getResult();
+        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')
+                    ->setMaxResults($maxResults)->getResult();
         if ($authors == null) {
             return $this->json(['message' => 'No authors found'], 404);
         }
@@ -568,9 +569,6 @@ class APIController extends AbstractController
         return $this->json($authors, 200, [], ['groups' => 'auteur_basic'])->setMaxAge(3600);
     }
 
-
-
-    
     #[Route('/recommandation', name: 'app_api_recommandation', methods: ['POST'])]
     public function recommandation(EntityManagerInterface $entityManager, Request $request)
     {
@@ -617,6 +615,5 @@ class APIController extends AbstractController
         }
 
         return $emprunts;
-    }
-    
+    } 
 }

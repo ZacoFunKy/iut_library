@@ -1,9 +1,5 @@
 function Pagination({indexPage, setIndex, nbLivres}) {
 
-    console.log(indexPage);
-    console.log(nbLivres - (8 * (indexPage/8+1)));
-    console.log(nbLivres);
-
   const nextPage = () => {
     setIndex(indexPage + 8);
   };
