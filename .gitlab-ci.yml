@@ -1,5 +1,4 @@
-image: node:latest
-
+image: jakzal/phpqa:php8.1
 before_script:
   - cd symfony
   - composer install
@@ -7,35 +6,28 @@ before_script:
   - composer require --dev phpunit/phpunit
   - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" > .env.local
   - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" >> .env.test
-
-
 cache:
-    paths:
-        - vendor/
-
+  paths:
+    - vendor/
 stages:
-    - SecurityChecker
-    - CodingStandards
-    - deploy
-
+  - SecurityChecker
+  - CodingStandards
+  - deploy
 security-checker:
-    stage: SecurityChecker
-    script:
-        - local-php-security-checker  --path=./composer.lock
-    allow_failure: false
-
+  stage: SecurityChecker
+  script:
+    - local-php-security-checker  --path=./composer.lock
+  allow_failure: false
 phpcs:
-    stage: CodingStandards
-    script:        
-        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
-    allow_failure: false
-
+  stage: CodingStandards
+  script:
+    - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+  allow_failure: false
 phpstan:
-    stage: CodingStandards
-    script:
-        - phpstan analyse ./src
-    allow_failure: false
-
+  stage: CodingStandards
+  script:
+    - phpstan analyse ./src
+  allow_failure: false
 pages:
   stage: deploy
   image: tthor/test
@@ -49,5 +41,4 @@ pages:
     paths:
       - vendor\*
   only:
-    - master
-
+    - main
