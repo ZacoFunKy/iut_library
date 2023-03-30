@@ -7,6 +7,10 @@ use GuzzleHttp\Client;
 
 class ApiTest extends WebTestCase
 { 
+
+
+    private $token_user;
+
     public function testEnregistrementConnexion()
     {                
         $client = new Client([
@@ -52,10 +56,54 @@ class ApiTest extends WebTestCase
         $content = $response->getBody()->getContents();
         $data = json_decode($content, true);
         if (isset($data["token"])){
+            $this->token_user = $data["token"];
             $this->assertTrue(true);
         }else{
             $this->assertTrue(false);
         }
+    }
+
+
+    public function testListFriends(){
+        $client = new Client([
+            'base_uri' => 'http://127.0.0.1:8000/'
+        ]);
+
+
+
+        $jsonData = json_encode([
+            'username' => 'test@gmail.com',
+            'password' => '000000',
+        ]);
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Expect' => '100-continue',
+        ];
+
+        $response = $client->request('POST', '/api/login', [
+            'headers' => $headers,
+            'body' => $jsonData,
+        ]);
+
+        $content = $response->getBody()->getContents();
+        $data = json_decode($content, true);
+        $json = json_encode([
+            'token' => $data["token"],
+        ]);
+
+        var_dump($json);
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Expect' => '100-continue',
+        ];
+        $response = $client->request('POST', '/api/friends', [
+            'headers' => $headers,
+            'body' => $json,
+        ]);
+        $content = $response->getBody()->getContents();
+        $content = json_decode($content, true);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function testSearchBar()
