@@ -26,7 +26,7 @@ class Lecteur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
-    #[Groups(['livre_basic'])]
+    #[Groups(['livre_basic', 'lecteur_basic'])]
     private ?string $email = null;
 
     #[ORM\Column]
