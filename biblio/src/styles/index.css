@@ -73,6 +73,9 @@ code {
     width: 25px;
     height: 25px;
   }
+  .nom {
+    display: none;
+  }
 }
 
 .book:hover {
