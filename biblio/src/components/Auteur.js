@@ -9,5 +9,4 @@ function Auteur({aut}) {
     </div>
   );
 }
-
 export default Auteur;
