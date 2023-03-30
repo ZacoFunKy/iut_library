@@ -8,7 +8,6 @@ before_script:
   - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" > .env.local
   - echo "DATABASE_URL="mysql://root:lCRIkg5xD@185.212.226.191:6033/BD_E9"" >> .env.test
 
-
 cache:
     paths:
         - vendor/
