@@ -158,6 +158,7 @@ class APIController extends AbstractController
         ];
         return new JsonResponse($response);
     }
+
     #[IsGranted("ROLE_USER")]
     #[Security(name: "Bearer")]
     #[Route('/lastEmprunt', name: 'api_lastEmprunt', methods: ['POST'])]
@@ -643,7 +644,6 @@ class APIController extends AbstractController
         }
         return $this->json(['livres' => $livres, 'nbResults' => $nbResults], 200, [], ['groups' => 'livre_basic']);
     }
-
 
 
     #[Route('/books/{id}', name: 'app_api_book', methods: ['GET'])]
