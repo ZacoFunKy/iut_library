@@ -7,7 +7,7 @@ function FriendsView() {
 
   // fais la meme requete que au dessus mais en fetch
   useEffect(() => {
-    fetch("https://localhost:8000/api/amis", {
+    fetch("http://185.212.226.191:8000/api/amis", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ function FriendsView() {
 
   // mettre des recommandations d'amis avec interrogation api
   useEffect(() => {
-    fetch("https://localhost:8000/api/recommandation", {
+    fetch("http://185.212.226.191:8000/api/recommandation", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

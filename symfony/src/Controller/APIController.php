@@ -158,6 +158,7 @@ class APIController extends AbstractController
         ];
         return new JsonResponse($response);
     }
+
     #[IsGranted("ROLE_USER")]
     #[Security(name: "Bearer")]
     #[Route('/lastEmprunt', name: 'api_lastEmprunt', methods: ['POST'])]
@@ -577,7 +578,7 @@ class APIController extends AbstractController
         return $this->json(['livres' => $livres, 'nbResults' => $nbResults], 200, [], ['groups' => 'livre_basic']);
     }
 
-    // route qui retourne les auteurs qui correspondent au nom passé en paramètre
+
     #[Route('/authors/research/', name: 'app_api_research_author', methods: ['GET'])]
     public function researchAuthor(EntityManagerInterface $entityManager)
     {
@@ -588,7 +589,7 @@ class APIController extends AbstractController
             return $this->json(['message' => 'No authors found'], 404);
         }
         $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
-        // limiter le nb de resuts a 10
+        // limiter le nb de results a 10
         $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')
             ->setMaxResults($maxResults)->getResult();
         if ($authors == null) {

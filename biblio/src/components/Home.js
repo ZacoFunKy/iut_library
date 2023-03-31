@@ -7,7 +7,7 @@ function Home({ setBook }) {
 
   // fasi pareil que au dessus mais avec fetch
   useEffect(() => {
-    fetch("https://localhost:8000/api/books/last_posts")
+    fetch("http://185.212.226.191:8000/api/books/last_posts")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -20,7 +20,7 @@ function Home({ setBook }) {
 
   // fais pareil que au dessus mais avec un bearer token
   useEffect(() => {
-    fetch("https://localhost:8000/api/lastEmprunt", {
+    fetch("http://185.212.226.191:8000/api/lastEmprunt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -2,7 +2,7 @@ import pasDeCouv from "../assets/pas-de-couv.png";
 
 function Ami({ item, setFriends, friends }) {
   const deleteFriend = (email) => {
-    fetch("https://localhost:8000/api/amis/delete", {
+    fetch("http://185.212.226.191:8000/api/amis/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +25,7 @@ function Ami({ item, setFriends, friends }) {
 
   const addFriend = (email) => {
     console.log(email);
-    fetch("https://localhost:8000/api/amis/add", {
+    fetch("http://185.212.226.191:8000/api/amis/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

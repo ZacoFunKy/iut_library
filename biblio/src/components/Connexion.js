@@ -17,7 +17,7 @@ function Connexion() {
   const login = (event) => {
     event.preventDefault();
     axios
-      .post("https://localhost:8000/api/login", {
+      .post("http://185.212.226.191:8000/api/login", {
         username: formData.username,
         password: formData.password,
       })
