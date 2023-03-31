@@ -97,7 +97,7 @@ class ApiTest extends WebTestCase
             'Content-Type' => 'application/json',
             'Expect' => '100-continue',
         ];
-        $response = $client->request('POST', '/api/friends', [
+        $response = $client->request('POST', '/api/amis', [
             'headers' => $headers,
             'body' => $json,
         ]);

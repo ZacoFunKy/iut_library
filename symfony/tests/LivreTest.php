@@ -58,15 +58,15 @@ class LivreTest extends KernelTestCase
     }
 
     function testLivreAuteurNotNull(){
-        $LivreAuteurNonNull=false;
+        $LivreAuteurNonNull=true;
         $sql = "SELECT * FROM test_livre_auteur";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($result as $row) { 
-                if ($row["livre_id"]!=NULL || $row["auteur_id"]!=NULL){
-                    $LivreAuteurNonNull=true;
+                if ($row["livre_id"]==NULL || $row["auteur_id"]==NULL){
+                    $LivreAuteurNonNull=false;
                 }
             }
         } catch(PDOException $e) {
