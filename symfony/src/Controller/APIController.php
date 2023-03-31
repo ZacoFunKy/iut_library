@@ -402,6 +402,71 @@ class APIController extends AbstractController
         return $this->json(['message' => 'L\'ami a été supprimé'], 201);
     }
 
+    #[Route('/authors/research/', name: 'app_api_research_author', methods: ['GET'])]
+    /**
+     * @OA\Get(
+     * path="/api/authors/research/",
+     * tags={"Livre"},
+     * summary="Recherche d'auteur",
+     * description="Recherche d'auteur en fonction de son nom",
+     * operationId="researchAuthor",
+     * @OA\Parameter(
+     * name="name",
+     * in="query",
+     * description="Nom de l'auteur",
+     * required=true,
+     * @OA\Schema(
+     * type="string"
+     * )
+     * ),
+     * @OA\Parameter(
+     * name="maxResults",
+     * in="query",
+     * description="Nombre de résultats",
+     * required=true,
+     * @OA\Schema(
+     * type="integer"
+     * )
+     * ),
+     * @OA\Response(
+     *  response=201,
+     * description="Les auteurs trouvés",
+     * @OA\MediaType(
+     *   mediaType="application/json",
+     * @OA\Schema(
+     * type="array",
+     * @OA\Items(
+     * )
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Aucun auteur trouvé",
+     * @OA\JsonContent(
+     *  @OA\Property(property="message", type="string", example="Aucun auteur trouvé"),
+     * )
+     * )
+     * )
+     */
+    public function researchAuthor(EntityManagerInterface $entityManager)
+    {
+        $name = $_GET['name'];
+        $maxResults = $_GET['maxResults'];
+
+        if ($name == null) {
+            return $this->json(['message' => 'No authors found'], 404);
+        }
+        $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
+        // limiter le nb de results a 10
+        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')
+            ->setMaxResults($maxResults)->getResult();
+        if ($authors == null) {
+            return $this->json(['message' => 'No authors found'], 404);
+        }
+
+        return $this->json($authors, 200, [], ['groups' => 'auteur_basic'])->setMaxAge(3600);
+    }
 
     // route qui permet de suivre un lecteur
     #[Route('/amis/add', name: 'api_amis_add', methods: ['POST'])]
