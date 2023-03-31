@@ -284,12 +284,11 @@ class APIController extends AbstractController
         return $this->json($emprunts, 200, [], ['groups' => ['emprunt_basic', 'livre_basic']])->setMaxAge(3600);
     }
 
-    // route qui renvoie les amis d'un lecteur
     #[Route('/amis', name: 'api_amis', methods: ['POST'])]
     /**
      * @OA\Post(
      * path="/api/amis",
-     * tags={"amis"},
+     * tags={"Amis"},
      * summary="amis d'un lecteur",
      * description="Donne les amis d'un lecteur en fonction de son email",
      * operationId="amis",
@@ -352,7 +351,7 @@ class APIController extends AbstractController
     /**
      * @OA\Post(
      * path="/api/amis/delete",
-     * tags={"amis"},
+     * tags={"Amis"},
      * summary="supprimer un ami",
      * description="Supprime un ami d'un lecteur en fonction de son email",
      * operationId="amisDelete",
@@ -409,7 +408,7 @@ class APIController extends AbstractController
     /**
      * @OA\Post(
      * path="/api/amis/add",
-     * tags={"amis"},
+     * tags={"Amis"},
      * summary="ajouter un ami",
      * description="Ajoute un ami d'un lecteur en fonction de son email",
      * operationId="amisAdd",
@@ -465,7 +464,32 @@ class APIController extends AbstractController
      * Renvoi les 4 dernières acquisitions de la bibliothèque
      */
     #[View(serializerGroups: ['livre_basic'])]
-    #[Route('/books/last_posts', name: 'app_api_last_posts')]
+    #[Route('/books/last_posts', name: 'app_api_last_posts', methods: ['GET'])]
+    /**
+     * @OA\Get(
+     * path="/api/books/last_posts",
+     * tags={"Livre"},
+     * summary="Renvoi les 4 dernières acquisitions de la bibliothèque",
+     * description="Renvoi les 4 dernières acquisitions de la bibliothèque",
+     * operationId="lastPosts",
+     * @OA\Response(
+     * response=200,
+     * description="Renvoi les 4 dernières acquisitions de la bibliothèque",
+     * @OA\JsonContent(
+     *  @OA\Property(property="message",
+     *  type="string",
+     *  example="Renvoi les 4 dernières acquisitions de la bibliothèque"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Pas de livre trouvé",
+     * @OA\JsonContent(
+     * @OA\Property(property="message  ", type="string",example="Pas de livre trouvé"),
+     * )
+     * )
+     * )
+     */
     public function lastPosts(EntityManagerInterface $entityManager)
     {
         $livres = $entityManager->getRepository(Livre::class)->findBy([], ['dateAcquisition' => 'DESC'], 4);
@@ -478,76 +502,56 @@ class APIController extends AbstractController
         return $this->json($livres, 200, [], ['groups' => 'livre_basic'])->setMaxAge(3600);
     }
 
-    /**
-     * Renvoi la liste des 4 derniers emprunts du lecteur
-     */
-    /*
-    #[View(serializerGroups: ['livre_basic'])]
-    #[Route('/books/last_emprunts', name: 'app_api_last_emprunts', methods: ['POST'])]
-    public function lastEmprunts(EntityManagerInterface $entityManager, Request $request)
-    {
-        $json = $request->getContent();
-        $data = json_decode($json, true);
-        $token = $data['token'];
-        $lecteur = $entityManager->getRepository(Lecteur::class)->findOneBy(['token' => $token]);
-        if (null === $lecteur) {
-            return $this->json([
-                'message' => 'missing credentials',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-        $emprunts = $lecteur->getEmprunts();
-        $emprunts = array_slice($emprunts->toArray(), 0, 4);
-
-        if (empty($emprunts)) {
-            return $this->json(['message' => 'No books found'], 404)->setMaxAge(3600);
-        }
-
-        return $emprunts;
-    }*/
-    /**
-     * Recherche de livre en fonction du nom de l'auteur
-     */
     #[View(serializerGroups: ['livre_basic'])]
     #[Route('/books/research', name: 'app_api_research', methods: ['GET'])]
     /**
      * @OA\Get(
      * path="/api/books/research",
      * tags={"Livre"},
-     * summary="Recherche de livre",
-     * description="Recherche de livre en fonction du titre de l'oeuvre et du nom de l'auteur",
+     * summary="Recherche de livre en fonction du nom de l'auteur ou d'un titre de livre",
+     * description="Recherche de livre en fonction du nom de l'auteur ou d'un mot du titre de livre",
      * operationId="research",
      * @OA\Parameter(
      * name="name",
      * in="query",
-     * description="Nom du livre ou de l'auteur",
+     * description="Nom de l'auteur",
      * required=true,
      * @OA\Schema(
-     * type="string",
-     * example="Harry Potter"
+     * type="string"
+     * )
+     * ),
+     * @OA\Parameter(
+     * name="maxResults",
+     * in="query",
+     * description="Nombre de résultats maximum",
+     * required=true,
+     * @OA\Schema(
+     * type="integer"
+     * )
+     * ),
+     * @OA\Parameter(
+     * name="startIndex",
+     * in="query",
+     * description="Index de départ",
+     * required=true,
+     * @OA\Schema(
+     * type="integer"
      * )
      * ),
      * @OA\Response(
      * response=200,
-     * description="Les livres",
-     * @OA\MediaType(
-     *   mediaType="application/json",
-     * ),
-     * ),
-     * @OA\Response(
-     *  response=404,
-     * description="Pas de livres",
+     * description="Recherche effectuée",
      * @OA\JsonContent(
-     * @OA\Property(property="message", type="string", example="No books found"),
+     * @OA\Property(property="nbResults", type="integer", example="2"),
      * )
      * ),
      * @OA\Response(
-     * response=400,
-     * description="Erreur de requête",
+     * response=404,
+     * description="Aucun livre trouvé",
      * @OA\JsonContent(
-     * @OA\Property(property="message", type="string", example="Bad request"),
+     * @OA\Property(property="message", type="string", example="Aucun livre trouvé"),
      * )
-     * )
-     * )
+     * ),
      * )
      */
     public function research(EntityManagerInterface $entityManager)
@@ -555,48 +559,27 @@ class APIController extends AbstractController
         $name = $_GET['name'];
         $max = $_GET['maxResults'];
         $startIndex = $_GET['startIndex'];
-
         $author = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
-        // recuperer tous les livres ecris par un auteur dont le nom ressembe a $name en sql
         $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getResult();
-
+        $livre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
+        $livre = $entityManager->createQuery($livre)->setParameter('name', $name . '%')->getResult();
         $livres = [];
         foreach ($author as $auteur) {
             $livres = array_merge($livres, $auteur->getLivres()->toArray());
         }
+        $livres = array_merge($livres, $livre);
         $nbResults = 0;
         foreach ($livres as $livre) {
             $nbResults++;
         }
-
         $livres = array_slice($livres, $startIndex, $max);
-
         if ($livres == null) {
             return $this->json(['message' => 'No books found'], 404);
         }
         return $this->json(['livres' => $livres, 'nbResults' => $nbResults], 200, [], ['groups' => 'livre_basic']);
     }
 
-    // route qui retourne les auteurs qui correspondent au nom passé en paramètre
-    #[Route('/authors/research/', name: 'app_api_research_author', methods: ['GET'])]
-    public function researchAuthor(EntityManagerInterface $entityManager)
-    {
-        $name = $_GET['name'];
-        $maxResults = $_GET['maxResults'];
 
-        if ($name == null) {
-            return $this->json(['message' => 'No authors found'], 404);
-        }
-        $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
-        // limiter le nb de resuts a 10
-        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')
-            ->setMaxResults($maxResults)->getResult();
-        if ($authors == null) {
-            return $this->json(['message' => 'No authors found'], 404);
-        }
-
-        return $this->json($authors, 200, [], ['groups' => 'auteur_basic'])->setMaxAge(3600);
-    }
 
     #[Route('/books/{id}', name: 'app_api_book', methods: ['GET'])]
     /**
