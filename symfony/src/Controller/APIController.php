@@ -559,13 +559,10 @@ class APIController extends AbstractController
         $name = $_GET['name'];
         $max = $_GET['maxResults'];
         $startIndex = $_GET['startIndex'];
-
         $author = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
         $author = $entityManager->createQuery($author)->setParameter('name', $name . '%')->getResult();
-
         $livre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
         $livre = $entityManager->createQuery($livre)->setParameter('name', $name . '%')->getResult();
-        
         $livres = [];
         foreach ($author as $auteur) {
             $livres = array_merge($livres, $auteur->getLivres()->toArray());
@@ -575,9 +572,7 @@ class APIController extends AbstractController
         foreach ($livres as $livre) {
             $nbResults++;
         }
-
         $livres = array_slice($livres, $startIndex, $max);
-
         if ($livres == null) {
             return $this->json(['message' => 'No books found'], 404);
         }
