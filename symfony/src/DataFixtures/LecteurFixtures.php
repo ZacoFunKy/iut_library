@@ -25,7 +25,6 @@ class LecteurFixtures extends Fixture
             $lecteur->setPrenomlecteur($result['name']['first']);
             $lecteur->setEmail($result['email']);
             $password = $result['login']['password'];
-            echo $lecteur->getPrenomlecteur() + ": " + $password + "";
             $lecteur->setPassword(hash('sha256', $password));
             $lecteur->setImagedeprofil($result['picture']['large']);
             $manager->persist($lecteur);
