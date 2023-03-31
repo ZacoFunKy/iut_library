@@ -646,23 +646,6 @@ class APIController extends AbstractController
     }
 
 
-    #[Route('/authors/research/', name: 'app_api_research_author', methods: ['GET'])]
-    public function researchAuthor(EntityManagerInterface $entityManager)
-    {
-        $name = $_GET['name'];
-        $maxResults = $_GET['maxResults'];
-
-        if ($name == null) {
-            return $this->json(['message' => 'No authors found'], 404);
-        }
-        $authors = "SELECT a FROM App\Entity\Auteur a WHERE a.intituleAuteur LIKE :name";
-        // limiter le nb de results a 10
-        $authors = $entityManager->createQuery($authors)->setParameter('name', $name . '%')
-            ->setMaxResults($maxResults)->getResult();
-        if ($authors == null) {
-            return $this->json(['message' => 'No authors found'], 404);
-        }
-
     #[Route('/books/{id}', name: 'app_api_book', methods: ['GET'])]
     /**
      * @OA\Get(
