@@ -60,7 +60,6 @@ function SearchBar({
     return () => clearTimeout(search);
   }, [indexPage, searchTerm, setNbLivres, setResults, setTextSearch]);
 
-  // pareil que auddessus mais avec fetch
   useEffect(() => {
     const search = setTimeout(() => {
       if (searchTerm.length >= 4) {
