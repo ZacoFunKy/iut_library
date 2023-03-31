@@ -32,14 +32,14 @@ function SearchBar({
     const search = setTimeout(() => {
       if (searchTerm.length >= 1) {
         fetch(
-          `https://localhost:8000/api/books/research/?name=${searchTerm}&&startIndex=${indexPage}&&maxResults=8`
+          `http://185.212.226.191:8000/api/books/research/?name=${searchTerm}&&startIndex=${indexPage}&&maxResults=8`
         )
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
             if (data.livres === undefined) {
               setResults([]);
-              setTextSearch("Aucun résultat pour l'auteur : " + searchTerm);
+              setTextSearch("Aucun résultat pour l'auteur/livre : " + searchTerm);
             } else {
               setResults(data.livres);
             }
@@ -65,7 +65,7 @@ function SearchBar({
     const search = setTimeout(() => {
       if (searchTerm.length >= 4) {
         fetch(
-          `https://localhost:8000/api/authors/research/?name=${searchTerm}&&maxResults=10`
+          `http://185.212.226.191:8000/api/authors/research/?name=${searchTerm}&&maxResults=10`
         )
           .then((response) => response.json())
           .then((data) => {
