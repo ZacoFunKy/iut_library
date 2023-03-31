@@ -476,7 +476,9 @@ class APIController extends AbstractController
      * response=200,
      * description="Renvoi les 4 dernières acquisitions de la bibliothèque",
      * @OA\JsonContent(
-     *  @OA\Property(property="message", type="string", example="Renvoi les 4 dernières acquisitions de la bibliothèque"),
+     *  @OA\Property(property="message",
+     *  type="string",
+     *  example="Renvoi les 4 dernières acquisitions de la bibliothèque"),
      * )
      * ),
      * @OA\Response(
@@ -487,7 +489,6 @@ class APIController extends AbstractController
      * )
      * )
      * )
-     * 
      */
     public function lastPosts(EntityManagerInterface $entityManager)
     {
@@ -564,7 +565,6 @@ class APIController extends AbstractController
 
         $livre = "SELECT l FROM App\Entity\Livre l WHERE l.titre LIKE :name";
         $livre = $entityManager->createQuery($livre)->setParameter('name', $name . '%')->getResult();
-
         
         $livres = [];
         foreach ($author as $auteur) {
