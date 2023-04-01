@@ -20,10 +20,10 @@ class AuteurTest extends KernelTestCase
     {
         $kernel = self::bootKernel();
         $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
-        $username = 'ztanji';
-        $password = 'J9SwdTBV';
+        $username = 'root';
+        $password = 'lCRIkg5xD';
 
-        $this->pdo = new PDO("mysql:host=info-titania;port=3306;dbname=etu_ztanji", $username, $password);  
+        $this->pdo = new PDO("mysql:host=185.212.226.191;port=6033;dbname=BD_E9", $username, $password);  
     }
 
     public function testConnection()

@@ -20,10 +20,10 @@ class LivreTest extends KernelTestCase
     {
         $kernel = self::bootKernel();
         $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
-        $username = 'ztanji';
-        $password = 'J9SwdTBV';
+        $username = 'root';
+        $password = 'lCRIkg5xD';
 
-        $this->pdo = new PDO("mysql:host=info-titania;port=3306;dbname=etu_ztanji", $username, $password);  
+        $this->pdo = new PDO("mysql:host=185.212.226.191;port=6033;dbname=BD_E9", $username, $password);  
     }
 
     public function testConnection()
@@ -58,15 +58,15 @@ class LivreTest extends KernelTestCase
     }
 
     function testLivreAuteurNotNull(){
-        $LivreAuteurNonNull=false;
+        $LivreAuteurNonNull=true;
         $sql = "SELECT * FROM test_livre_auteur";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($result as $row) { 
-                if ($row["livre_id"]!=NULL || $row["auteur_id"]!=NULL){
-                    $LivreAuteurNonNull=true;
+                if ($row["livre_id"]==NULL || $row["auteur_id"]==NULL){
+                    $LivreAuteurNonNull=false;
                 }
             }
         } catch(PDOException $e) {

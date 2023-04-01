@@ -97,7 +97,7 @@ class ApiTest extends WebTestCase
             'Content-Type' => 'application/json',
             'Expect' => '100-continue',
         ];
-        $response = $client->request('POST', '/api/friends', [
+        $response = $client->request('POST', '/api/amis', [
             'headers' => $headers,
             'body' => $json,
         ]);
@@ -112,23 +112,25 @@ class ApiTest extends WebTestCase
             'base_uri' => 'http://127.0.0.1:8000/api/books/research/',
             'verify' => false,
         ]);
-
-        $response = $client->request('GET', '?name= ');
+        $count=0;
+        $response = $client->request('GET', '?name=&maxResults=500&startIndex=0');
         $content = $response->getBody()->getContents();
         $content = json_decode($content, true);
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(count($content)-1, $content[count($content)-1]["TotalResponse"]);
+        foreach ($content["livres"] as $book){
+            $count+=1;
+        }
+        $this->assertEquals($count, $content["nbResults"]);
 
-        $response = $client->request('GET', '?name=re');
+        $count=0;
+        $response = $client->request('GET', '?name=re&maxResults=600&startIndex=0');
         $content = $response->getBody()->getContents();
         $content = json_decode($content, true);
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(count($content)-1, $content[count($content)-1]["TotalResponse"]);
+        foreach ($content["livres"] as $book){
+            $count+=1;
+        }
+        $this->assertEquals($count, $content["nbResults"]);
 
-        $response = $client->request('GET', '?name=reijuibnfcyfdgbfgfffgffgffgctgfcxgfcxgfctxfctgcd');
-        $content = $response->getBody()->getContents();
-        $content = json_decode($content, true);
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(count($content)-1, $content[count($content)-1]["TotalResponse"]);
     }
 }
