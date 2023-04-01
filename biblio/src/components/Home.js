@@ -46,7 +46,7 @@ function Home({ setBook }) {
       <div className="derniers-emprunts m-20 h-auto items-center">
         <h2 className="md:text-xl text-lg">Derniers livres empruntés</h2>
         {derniersEmprunts.length > 0 && derniersEmprunts !== undefined? (
-          <div className="flex flex-row justify-around">
+          <div className="flex flex-row flex-wrap justify-around">
             {derniersEmprunts.map((item) => {
               return (
                 <div key={item.livre.id}>
