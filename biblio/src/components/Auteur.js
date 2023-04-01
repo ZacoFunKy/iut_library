@@ -1,4 +1,4 @@
-function Auteur({aut}) {
+function Auteur({ aut }) {
   return (
     <div key={aut.id}>
       {aut.intituleAuteur !== null ? (

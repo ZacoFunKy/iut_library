@@ -1,5 +1,4 @@
-function Pagination({indexPage, setIndex, nbLivres}) {
-
+function Pagination({ indexPage, setIndex, nbLivres }) {
   const nextPage = () => {
     setIndex(indexPage + 8);
   };
@@ -25,8 +24,8 @@ function Pagination({indexPage, setIndex, nbLivres}) {
           Précédent
         </button>
       )}
-      <p>Page {indexPage / 8 +1}</p>
-      {nbLivres - (8 * (indexPage/8+1)) <= 0 ? null : (
+      <p>Page {indexPage / 8 + 1}</p>
+      {nbLivres - 8 * (indexPage / 8 + 1) <= 0 ? null : (
         <button onClick={nextPage} className="flex items-center">
           Suivant
           <svg

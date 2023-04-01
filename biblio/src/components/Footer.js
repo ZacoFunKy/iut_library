@@ -2,7 +2,7 @@ function Footer() {
   return (
     // footer en bas de page si le contenu est trop court avec affichage conditionnel
     <footer
-      className={`footer bg-gray-100 flex flex-row justify-around  text-[#009999] text-sm md:text-2xl items-top p-5  w-full ` }
+      className={`footer bg-gray-100 flex flex-row justify-around  text-[#009999] text-sm md:text-2xl items-top p-5  w-full `}
     >
       <div className="m-2">
         <h1 className=" mb-5">IUT - Bibliothèque</h1>

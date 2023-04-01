@@ -14,7 +14,6 @@ function Ami({ item, setFriends, friends }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setFriends(data);
       })
       .catch((error) => {
@@ -37,7 +36,6 @@ function Ami({ item, setFriends, friends }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setFriends(data);
       })
 
