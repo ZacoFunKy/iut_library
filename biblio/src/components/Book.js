@@ -24,7 +24,7 @@ function Book({ props, setBook }) {
         <div className="flex flex-row items-center m-auto min-w-32 max-w-32 ">
           {props.couverture !== undefined && props.couverture !== null ? (
             <img
-            fetchpriority="hight"
+              fetchpriority="hight"
               src={props.couverture}
               alt="book"
               className="border-2 border-[#009999] rounded-md h-48 w-32 object-cover"
@@ -48,7 +48,8 @@ function Book({ props, setBook }) {
               )}
             </div>
             <div className="m-2">
-              {props.dateParution === null || props.dateParution === undefined ? (
+              {props.dateParution === null ||
+              props.dateParution === undefined ? (
                 <p className="text-md">Pas de date définie</p>
               ) : (
                 <p className="text-md">{props.dateParution.split("-")[0]}</p>

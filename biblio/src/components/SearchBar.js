@@ -39,7 +39,9 @@ function SearchBar({
             console.log(data);
             if (data.livres === undefined) {
               setResults([]);
-              setTextSearch("Aucun résultat pour l'auteur/livre : " + searchTerm);
+              setTextSearch(
+                "Aucun résultat pour l'auteur/livre : " + searchTerm
+              );
             } else {
               setResults(data.livres);
             }
@@ -60,6 +62,7 @@ function SearchBar({
     return () => clearTimeout(search);
   }, [indexPage, searchTerm, setNbLivres, setResults, setTextSearch]);
 
+  // pareil que auddessus mais avec fetch
   useEffect(() => {
     const search = setTimeout(() => {
       if (searchTerm.length >= 4) {
@@ -78,7 +81,7 @@ function SearchBar({
       }
     }, 250);
     return () => clearTimeout(search);
-  }, [searchTerm, setListSuggestions]);
+  }, [searchTerm]);
 
   const rebootIndex = () => {
     setIndex(0);

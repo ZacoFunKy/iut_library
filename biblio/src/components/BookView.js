@@ -7,7 +7,12 @@ function BookView({ Book }) {
 
   return (
     <Fragment>
-      <button className="bg-[#009999] ml-10 mt-10 pr-5 pl-5 p-2 retour" onClick={() => window.history.back()}>Retour</button>
+      <button
+        className="bg-[#009999] ml-10 mt-10 pr-5 pl-5 p-2 retour"
+        onClick={() => window.history.back()}
+      >
+        Retour
+      </button>
       {Book.length !== 0 ? (
         <div className="flex flex-col items-center">
           {Book.titre !== null ? (

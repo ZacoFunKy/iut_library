@@ -11,7 +11,7 @@ function Navbar() {
     retourMenu("/");
     window.location.reload();
   }
-  
+
   window.addEventListener("resize", () => {
     if (window.innerWidth > 1024) {
       setShowMenu(false);
@@ -77,11 +77,17 @@ function Navbar() {
 
             {localStorage.getItem("token") !== null ? (
               <div className="flex flex-col items-center">
-                <p className="text-xl m-2 mb-5"> {localStorage.getItem("email")} </p>
+                <p className="text-xl m-2 mb-5">
+                  {" "}
+                  {localStorage.getItem("email")}{" "}
+                </p>
                 <button
                   className="bg-red-600 p-2 deco text text-xl ml-5 mr-5
                      hover:bg-red-500"
-                  onMouseDown={() => {handleDeco(); setShowMenu(!showMenu)}}
+                  onMouseDown={() => {
+                    handleDeco();
+                    setShowMenu(!showMenu);
+                  }}
                 >
                   Deconnexion
                 </button>
